@@ -20,7 +20,7 @@ export default function RoomTour({ slides, open, onClose }: RoomTourProps) {
     if (timerRef.current) window.clearInterval(timerRef.current);
     if (playing) {
       // 15 seconds per slide as requested
-      timerRef.current = window.setInterval(() => setIndex((i) => (i + 1) % slides.length), 15000);
+      timerRef.current = window.setInterval(() => setIndex((i) => (i + 1) % slides.length), 5000);
     }
     return () => { if (timerRef.current) window.clearInterval(timerRef.current); };
   }, [open, playing, slides.length]);
