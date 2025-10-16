@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { getSupabase } from '../../lib/supabaseClient';
 
 function normalizeString(v: any) {
@@ -26,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: 'Supabase not configured' });
     }
 
-    async function fetchRoomsByType(): Promise<{ ids: string[]; count: number }> {
+    async function fetchRoomsByType(db: SupabaseClient): Promise<{ ids: string[]; count: number }> {
       const candidates = [
         { table: 'hotel_rooms', col: 'type' },
         { table: 'hotel_rooms', col: 'room_type' },
@@ -35,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       for (const c of candidates) {
         try {
-          const { data, error } = await supabase
+          const { data, error } = await db
             .from(c.table)
             .select('id,status')
             .eq(c.col, roomType)
@@ -51,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return { ids: [], count: 0 };
     }
 
-    async function countOverlappingReservations(roomIds: string[]): Promise<{ rows: any[]; usedIds: Set<string> }> {
+    async function countOverlappingReservations(db: SupabaseClient, roomIds: string[]): Promise<{ rows: any[]; usedIds: Set<string> }> {
       const datePairs: Array<{ start: string; end: string }> = [
         { start: 'check_in', end: 'check_out' },
         { start: 'start_date', end: 'end_date' }
@@ -62,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       for (const pair of datePairs) {
         for (const filter of filters) {
           try {
-            let q = supabase.from('room_reservations').select('*');
+            let q = db.from('room_reservations').select('*');
 
             // Date overlap: start <= checkOut AND end >= checkIn
             q = q.or(`and(${pair.start}.lte.${checkOut},${pair.end}.gte.${checkIn})`);
@@ -88,9 +89,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return { rows: [], usedIds: new Set<string>() };
     }
 
-    const { ids: roomIds, count: capacity } = await fetchRoomsByType();
+    const { ids: roomIds, count: capacity } = await fetchRoomsByType(supabase);
 
-    const { rows: overlaps, usedIds } = await countOverlappingReservations(roomIds);
+    const { rows: overlaps, usedIds } = await countOverlappingReservations(supabase, roomIds);
 
     const reservedCount = usedIds.size > 0 ? usedIds.size : overlaps.length;
 
