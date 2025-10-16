@@ -200,7 +200,7 @@ export default function Home() {
                       <button className="btn btn-outline" type="button" onClick={() => setAvailabilityOpen(false)}>Cancel</button>
                       <button className="btn btn-primary" type="submit" disabled={availabilityLoading}>{availabilityLoading ? 'Searching…' : 'Search'}</button>
                     </div>
-                    {availabilityMessage && <p role="status" style={{ marginTop: 8 }}>{availabilityMessage}</p>}
+                    {availabilityMessage && <p role="status">{availabilityMessage}</p>}
                   </form>
                 </div>
               </div>
