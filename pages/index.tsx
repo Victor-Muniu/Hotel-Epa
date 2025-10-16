@@ -98,14 +98,14 @@ export default function Home() {
             <div className="hero-preview-caption">It’s not always easy for travellers to know – let our concierge guide the way.</div>
           </aside>
         </div>
-        <div className="availability-bar" role="search" aria-label="Availability">
+        <form className="availability-bar" onSubmit={onCheckAvailability} role="search" aria-label="Availability">
           <label className="availability-field">
             <span className="availability-icon" aria-hidden="true">
               <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10V5m0 10v-3h14v3M5 5h6a2 2 0 0 1 2 2v3H5V7a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </span>
             <span className="availability-text">
               <span className="availability-label">Room</span>
-              <select className="availability-input" aria-label="Room" name="room_type" defaultValue={roomTypes[0] || ''}>
+              <select className="availability-input" aria-label="Room" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
                 {roomTypes.map((t) => (
                   <option key={t} value={t}>{t}</option>
                 ))}
@@ -119,7 +119,15 @@ export default function Home() {
             </span>
             <span className="availability-text">
               <span className="availability-label">Check in</span>
-              <input className="availability-input" type="date" aria-label="Check in" defaultValue="" />
+              <input
+                className="availability-input"
+                type="date"
+                aria-label="Check in"
+                value={formData.checkIn}
+                onChange={(e) => setFormData({ ...formData, checkIn: e.target.value })}
+                min={new Date().toISOString().split('T')[0]}
+                required
+              />
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
           </label>
@@ -129,7 +137,15 @@ export default function Home() {
             </span>
             <span className="availability-text">
               <span className="availability-label">Check out</span>
-              <input className="availability-input" type="date" aria-label="Check out" defaultValue="" />
+              <input
+                className="availability-input"
+                type="date"
+                aria-label="Check out"
+                value={formData.checkOut}
+                onChange={(e) => setFormData({ ...formData, checkOut: e.target.value })}
+                min={formData.checkIn || new Date().toISOString().split('T')[0]}
+                required
+              />
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
           </label>
@@ -139,127 +155,38 @@ export default function Home() {
             </span>
             <span className="availability-text">
               <span className="availability-label">Guests</span>
-              <select className="availability-input" aria-label="Guests" defaultValue="02 Adults">
-                <option value="02 Adults">02 Adults</option>
+              <select
+                className="availability-input"
+                aria-label="Guests"
+                value={formData.guests}
+                onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+              >
                 <option value="01 Adult">01 Adult</option>
+                <option value="02 Adults">02 Adults</option>
                 <option value="03 Adults">03 Adults</option>
+                <option value="04 Adults">04 Adults</option>
+                <option value="05 Adults">05 Adults</option>
+                <option value="06 Adults">06 Adults</option>
+                <option value="07 Adults">07 Adults</option>
+                <option value="08 Adults">08 Adults</option>
+                <option value="09 Adults">09 Adults</option>
+                <option value="10 Adults">10 Adults</option>
               </select>
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
           </label>
           <div className="availability-btn">
-            <button type="button" className="btn btn-contrast" onClick={() => setAvailabilityOpen(true)}>Check Availability</button>
+            <button type="submit" className="btn btn-contrast" disabled={availabilityLoading}>
+              {availabilityLoading ? 'Searching…' : 'Check Availability'}
+            </button>
           </div>
 
-          {availabilityOpen && (
-            <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Check availability" onClick={() => setAvailabilityOpen(false)}>
-              <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
-                <header className="modal-header">
-                  <h3>Check availability</h3>
-                  <button className="modal-close" aria-label="Close" onClick={() => setAvailabilityOpen(false)}>✕</button>
-                </header>
-                <div className="modal-body">
-                  <form className="form" onSubmit={onCheckAvailability}>
-                    <label className="availability-field">
-                      <span className="availability-icon" aria-hidden="true">
-                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10V5m0 10v-3h14v3M5 5h6a2 2 0 0 1 2 2v3H5V7a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                      <span className="availability-text">
-                        <span className="availability-label">Room</span>
-                        <select className="availability-input" aria-label="Room" name="room_type" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
-                          {roomTypes.map((t) => (
-                            <option key={t} value={t}>{t}</option>
-                          ))}
-                        </select>
-                      </span>
-                      <span className="availability-caret" aria-hidden="true"></span>
-                    </label>
-
-                    <label className="availability-field">
-                      <span className="availability-icon" aria-hidden="true">
-                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3v2m8-2v2M4 7h12M5 11h3m4 0h3M5 15h3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                      <span className="availability-text">
-                        <span className="availability-label">Check in</span>
-                        <input className="availability-input" type="date" aria-label="Check in" name="check_in" defaultValue="" />
-                      </span>
-                      <span className="availability-caret" aria-hidden="true"></span>
-                    </label>
-
-                    <label className="availability-field">
-                      <span className="availability-icon" aria-hidden="true">
-                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3v2m8-2v2M4 7h12M5 11h3m4 0h3M5 15h3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                      <span className="availability-text">
-                        <span className="availability-label">Check out</span>
-                        <input className="availability-input" type="date" aria-label="Check out" name="check_out" defaultValue="" />
-                      </span>
-                      <span className="availability-caret" aria-hidden="true"></span>
-                    </label>
-
-                    <label className="availability-field">
-                      <span className="availability-icon" aria-hidden="true">
-                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 5a6 6 0 1 1 12 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                      <span className="availability-text">
-                        <span className="availability-label">Guests</span>
-                        <select className="availability-input" aria-label="Guests" defaultValue="02 Adults">
-                          <option value="02 Adults">02 Adults</option>
-                          <option value="01 Adult">01 Adult</option>
-                          <option value="03 Adults">03 Adults</option>
-                        </select>
-                      </span>
-                      <span className="availability-caret" aria-hidden="true"></span>
-                    </label>
-
-                    {rates && (
-                      <label className="availability-field">
-                        <span className="availability-icon" aria-hidden="true">
-                          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h12v6H4z M3 15h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        </span>
-                        <span className="availability-text">
-                          <span className="availability-label">Rates</span>
-                          <span className="availability-input" aria-live="polite">
-                            {rates.bed_only != null && <span>Bed Only: {rates.bed_only}</span>} {rates.bed_and_breakfast != null && <span> · B&amp;B: {rates.bed_and_breakfast}</span>} {rates.half_board != null && <span> · Half Board: {rates.half_board}</span>} {rates.full_board != null && <span> · Full Board: {rates.full_board}</span>}
-                          </span>
-                        </span>
-                        <span className="availability-caret" aria-hidden="true"></span>
-                      </label>
-                    )}
-
-                    <label className="availability-field">
-                      <span className="availability-icon" aria-hidden="true">
-                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h12M6 6h8m-9 7h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                      <span className="availability-text">
-                        <span className="availability-label">Rooms</span>
-                        <input className="availability-input" type="number" name="rooms" min={1} defaultValue={1} aria-label="Rooms" />
-                      </span>
-                      <span className="availability-caret" aria-hidden="true"></span>
-                    </label>
-
-                    <label className="availability-field">
-                      <span className="availability-icon" aria-hidden="true">
-                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 5a6 6 0 1 1 12 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                      <span className="availability-text">
-                        <span className="availability-label">Children</span>
-                        <input className="availability-input" type="number" name="children" min={0} defaultValue={0} aria-label="Children" />
-                      </span>
-                      <span className="availability-caret" aria-hidden="true"></span>
-                    </label>
-
-                    <div className="modal-actions">
-                      <button className="btn btn-outline" type="button" onClick={() => setAvailabilityOpen(false)}>Cancel</button>
-                      <button className="btn btn-primary" type="submit" disabled={availabilityLoading}>{availabilityLoading ? 'Searching…' : 'Search'}</button>
-                    </div>
-                    {availabilityMessage && <p role="status">{availabilityMessage}</p>}
-                  </form>
-                </div>
-              </div>
+          {availabilityMessage && (
+            <div className="availability-result" role="status" aria-live="polite">
+              {availabilityMessage}
             </div>
           )}
-        </div>
+        </form>
       </section>
 
       <section className="about-section" aria-label="About">
