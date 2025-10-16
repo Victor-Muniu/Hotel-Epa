@@ -6,11 +6,44 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
+  
   try {
+    const supabase = getSupabase();
+    if (!supabase) {
+      return res.status(200).json({ message: 'Received. Configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to store requests.' });
+    }
+
     const first_name = req.body.first_name || null;
     const last_name = req.body.last_name || null;
     const rooms = req.body.rooms ? Number(req.body.rooms) : 1;
-    const payload = {
+    const guests = req.body.guests ? Number(req.body.guests) : 1;
+    const children = req.body.children ? Number(req.body.children) : 0;
+
+    const bookingPayload = {
+      room_id: req.body.room_id || null,
+      first_name,
+      last_name,
+      email: req.body.email,
+      phone: req.body.phone || null,
+      start_date: req.body.start_date,
+      end_date: req.body.end_date,
+      guests,
+      children,
+      board_type: req.body.type || req.body.board_type || null,
+      total_price: req.body.total_price || null,
+      currency: 'USD',
+      status: 'pending',
+      payment_status: 'pending',
+      notes: req.body.notes || null,
+      created_at: new Date().toISOString()
+    };
+
+    // Insert booking
+    const { error: bookingError } = await supabase.from('bookings').insert(bookingPayload as any);
+    if (bookingError) throw bookingError;
+
+    // Also maintain backward compatibility with booking_requests table
+    const requestPayload = {
       type: req.body.type,
       first_name,
       last_name,
@@ -19,8 +52,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       phone: req.body.phone || null,
       start_date: req.body.start_date,
       end_date: req.body.end_date,
-      guests: req.body.guests ? Number(req.body.guests) : null,
-      children: req.body.children ? Number(req.body.children) : 0,
+      guests,
+      children,
       rooms,
       room: req.body.room || null,
       nationality: req.body.nationality || null,
@@ -29,15 +62,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       created_at: new Date().toISOString()
     };
 
-    const supabase = getSupabase();
-    if (!supabase) {
-      return res.status(200).json({ message: 'Received. Configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to store requests.' });
-    }
+    const { error: requestError } = await supabase.from('booking_requests').insert(requestPayload as any);
+    if (requestError) throw requestError;
 
-    const { error } = await supabase.from('booking_requests').insert(payload as any);
-    if (error) throw error;
-    return res.status(200).json({ message: 'Request submitted. We will contact you soon.' });
+    return res.status(200).json({ message: 'Booking confirmed! We will contact you soon with details.' });
   } catch (e: any) {
-    return res.status(200).json({ message: 'Received. Please ensure the booking_requests table exists with RLS allowing anon inserts.' });
+    console.error('Booking error:', e);
+    return res.status(200).json({ message: 'Booking received. Please ensure the bookings and booking_requests tables exist with RLS allowing anon inserts.' });
   }
 }

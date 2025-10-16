@@ -31,7 +31,7 @@ export default function Home() {
     <div className="coffee-theme">
       <Head>
         <title>Epashikino Resort & Spa</title>
-        <meta name="description" content="Epashikino Resort & Spa – luxury rooms, conference facilities, and spa. Book your stay and events." />
+        <meta name="description" content="Epashikino Resort & Spa �� luxury rooms, conference facilities, and spa. Book your stay and events." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <section className="hero-banner" aria-label="Hero">
@@ -40,8 +40,8 @@ export default function Home() {
             <h1 className="hero-title">Epashikino Resort & Spa.</h1>
             <p className="hero-subtitle">Your Ultimate Joyous Place</p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href="/booking">Book Now</Link>
-              <Link className="btn btn-outline" href="/rooms">Check Availability</Link>
+              <Link className="btn btn-primary" href="/rooms-list">Book Now</Link>
+              <Link className="btn btn-outline" href="/rooms-list">View Rooms</Link>
             </div>
           </div>
           <aside className="hero-preview" aria-label="Highlight">
