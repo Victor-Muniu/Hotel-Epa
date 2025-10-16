@@ -3,26 +3,12 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const [availabilityOpen, setAvailabilityOpen] = useState(false);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
   const [availabilityMessage, setAvailabilityMessage] = useState<string | null>(null);
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
   const [rates, setRates] = useState<{ bed_only: number | null; bed_and_breakfast: number | null; half_board: number | null; full_board: number | null } | null>(null);
-
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setAvailabilityOpen(false);
-    }
-    if (availabilityOpen) {
-      document.addEventListener('keydown', onKey);
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [availabilityOpen]);
+  const [formData, setFormData] = useState({ checkIn: '', checkOut: '', guests: '02 Adults' });
 
   useEffect(() => {
     let mounted = true;
