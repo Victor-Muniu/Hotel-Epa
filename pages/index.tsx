@@ -42,18 +42,16 @@ export default function Home() {
     e.preventDefault();
     setAvailabilityMessage(null);
     setAvailabilityLoading(true);
-    const form = new FormData(e.currentTarget);
-    const roomType = String(form.get('room_type') || '').trim();
-    const checkIn = String(form.get('check_in') || '').trim();
-    const checkOut = String(form.get('check_out') || '').trim();
-    const rooms = Number(form.get('rooms') || 1) || 1;
-    const children = Number(form.get('children') || 0) || 0;
+
+    const roomType = selectedType;
+    const checkIn = formData.checkIn;
+    const checkOut = formData.checkOut;
 
     try {
       const res = await fetch('/api/availability', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roomType, checkIn, checkOut, rooms, children })
+        body: JSON.stringify({ roomType, checkIn, checkOut, rooms: 1, children: 0 })
       });
       const json = await res.json();
       if (res.ok) {
