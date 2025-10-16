@@ -638,8 +638,23 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .tour-stage { position: absolute; inset: 0; }
 .tour-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; background-size: cover; background-position: center; }
 .tour-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
-.tour-slide.active { opacity: 1; animation: kenburns 9s ease-in-out both; }
-@keyframes kenburns { 0% { transform: scale(1) translateZ(0); } 100% { transform: scale(1.1) translateZ(0); } }
+.tour-slide.active { opacity: 1; transition: opacity .9s ease, transform .9s ease, filter .9s ease; transform: translate3d(calc(var(--mx,0) * calc(var(--depth,1) * 20px)), calc(var(--my,0) * calc(var(--depth,1) * 14px)), 0) rotate(calc(var(--mx,0) * calc(var(--depth,1) * 3deg))) scale(1.02); filter: contrast(1.03) saturate(1.06); z-index: 3; }
+/* gentle floating motion for active slide */
+@keyframes floaty { 0% { transform: translate3d(calc(var(--mx,0) * calc(var(--depth,1) * 20px)), calc(var(--my,0) * calc(var(--depth,1) * 14px)) , 0) rotate(calc(var(--mx,0) * calc(var(--depth,1) * 3deg))) scale(1.01); }
+ 50% { transform: translate3d(calc(var(--mx,0) * calc(var(--depth,1) * 20px)), calc(var(--my,0) * calc(var(--depth,1) * 14px)) , 0) rotate(calc(var(--mx,0) * calc(var(--depth,1) * 3deg))) scale(1.03); }
+ 100% { transform: translate3d(calc(var(--mx,0) * calc(var(--depth,1) * 20px)), calc(var(--my,0) * calc(var(--depth,1) * 14px)) , 0) rotate(calc(var(--mx,0) * calc(var(--depth,1) * 3deg))) scale(1.01); } }
+.tour-slide.active::after { content: ""; position: absolute; left: -40%; top: -40%; width: 60%; height: 180%; transform: rotate(12deg); background: linear-gradient(120deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.0) 70%); opacity: 0.0; pointer-events: none; animation: sweep 3.2s ease-in-out 1s both; }
+@keyframes sweep { 0% { left: -40%; opacity: 0; } 10% { opacity: .06 } 45% { left: 80%; opacity: .12 } 100% { left: 120%; opacity: 0 } }
+/* non-active slides sit behind with subtle blur and scaled down, still respond to parallax */
+.tour-slide.bg, .tour-slide.prev, .tour-slide.next { transform: translate3d(calc(var(--mx,0) * calc(var(--depth,1) * 10px)), calc(var(--my,0) * calc(var(--depth,1) * 8px)), 0) scale(.98); filter: blur(.6px) grayscale(.02) brightness(.96); opacity: .9; z-index: 1; }
+/* film grain and vignette on panel for a cinematic feel */
+.tour-panel::before { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%); mix-blend-mode: multiply; }
+.tour-panel::after { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="g"><feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.06"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(%23g)" opacity="0.04"/></svg>'); opacity: .6; mix-blend-mode: overlay; }
+/* ensure images themselves cover and remain crisp */
+.tour-slide img { opacity: 0; }
+
+/* start a subtle float animation on the active slide container */
+.tour-slide.active { animation: floaty 10s ease-in-out infinite; }
 .tour-controls { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; z-index: 2; }
 .tour-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(0,0,0,.35); color: #fff; font-size: 20px; display: grid; place-items: center; cursor: pointer; }
 .tour-btn:hover { background: rgba(0,0,0,.55); }
