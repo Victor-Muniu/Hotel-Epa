@@ -1,12 +1,28 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
+import RoomTour from '../components/RoomTour';
 
 export default function Rooms() {
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'floor' | 'tour'>('floor');
+  const [tourOpen, setTourOpen] = useState(false);
+
+  const tourSlides = [
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Faa5ae259ac784d40825512253e7db2fb?format=webp&width=1600', alt: 'Elegant bedroom overview' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F9a42056b6d524f8681950c1bb20936ba?format=webp&width=1600', alt: 'Wide view with balcony light' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F4403b39547664266bd5285e4b2bdb00f?format=webp&width=1600', alt: 'Mirror reflection detail' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F66435057c73f4ca4876ee1eaeeddd83d?format=webp&width=1600', alt: 'Balcony and bedroom' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fcd164c09d1d74a908eb8e032aa0e8f56?format=webp&width=1600', alt: 'Warm-toned room layout' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F9f1c54d650e94bebb9fe745e2c6d6479?format=webp&width=1600', alt: 'Comfortable bed in spacious room' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fb9c805fd52ad463f817b8164540a6eb9?format=webp&width=1600', alt: 'Bathroom with walk-in shower' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fbd4cb9b5b8f149308da6d47f2bdda31d?format=webp&width=1600', alt: 'Spacious bathroom and vanity' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F8ab2d8ecd7ec4d36b45d00dd691e4975?format=webp&width=1600', alt: 'Twin beds in teal accent room' },
+    { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F15c55ae24551420eaf7da75241165a64?format=webp&width=1600', alt: 'Bright twin room with large windows' }
+  ];
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,6 +38,7 @@ export default function Rooms() {
   }
 
   function openBooking(room?: string) { setSelectedRoom(room || null); setBookingOpen(true); }
+  function openTour() { setActiveTab('tour'); setTourOpen(true); }
 
   function scrollToBooking() {
     const el = document.getElementById('booking');
@@ -31,7 +48,7 @@ export default function Rooms() {
   return (
     <>
       <Head>
-        <title>Accommodation – Premium Apartment</title>
+        <title>Accommodation �� Premium Apartment</title>
         <meta name="description" content="Premium Apartment with 2 bedrooms. Availability, gallery, rooms, and amenities." />
       </Head>
 
@@ -87,13 +104,17 @@ export default function Rooms() {
                 {status && <p role="status">{status}</p>}
               </form>
             </div>
-            <aside className="listing-aside" aria-label="Floor plan">
+            <aside className="listing-aside" aria-label="Floor plan and room tour">
               <div className="aside-tabs">
-                <button className="tab active" type="button">Floor plan</button>
-                <button className="tab" type="button">Room tour</button>
+                <button className={`tab ${activeTab === 'floor' ? 'active' : ''}`} type="button" onClick={() => setActiveTab('floor')}>Floor plan</button>
+                <button className={`tab ${activeTab === 'tour' ? 'active' : ''}`} type="button" onClick={openTour}>Room tour</button>
               </div>
               <div className="aside-media">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F1e15dbf5c36c4d60a854af5f6af6ad0c?format=webp&width=900" alt="Apartment floor plan" />
+                {activeTab === 'floor' ? (
+                  <img src="https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F1e15dbf5c36c4d60a854af5f6af6ad0c?format=webp&width=900" alt="Apartment floor plan" />
+                ) : (
+                  <img src={tourSlides[0].src} alt={tourSlides[0].alt} />
+                )}
               </div>
             </aside>
           </section>
@@ -163,6 +184,10 @@ export default function Rooms() {
           </nav>
         </div>
       </main>
+
+      {tourOpen && (
+        <RoomTour slides={tourSlides} open={tourOpen} onClose={() => setTourOpen(false)} />
+      )}
 
       {bookingOpen && (
         <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Booking form" onClick={() => setBookingOpen(false)}>
