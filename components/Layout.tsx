@@ -24,7 +24,6 @@ export default function Layout({ children }: { children: ReactNode }) {
 
         <nav className="primary-nav" aria-label="Primary">
           <Link className="nav-link" href="/">Home</Link>
-          <Link className="nav-link" href="/rooms-list">Rooms</Link>
           <Link className="nav-link" href="/rooms">Accommodation</Link>
           <Link className="nav-link" href="/conference">Conferences</Link>
           <Link className="nav-link" href="/attractions">Attractions</Link>
