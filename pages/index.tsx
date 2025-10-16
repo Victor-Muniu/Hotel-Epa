@@ -155,23 +155,15 @@ export default function Home() {
             </span>
             <span className="availability-text">
               <span className="availability-label">Guests</span>
-              <select
+              <input
                 className="availability-input"
+                type="number"
+                min="1"
                 aria-label="Guests"
                 value={formData.guests}
                 onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
-              >
-                <option value="01 Adult">01 Adult</option>
-                <option value="02 Adults">02 Adults</option>
-                <option value="03 Adults">03 Adults</option>
-                <option value="04 Adults">04 Adults</option>
-                <option value="05 Adults">05 Adults</option>
-                <option value="06 Adults">06 Adults</option>
-                <option value="07 Adults">07 Adults</option>
-                <option value="08 Adults">08 Adults</option>
-                <option value="09 Adults">09 Adults</option>
-                <option value="10 Adults">10 Adults</option>
-              </select>
+                placeholder="Number of adults"
+              />
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
           </label>
