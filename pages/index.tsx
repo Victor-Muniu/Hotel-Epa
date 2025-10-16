@@ -281,8 +281,15 @@ export default function Home() {
           )}
 
           {availabilityMessage && (
-            <div className="availability-result" role="status" aria-live="polite">
-              {availabilityMessage}
+            <div className={`availability-result ${availabilityStatus === 'success' ? 'result-success' : 'result-error'}`} role="status" aria-live="polite">
+              <div className="result-content">
+                <span className="result-message">{availabilityMessage}</span>
+                {availabilityStatus === 'success' && (
+                  <Link href="/booking" className="btn btn-primary btn-small">
+                    Proceed to Book
+                  </Link>
+                )}
+              </div>
             </div>
           )}
         </form>
