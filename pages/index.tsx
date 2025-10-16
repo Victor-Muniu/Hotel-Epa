@@ -8,7 +8,7 @@ export default function Home() {
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
   const [rates, setRates] = useState<{ bed_only: number | null; bed_and_breakfast: number | null; half_board: number | null; full_board: number | null } | null>(null);
-  const [formData, setFormData] = useState({ checkIn: '', checkOut: '', guests: '02 Adults' });
+  const [formData, setFormData] = useState({ checkIn: '', checkOut: '', guests: '2' });
 
   useEffect(() => {
     let mounted = true;
