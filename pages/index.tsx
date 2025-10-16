@@ -252,7 +252,7 @@ export default function Home() {
           </label>
 
           <div className="availability-btn">
-            <button type="submit" className="btn btn-contrast" disabled={availabilityLoading}>
+            <button type="submit" className="btn btn-primary" disabled={availabilityLoading}>
               {availabilityLoading ? 'Searching…' : 'Check Availability'}
             </button>
           </div>
