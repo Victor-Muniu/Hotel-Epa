@@ -191,24 +191,87 @@ export default function Home() {
               <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 5a6 6 0 1 1 12 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </span>
             <span className="availability-text">
-              <span className="availability-label">Guests</span>
+              <span className="availability-label">Adults</span>
               <input
                 className="availability-input"
                 type="number"
                 min="1"
-                aria-label="Guests"
-                value={formData.guests}
-                onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
-                placeholder="Number of adults"
+                aria-label="Adults"
+                value={formData.adults}
+                onChange={(e) => setFormData({ ...formData, adults: e.target.value })}
+                placeholder="Adults"
               />
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
           </label>
+
+          <label className="availability-field">
+            <span className="availability-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 5a6 6 0 1 1 12 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </span>
+            <span className="availability-text">
+              <span className="availability-label">Children</span>
+              <input
+                className="availability-input"
+                type="number"
+                min="0"
+                aria-label="Children"
+                value={formData.children}
+                onChange={(e) => setFormData({ ...formData, children: e.target.value })}
+                placeholder="Children"
+              />
+            </span>
+            <span className="availability-caret" aria-hidden="true"></span>
+          </label>
+
+          <label className="availability-field">
+            <span className="availability-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h12M6 6h8m-9 7h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </span>
+            <span className="availability-text">
+              <span className="availability-label">Rooms</span>
+              <input
+                className="availability-input"
+                type="number"
+                min="1"
+                max="10"
+                aria-label="Number of rooms"
+                value={formData.numRooms}
+                onChange={(e) => updateNumRooms(Number(e.target.value))}
+                placeholder="Rooms"
+              />
+            </span>
+            <span className="availability-caret" aria-hidden="true"></span>
+          </label>
+
           <div className="availability-btn">
             <button type="submit" className="btn btn-contrast" disabled={availabilityLoading}>
               {availabilityLoading ? 'Searching…' : 'Check Availability'}
             </button>
           </div>
+
+          {Number(formData.numRooms) > 1 && (
+            <div className="availability-room-types">
+              <h4 className="room-types-title">Room Types</h4>
+              <div className="room-types-grid">
+                {formData.roomTypes.map((roomType, index) => (
+                  <label key={index} className="room-type-field">
+                    <span className="room-type-label">Room {index + 1}</span>
+                    <select
+                      className="room-type-input"
+                      value={roomType}
+                      onChange={(e) => updateRoomType(index, e.target.value)}
+                      aria-label={`Room ${index + 1} type`}
+                    >
+                      {roomTypes.map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
 
           {availabilityMessage && (
             <div className="availability-result" role="status" aria-live="polite">
