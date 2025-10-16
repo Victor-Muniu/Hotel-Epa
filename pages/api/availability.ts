@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const roomType = normalizeString(req.body.roomType || req.body.room_type || req.body.room || '');
     const checkIn = normalizeString(req.body.checkIn || req.body.check_in || req.body.startDate || req.body.start_date || '');
     const checkOut = normalizeString(req.body.checkOut || req.body.check_out || req.body.endDate || req.body.end_date || '');
+    const requestedRooms = Number(req.body.rooms ?? req.body.quantity ?? 1) || 1;
 
     if (!roomType || !checkIn || !checkOut) {
       return res.status(400).json({ error: 'roomType, checkIn, and checkOut are required' });
@@ -36,10 +37,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try {
           const { data, error } = await supabase
             .from(c.table)
-            .select('id')
-            .eq(c.col, roomType);
+            .select('id,status')
+            .eq(c.col, roomType)
+            .eq('status', 'available');
           if (!error && Array.isArray(data)) {
-            const ids = (data as any[]).map((r: any) => String(r.id));
+            const ids = (data as any[])
+              .filter((r: any) => !r.status || r.status === 'available')
+              .map((r: any) => String(r.id));
             return { ids, count: ids.length };
           }
         } catch (_) {}
@@ -91,9 +95,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const reservedCount = usedIds.size > 0 ? usedIds.size : overlaps.length;
 
     const remaining = Math.max(0, capacity - reservedCount);
-    const available = remaining > 0;
+    const available = remaining >= requestedRooms;
 
-    return res.status(200).json({ available, remaining, capacity });
+    return res.status(200).json({ available, remaining, capacity, requestedRooms });
   } catch (error) {
     return res.status(500).json({ error: 'Failed to check availability' });
   }
