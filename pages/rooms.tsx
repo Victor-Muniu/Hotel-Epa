@@ -39,8 +39,6 @@ export default function Rooms() {
         <div className="listing-container">
           <header className="listing-header">
             <h1 className="listing-eyebrow">Epashikino Resort & Spa — Booking</h1>
-            <h2 className="listing-title">Premium Apartment with 2 Bedrooms</h2>
-            <p className="listing-subtitle">4–6 guests, 2 bedrooms, 4 beds, 1.5 baths</p>
           </header>
 
           <section className="listing-gallery" aria-label="Gallery">
