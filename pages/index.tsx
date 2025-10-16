@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [availabilityOpen, setAvailabilityOpen] = useState(false);
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  const [availabilityMessage, setAvailabilityMessage] = useState<string | null>(null);
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
+  const [selectedType, setSelectedType] = useState<string>('');
+  const [rates, setRates] = useState<{ bed_only: number | null; bed_and_breakfast: number | null; half_board: number | null; full_board: number | null } | null>(null);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -19,6 +23,67 @@ export default function Home() {
       document.body.style.overflow = '';
     };
   }, [availabilityOpen]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/room-types');
+        const json = await res.json();
+        if (mounted && Array.isArray(json.types)) {
+          setRoomTypes(json.types);
+          if (json.types[0]) setSelectedType(json.types[0]);
+        }
+      } catch (_) {}
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      if (!selectedType) return;
+      try {
+        const res = await fetch(`/api/rates?type=${encodeURIComponent(selectedType)}`);
+        const json = await res.json();
+        if (mounted) setRates(json.rates || null);
+      } catch (_) {}
+    })();
+    return () => { mounted = false; };
+  }, [selectedType]);
+
+  async function onCheckAvailability(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setAvailabilityMessage(null);
+    setAvailabilityLoading(true);
+    const form = new FormData(e.currentTarget);
+    const roomType = String(form.get('room_type') || '').trim();
+    const checkIn = String(form.get('check_in') || '').trim();
+    const checkOut = String(form.get('check_out') || '').trim();
+    const rooms = Number(form.get('rooms') || 1) || 1;
+    const children = Number(form.get('children') || 0) || 0;
+
+    try {
+      const res = await fetch('/api/availability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomType, checkIn, checkOut, rooms, children })
+      });
+      const json = await res.json();
+      if (res.ok) {
+        const msg = json.available
+          ? `Available — ${json.remaining ?? ''}${json.remaining != null ? '/' : ''}${json.capacity ?? ''} rooms left`.trim()
+          : 'Not available for the selected dates';
+        setAvailabilityMessage(msg);
+      } else {
+        setAvailabilityMessage(json.error || 'Unable to check availability');
+      }
+    } catch (_) {
+      setAvailabilityMessage('Unable to check availability');
+    } finally {
+      setAvailabilityLoading(false);
+    }
+  }
 
   const yearsInService = (startYear: number) => {
     const diff = new Date().getFullYear() - startYear;
@@ -56,10 +121,10 @@ export default function Home() {
             </span>
             <span className="availability-text">
               <span className="availability-label">Room</span>
-              <select className="availability-input" aria-label="Room" defaultValue="Pine Log">
-                <option value="Pine Log">Pine Log</option>
-                <option value="Deluxe Suite">Deluxe Suite</option>
-                <option value="Executive">Executive</option>
+              <select className="availability-input" aria-label="Room" name="room_type" defaultValue={roomTypes[0] || ''}>
+                {roomTypes.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
               </select>
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
@@ -110,17 +175,17 @@ export default function Home() {
                   <button className="modal-close" aria-label="Close" onClick={() => setAvailabilityOpen(false)}>✕</button>
                 </header>
                 <div className="modal-body">
-                  <form className="form" onSubmit={(e) => { e.preventDefault(); /* placeholder for submit */ setAvailabilityOpen(false); }}>
+                  <form className="form" onSubmit={onCheckAvailability}>
                     <label className="availability-field">
                       <span className="availability-icon" aria-hidden="true">
                         <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10V5m0 10v-3h14v3M5 5h6a2 2 0 0 1 2 2v3H5V7a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </span>
                       <span className="availability-text">
                         <span className="availability-label">Room</span>
-                        <select className="availability-input" aria-label="Room" defaultValue="Pine Log">
-                          <option value="Pine Log">Pine Log</option>
-                          <option value="Deluxe Suite">Deluxe Suite</option>
-                          <option value="Executive">Executive</option>
+                        <select className="availability-input" aria-label="Room" name="room_type" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+                          {roomTypes.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                          ))}
                         </select>
                       </span>
                       <span className="availability-caret" aria-hidden="true"></span>
@@ -132,7 +197,7 @@ export default function Home() {
                       </span>
                       <span className="availability-text">
                         <span className="availability-label">Check in</span>
-                        <input className="availability-input" type="date" aria-label="Check in" defaultValue="" />
+                        <input className="availability-input" type="date" aria-label="Check in" name="check_in" defaultValue="" />
                       </span>
                       <span className="availability-caret" aria-hidden="true"></span>
                     </label>
@@ -143,7 +208,7 @@ export default function Home() {
                       </span>
                       <span className="availability-text">
                         <span className="availability-label">Check out</span>
-                        <input className="availability-input" type="date" aria-label="Check out" defaultValue="" />
+                        <input className="availability-input" type="date" aria-label="Check out" name="check_out" defaultValue="" />
                       </span>
                       <span className="availability-caret" aria-hidden="true"></span>
                     </label>
@@ -163,10 +228,48 @@ export default function Home() {
                       <span className="availability-caret" aria-hidden="true"></span>
                     </label>
 
-                    <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 4 }}>
+                    {rates && (
+                      <label className="availability-field">
+                        <span className="availability-icon" aria-hidden="true">
+                          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h12v6H4z M3 15h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </span>
+                        <span className="availability-text">
+                          <span className="availability-label">Rates</span>
+                          <span className="availability-input" aria-live="polite">
+                            {rates.bed_only != null && <span>Bed Only: {rates.bed_only}</span>} {rates.bed_and_breakfast != null && <span> · B&amp;B: {rates.bed_and_breakfast}</span>} {rates.half_board != null && <span> · Half Board: {rates.half_board}</span>} {rates.full_board != null && <span> · Full Board: {rates.full_board}</span>}
+                          </span>
+                        </span>
+                        <span className="availability-caret" aria-hidden="true"></span>
+                      </label>
+                    )}
+
+                    <label className="availability-field">
+                      <span className="availability-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h12M6 6h8m-9 7h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </span>
+                      <span className="availability-text">
+                        <span className="availability-label">Rooms</span>
+                        <input className="availability-input" type="number" name="rooms" min={1} defaultValue={1} aria-label="Rooms" />
+                      </span>
+                      <span className="availability-caret" aria-hidden="true"></span>
+                    </label>
+
+                    <label className="availability-field">
+                      <span className="availability-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 5a6 6 0 1 1 12 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </span>
+                      <span className="availability-text">
+                        <span className="availability-label">Children</span>
+                        <input className="availability-input" type="number" name="children" min={0} defaultValue={0} aria-label="Children" />
+                      </span>
+                      <span className="availability-caret" aria-hidden="true"></span>
+                    </label>
+
+                    <div className="modal-actions">
                       <button className="btn btn-outline" type="button" onClick={() => setAvailabilityOpen(false)}>Cancel</button>
-                      <button className="btn btn-primary" type="submit">Search</button>
+                      <button className="btn btn-primary" type="submit" disabled={availabilityLoading}>{availabilityLoading ? 'Searching…' : 'Search'}</button>
                     </div>
+                    {availabilityMessage && <p role="status">{availabilityMessage}</p>}
                   </form>
                 </div>
               </div>
