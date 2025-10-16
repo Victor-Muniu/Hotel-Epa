@@ -133,7 +133,7 @@ export default function Home() {
             <h1 className="hero-title">Epashikino Resort & Spa.</h1>
             <p className="hero-subtitle">Your Ultimate Joyous Place</p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href="/rooms-list">Book Now</Link>
+              <Link className="btn btn-primary" href="/rooms">Book Now</Link>
               <Link className="btn btn-outline" href="/rooms">View Rooms</Link>
             </div>
           </div>
