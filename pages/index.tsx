@@ -69,6 +69,7 @@ export default function Home() {
   async function onCheckAvailability(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setAvailabilityMessage(null);
+    setAvailabilityStatus(null);
     setAvailabilityLoading(true);
 
     const checkIn = formData.checkIn;
@@ -93,15 +94,20 @@ export default function Home() {
       });
       const json = await res.json();
       if (res.ok) {
-        const msg = json.available
-          ? `Available — ${json.remaining ?? ''}${json.remaining != null ? '/' : ''}${json.capacity ?? ''} rooms left`.trim()
-          : 'Not available for the selected dates';
-        setAvailabilityMessage(msg);
+        if (json.available) {
+          setAvailabilityMessage('Unit is available');
+          setAvailabilityStatus('success');
+        } else {
+          setAvailabilityMessage('Not available for the selected dates');
+          setAvailabilityStatus('error');
+        }
       } else {
         setAvailabilityMessage(json.error || 'Unable to check availability');
+        setAvailabilityStatus('error');
       }
     } catch (_) {
       setAvailabilityMessage('Unable to check availability');
+      setAvailabilityStatus('error');
     } finally {
       setAvailabilityLoading(false);
     }
