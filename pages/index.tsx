@@ -45,20 +45,50 @@ export default function Home() {
     return () => { mounted = false; };
   }, [selectedType]);
 
+  function updateRoomType(index: number, value: string) {
+    const newRoomTypes = [...formData.roomTypes];
+    newRoomTypes[index] = value;
+    setFormData({ ...formData, roomTypes: newRoomTypes });
+  }
+
+  function updateNumRooms(num: number) {
+    const newNum = Math.max(1, num);
+    const currentTypes = formData.roomTypes;
+    let newRoomTypes = [...currentTypes];
+
+    if (newNum > currentTypes.length) {
+      newRoomTypes = [...currentTypes, ...Array(newNum - currentTypes.length).fill('double')];
+    } else {
+      newRoomTypes = currentTypes.slice(0, newNum);
+    }
+
+    setFormData({ ...formData, numRooms: String(newNum), roomTypes: newRoomTypes });
+  }
+
   async function onCheckAvailability(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setAvailabilityMessage(null);
     setAvailabilityLoading(true);
 
-    const roomType = selectedType;
     const checkIn = formData.checkIn;
     const checkOut = formData.checkOut;
+    const adults = Number(formData.adults) || 1;
+    const children = Number(formData.children) || 0;
+    const numRooms = Number(formData.numRooms) || 1;
 
     try {
       const res = await fetch('/api/availability', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roomType, checkIn, checkOut, rooms: 1, children: 0 })
+        body: JSON.stringify({
+          roomType: selectedType,
+          checkIn,
+          checkOut,
+          rooms: numRooms,
+          children,
+          adults,
+          roomTypes: formData.roomTypes
+        })
       });
       const json = await res.json();
       if (res.ok) {
