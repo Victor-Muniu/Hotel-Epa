@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 export default function Home() {
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
   const [availabilityMessage, setAvailabilityMessage] = useState<string | null>(null);
+  const [availabilityStatus, setAvailabilityStatus] = useState<'success' | 'error' | null>(null);
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
   const [rates, setRates] = useState<{ bed_only: number | null; bed_and_breakfast: number | null; half_board: number | null; full_board: number | null } | null>(null);
