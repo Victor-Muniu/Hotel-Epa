@@ -19,7 +19,8 @@ export default function RoomTour({ slides, open, onClose }: RoomTourProps) {
     if (!open) return;
     if (timerRef.current) window.clearInterval(timerRef.current);
     if (playing) {
-      timerRef.current = window.setInterval(() => setIndex((i) => (i + 1) % slides.length), 3800);
+      // 15 seconds per slide as requested
+      timerRef.current = window.setInterval(() => setIndex((i) => (i + 1) % slides.length), 15000);
     }
     return () => { if (timerRef.current) window.clearInterval(timerRef.current); };
   }, [open, playing, slides.length]);
@@ -49,15 +50,20 @@ export default function RoomTour({ slides, open, onClose }: RoomTourProps) {
           onMouseEnter={() => setPlaying(false)}
           onMouseLeave={() => setPlaying(true)}
         >
-          {slides.map((s, i) => (
-            <figure
-              key={i}
-              className={`tour-slide ${i === index ? 'active' : ''}`}
-              style={{ backgroundImage: `url(${s.src})` }}
-            >
-              <img src={s.src} alt={s.alt} />
-            </figure>
-          ))}
+          <div className="tour-track" style={{ transform: `translateX(-${index * 100}%)` }}>
+            {slides.map((s, i) => (
+              <figure
+                key={i}
+                className="tour-slide"
+                style={{ backgroundImage: `url(${s.src})` }}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} of ${slides.length}`}
+              >
+                <img src={s.src} alt={s.alt} />
+              </figure>
+            ))}
+          </div>
 
           <div className="tour-controls">
             <button className="tour-btn" onClick={(e) => { e.stopPropagation(); prev(); }} aria-label="Previous">‹</button>
