@@ -2,11 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/room-types": "pages/api/room-types.js",
-  "/api/rates": "pages/api/rates.js",
-  "/": "pages/index.js",
   "/api/availability": "pages/api/availability.js",
+  "/": "pages/index.js",
+  "/booking": "pages/booking.js",
   "/rooms": "pages/rooms.js",
-  "/rooms-list": "pages/rooms-list.js",
-  "/booking": "pages/booking.js"
+  "/rooms-list": "pages/rooms-list.js"
 }
