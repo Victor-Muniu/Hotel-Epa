@@ -644,10 +644,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .tour-panel::before { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%); mix-blend-mode: multiply; }
 .tour-panel::after { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="g"><feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.06"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(%23g)" opacity="0.04"/></svg>'); opacity: .6; mix-blend-mode: overlay; }
 /* ensure images themselves cover and remain crisp */
-.tour-slide img { opacity: 0; }
+.tour-slide img { display: none; }
 
-/* start a subtle float animation on the active slide container */
-.tour-slide.active { animation: floaty 10s ease-in-out infinite; }
 .tour-controls { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; z-index: 30; pointer-events: none; }
 .tour-controls > .tour-btn { pointer-events: auto; }
 .tour-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(0,0,0,.35); color: #fff; font-size: 20px; display: grid; place-items: center; cursor: pointer; }
