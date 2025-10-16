@@ -6,7 +6,7 @@ export default function Home() {
   const [availabilityOpen, setAvailabilityOpen] = useState(false);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
   const [availabilityMessage, setAvailabilityMessage] = useState<string | null>(null);
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -21,6 +21,18 @@ export default function Home() {
       document.body.style.overflow = '';
     };
   }, [availabilityOpen]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/room-types');
+        const json = await res.json();
+        if (mounted && Array.isArray(json.types)) setRoomTypes(json.types);
+      } catch (_) {}
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   async function onCheckAvailability(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -89,10 +101,10 @@ export default function Home() {
             </span>
             <span className="availability-text">
               <span className="availability-label">Room</span>
-              <select className="availability-input" aria-label="Room" defaultValue="Pine Log">
-                <option value="Pine Log">Pine Log</option>
-                <option value="Deluxe Suite">Deluxe Suite</option>
-                <option value="Executive">Executive</option>
+              <select className="availability-input" aria-label="Room" name="room_type" defaultValue={roomTypes[0] || ''}>
+                {roomTypes.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
               </select>
             </span>
             <span className="availability-caret" aria-hidden="true"></span>
@@ -150,10 +162,10 @@ export default function Home() {
                       </span>
                       <span className="availability-text">
                         <span className="availability-label">Room</span>
-                        <select className="availability-input" aria-label="Room" name="room_type" defaultValue="Pine Log">
-                          <option value="Pine Log">Pine Log</option>
-                          <option value="Deluxe Suite">Deluxe Suite</option>
-                          <option value="Executive">Executive</option>
+                        <select className="availability-input" aria-label="Room" name="room_type" defaultValue={roomTypes[0] || ''}>
+                          {roomTypes.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                          ))}
                         </select>
                       </span>
                       <span className="availability-caret" aria-hidden="true"></span>
@@ -196,7 +208,7 @@ export default function Home() {
                       <span className="availability-caret" aria-hidden="true"></span>
                     </label>
 
-                    <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 4 }}>
+                    <div className="modal-actions">
                       <button className="btn btn-outline" type="button" onClick={() => setAvailabilityOpen(false)}>Cancel</button>
                       <button className="btn btn-primary" type="submit" disabled={availabilityLoading}>{availabilityLoading ? 'Searching…' : 'Search'}</button>
                     </div>
