@@ -936,6 +936,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   position: relative;
   width: 100%;
   perspective: 1000px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .flipper-front,
