@@ -3,5 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
+  "/api/room-types": "pages/api/room-types.js",
   "/explore_rooms": "pages/explore_rooms.js"
 }
