@@ -301,14 +301,14 @@ export const HALL_DATA: Record<string, HallData> = {
       'Writing materials (provided)',
       'Complementary Wi‑Fi',
       'Water available (see session inclusions)',
-      'Projector access'
+      'Tele‑conference'
     ],
     sessionDetails: {
       halfDay: [
         'Writing materials (provided)',
-        'Complementary Wi‑Fi',
+        'Complementary Wi��Fi',
         'Water for one session',
-        'Projector access',
+        'Tele‑conference',
         '10:00 — Tea & snacks',
         'Lunch buffet (separate from tea & snacks)'
       ],
@@ -316,7 +316,7 @@ export const HALL_DATA: Record<string, HallData> = {
         'Writing materials (provided)',
         'Complementary Wi‑Fi',
         'Water for both sessions',
-        'Projector access',
+        'Tele‑conference',
         '10:00 — Tea & snacks',
         '16:00 — Tea & snacks',
         'Lunch buffet (separate from tea & snacks)',

@@ -194,7 +194,7 @@ export default function ConferenceAndMeetings() {
                           <path d="M8 17h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
                           <path d="M12 6v-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
                         </svg>
-                        <span className="amenity-label">Projector</span>
+                        <span className="amenity-label">{c.id === 'pkg6' ? 'Tele‑conference' : 'Projector'}</span>
                       </span>
 
                       <span className="amenity">
@@ -288,5 +288,5 @@ const CARD_DATA = [
   { id: 'pkg3', title: 'Kibo', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F2178499d3afd41e6a1a009b48c6d971a?format=webp&width=800', price: 5000, rating: 4.9, metaLeft: 'Facilitators & Gear', metaRight: 'Meals Included' },
   { id: 'pkg4', title: 'Mawenzi', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F3eed4abdf32f4ec9b4e0a1512a408204?format=webp&width=800', price: 3800, rating: 4.9, metaLeft: 'Tele‑conference Ready', metaRight: 'Snacks & Water' },
   { id: 'pkg5', title: 'Lenana', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F329fd56dc90044a9a1fd823642d3d4ea?format=webp&width=800', price: 0, rating: 4.8, metaLeft: 'Bottled Water', metaRight: 'Stationery' },
-  { id: 'pkg6', title: 'Boardroom', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fd82dd3cc4afe45b68218b5634f827510?format=webp&width=800', price: 4200, rating: 4.8, metaLeft: 'Projector & Sound', metaRight: 'Meals Included' },
+  { id: 'pkg6', title: 'Boardroom', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fd82dd3cc4afe45b68218b5634f827510?format=webp&width=800', price: 4200, rating: 4.8, metaLeft: 'Tele‑conference & Sound', metaRight: 'Meals Included' },
 ];
