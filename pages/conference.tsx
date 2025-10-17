@@ -47,18 +47,21 @@ export default function ConferenceAndMeetings() {
     const result = CARD_DATA.filter(c => {
       const hall = HALL_DATA[c.id as keyof typeof HALL_DATA];
 
+      // if capacity range or seating arrangement is selected, require hall data
+      if ((selectedCapacityRange || selectedRoomStyle) && !hall) return false;
+
       // capacity by attendee count
-      if (attendeeCount > 0 && hall) {
-        if (hall.maxCapacity < attendeeCount) return false;
+      if (attendeeCount > 0) {
+        if (!hall || hall.maxCapacity < attendeeCount) return false;
       }
 
       // capacity range filter (Up to X)
-      if (selectedCapacityRange && hall) {
+      if (selectedCapacityRange) {
+        if (!hall) return false;
         if (/Up to (\d+)/i.test(selectedCapacityRange)) {
           const cap = Number(selectedCapacityRange.match(/Up to (\d+)/i)?.[1] || 0);
           if (hall.maxCapacity > cap) return false;
         } else if (selectedCapacityRange === '100+') {
-          // allow halls with capacity >=100
           if (hall.maxCapacity < 100) return false;
         }
       }
@@ -87,7 +90,8 @@ export default function ConferenceAndMeetings() {
       }
 
       // seating arrangement filter
-      if (selectedRoomStyle && hall) {
+      if (selectedRoomStyle) {
+        if (!hall) return false;
         const found = hall.arrangements.some(a => a.name.toLowerCase() === selectedRoomStyle.toLowerCase());
         if (!found) return false;
       }
@@ -97,6 +101,9 @@ export default function ConferenceAndMeetings() {
 
     setFilteredCards(result);
   }
+
+  // Re-run filters on change so the UI updates immediately
+  useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages]);
 
   return (
     <>
