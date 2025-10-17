@@ -154,6 +154,137 @@ export const HALL_DATA: Record<string, HallData> = {
       { name: 'Hollow Square', capacity: 40, description: 'Tables arranged in a square facing inward.' },
       { name: 'Cabaret', capacity: 50, description: 'Round tables facing the stage.' }
     ]
+  },
+  pkg3: {
+    id: 'pkg3',
+    title: 'Kibo',
+    maxCapacity: 20,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fcc9e710599654352a5d9f794622f56da?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F656dd92ea69c4333859c34cdf0d50c2e?format=webp&width=1200'
+    ],
+    description: 'Cozy boardroom-style space ideal for small executive meetings and workshops.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Theater', capacity: 20, description: 'Rows of chairs facing the stage.' },
+      { name: 'Classroom', capacity: 16, description: 'Rows of tables with chairs for training.' },
+      { name: 'U-Shape', capacity: 14, description: 'Tables arranged in U-shape for discussions.' },
+      { name: 'Boardroom', capacity: 12, description: 'Single table setup for executive meetings.' },
+      { name: 'Banquet', capacity: 16, description: 'Round tables with chairs.' }
+    ]
+  },
+  pkg4: {
+    id: 'pkg4',
+    title: 'Mawenzi',
+    maxCapacity: 40,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F3eed4abdf32f4ec9b4e0a1512a408204?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F38fcbff7f22649da9b1647984af7a987?format=webp&width=1200'
+    ],
+    description: 'Flexible event space suitable for medium-sized meetings and workshops.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Theater', capacity: 40, description: 'Rows of chairs facing the stage.' },
+      { name: 'Classroom', capacity: 30, description: 'Rows of tables with chairs for training.' },
+      { name: 'U-Shape', capacity: 20, description: 'Tables arranged in U-shape for discussions.' },
+      { name: 'Boardroom', capacity: 18, description: 'Single table setup for executive meetings.' },
+      { name: 'Banquet', capacity: 30, description: 'Round tables with chairs.' },
+      { name: 'Cocktail', capacity: 40, description: 'Standing reception with high-top tables.' },
+      { name: 'Hollow Square', capacity: 22, description: 'Tables arranged in a square facing inward.' },
+      { name: 'Cabaret', capacity: 28, description: 'Round tables facing the stage.' }
+    ]
+  },
+  pkg5: {
+    id: 'pkg5',
+    title: 'Lenana',
+    maxCapacity: 10,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F329fd56dc90044a9a1fd823642d3d4ea?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F7247bd4a6e364afba02337258d35f68e?format=webp&width=1200'
+    ],
+    description: 'Small, intimate room for executive discussions and private meetings.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Theater', capacity: 10, description: 'Rows of chairs facing the stage.' },
+      { name: 'Classroom', capacity: 8, description: 'Rows of tables with chairs for training.' },
+      { name: 'U-Shape', capacity: 6, description: 'Tables arranged in U-shape for discussions.' },
+      { name: 'Boardroom', capacity: 6, description: 'Single table setup for executive meetings.' }
+    ]
   }
 };
 
