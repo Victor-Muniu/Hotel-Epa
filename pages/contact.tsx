@@ -75,7 +75,7 @@ export default function Contact({ mapSrc }: ContactProps) {
             <ul className="contact-lines">
               <li><span className="ico" aria-hidden>📞</span> +254 705 455 001 / +254 788 455 001</li>
               <li><span className="ico" aria-hidden>✉️</span> reservations@epashikinoresort.com</li>
-              <li><span className="ico" aria-hidden>⏰</span> Monday to Friday, 9 AM – 6 PM (GMT)</li>
+              <li><span className="ico" aria-hidden>⏰</span> Open daily, 8:00 AM – 10:00 PM (EAT)</li>
             </ul>
 
             <figure className="contact-map">
