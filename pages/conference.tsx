@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import HallModal from '../components/HallModal';
+import HallModal, { HALL_DATA } from '../components/HallModal';
 
 export default function ConferenceAndMeetings() {
   const [minPrice, setMinPrice] = useState(1500); // KSh
