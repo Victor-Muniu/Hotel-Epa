@@ -1,9 +1,12 @@
 import Head from 'next/head';
 import { useState } from 'react';
+import HallModal from '../components/HallModal';
 
 export default function ConferenceAndMeetings() {
   const [minPrice, setMinPrice] = useState(1500); // KSh
   const [maxPrice, setMaxPrice] = useState(6500); // KSh
+  const [selectedHall, setSelectedHall] = useState<string | null>(null);
+
   return (
     <>
       <Head>
