@@ -31,6 +31,7 @@ export default function ConferenceAndMeetings() {
     setSelectedRoomStyle(null);
     setSelectedCapacityRange(null);
     setAttendees(0);
+    setCategory('halls');
     setFilteredCards(null);
   }
 
@@ -44,6 +45,7 @@ export default function ConferenceAndMeetings() {
   function applyFilters() {
     const attendeeCount = Number(attendees) || 0;
     const selectedAmenityNames = Object.keys(selectedAmenities).filter(k => selectedAmenities[k]);
+    const selectedPackageNames = Object.keys(selectedPackages).filter(k => selectedPackages[k]);
 
     const baseCards = CARD_DATA.filter(c => category === 'boardroom' ? c.id === 'pkg6' : c.id !== 'pkg6');
 
@@ -97,6 +99,18 @@ export default function ConferenceAndMeetings() {
         if (!hall) return false;
         const found = hall.arrangements.some(a => a.name.toLowerCase() === selectedRoomStyle.toLowerCase());
         if (!found) return false;
+      }
+
+      // package filter (chips/checkboxes)
+      if (selectedPackageNames.length > 0) {
+        const text = `${(c.metaLeft||'')} ${(c.metaRight||'')} ${(hall?.description||'')}`.toLowerCase();
+        const matches = selectedPackageNames.some(p => {
+          if (p === 'Team Building') return /(team|facilitator|gear|outdoor)/i.test(text);
+          if (p === 'Full Day') return /(lunch|meals|hot\s*lunch)/i.test(text);
+          if (p === 'Half Day') return /(tea|snack)/i.test(text);
+          return false;
+        });
+        if (!matches) return false;
       }
 
       return true;
@@ -161,12 +175,12 @@ export default function ConferenceAndMeetings() {
 
           <div className="chip-toolbar">
             <div className="chip-row">
-              <button className="chip active"><span className="chip-ico" aria-hidden="true">📅</span> Full Day</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">⏱️</span> Half Day</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">🤝</span> Team Building</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">🏢</span> Boardroom</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">🎥</span> Projector & Sound</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">📶</span> High‑Speed Wi‑Fi</button>
+              <button className={`chip ${selectedPackages['Full Day']?'active':''}`} aria-pressed={!!selectedPackages['Full Day']} onClick={()=> togglePackage('Full Day')}><span className="chip-ico" aria-hidden="true">📅</span> Full Day</button>
+              <button className={`chip ${selectedPackages['Half Day']?'active':''}`} aria-pressed={!!selectedPackages['Half Day']} onClick={()=> togglePackage('Half Day')}><span className="chip-ico" aria-hidden="true">⏱️</span> Half Day</button>
+              <button className={`chip ${selectedPackages['Team Building']?'active':''}`} aria-pressed={!!selectedPackages['Team Building']} onClick={()=> togglePackage('Team Building')}><span className="chip-ico" aria-hidden="true">🤝</span> Team Building</button>
+              <button className={`chip ${category==='boardroom'?'active':''}`} aria-pressed={category==='boardroom'} onClick={()=> setCategory('boardroom')}><span className="chip-ico" aria-hidden="true">🏢</span> Boardroom</button>
+              <button className={`chip ${selectedAmenities['Projector'] && selectedAmenities['Sound System'] ? 'active' : ''}`} aria-pressed={selectedAmenities['Projector'] && selectedAmenities['Sound System']} onClick={()=> setSelectedAmenities(prev=> ({...prev, 'Projector': !(prev['Projector'] && prev['Sound System']), 'Sound System': !(prev['Projector'] && prev['Sound System']) }))}><span className="chip-ico" aria-hidden="true">🎥</span> Projector & Sound</button>
+              <button className={`chip ${selectedAmenities['High‑Speed Wi‑Fi']?'active':''}`} aria-pressed={!!selectedAmenities['High‑Speed Wi‑Fi']} onClick={()=> toggleAmenity('High‑Speed Wi‑Fi')}><span className="chip-ico" aria-hidden="true">📶</span> High‑Speed Wi‑Fi</button>
             </div>
             <div className="chip-actions" style={{ display: 'none' }}></div>
           </div>
