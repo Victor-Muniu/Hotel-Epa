@@ -3,6 +3,85 @@ import { useState, useEffect } from 'react';
 import { getRooms } from '../lib/roomsData';
 import type { Room } from '../lib/roomsData';
 
+const SAMPLE_ROOMS: Room[] = [
+  {
+    id: '1',
+    name: 'Deluxe Ocean View',
+    slug: 'deluxe-ocean-view',
+    description: 'Experience luxury with stunning ocean views. This spacious room features a king bed, marble bathroom, and a private balcony overlooking the sea.',
+    capacity: 2,
+    beds: 1,
+    bathrooms: 1,
+    size_m2: 45,
+    price: 299,
+    currency: 'USD',
+    amenities: ['Ocean View', 'Air Conditioning', 'Free WiFi', 'Flat Screen TV', 'Mini Bar', 'Premium Toiletries'],
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F1966ee8babb94437812b351eb3246c8a?format=webp&width=800'
+    ],
+    visible: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: 'Family Suite',
+    slug: 'family-suite',
+    description: 'Perfect for families and groups. Two bedrooms, spacious living area, and modern amenities for a comfortable stay.',
+    capacity: 4,
+    beds: 2,
+    bathrooms: 2,
+    size_m2: 65,
+    price: 399,
+    currency: 'USD',
+    amenities: ['Living Room', 'Kitchen', 'Two Bathrooms', 'Separate Bedrooms', 'Free WiFi', 'Climate Control'],
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2Ffa4d03405a5f4af6a0fb140a86159812?format=webp&width=800'
+    ],
+    visible: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    name: 'Scenic Garden Room',
+    slug: 'scenic-garden-room',
+    description: 'Relaxing retreat with beautiful garden views. Queen bed, ensuite bathroom, and direct access to landscaped gardens.',
+    capacity: 2,
+    beds: 1,
+    bathrooms: 1,
+    size_m2: 38,
+    price: 199,
+    currency: 'USD',
+    amenities: ['Garden View', 'Queen Bed', 'Ensuite Bath', 'Free WiFi', 'Work Desk', 'Safe'],
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F9ae710d8f1ed4e49b9b727c33fb31d0f?format=webp&width=800'
+    ],
+    visible: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    name: 'Twin Canopy Room',
+    slug: 'twin-canopy-room',
+    description: 'Charming room with twin beds and elegant canopy. Perfect for guests who prefer separate beds with upscale comfort.',
+    capacity: 2,
+    beds: 2,
+    bathrooms: 1,
+    size_m2: 35,
+    price: 249,
+    currency: 'USD',
+    amenities: ['Twin Beds', 'Canopy Design', 'Shower', 'Free WiFi', 'Ceiling Fan', 'Modern Decor'],
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F1b6d237b133545e0a2545b1e1c9b39ec?format=webp&width=800'
+    ],
+    visible: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
 export default function Booking() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoomId, setSelectedRoomId] = useState<string>('');
@@ -12,7 +91,10 @@ export default function Booking() {
 
   useEffect(() => {
     async function loadRooms() {
-      const data = await getRooms();
+      let data = await getRooms();
+      if (!data || data.length === 0) {
+        data = SAMPLE_ROOMS;
+      }
       setRooms(data);
       if (data.length > 0) {
         setSelectedRoomId(data[0].id);
