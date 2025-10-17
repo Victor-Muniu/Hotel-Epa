@@ -286,6 +286,47 @@ export const HALL_DATA: Record<string, HallData> = {
       { name: 'Boardroom', capacity: 6, description: 'Single table setup for executive meetings.' }
     ]
   }
+,
+  pkg6: {
+    id: 'pkg6',
+    title: 'Boardroom',
+    maxCapacity: 14,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fd82dd3cc4afe45b68218b5634f827510?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F7f54b68ad68949d09474e1dd03daaece?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F80e2eb80aa6f4d4393f7723c92f6e8e4?format=webp&width=1200'
+    ],
+    description: 'Executive boardroom-style space ideal for private meetings and strategy sessions.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Boardroom', capacity: 14, description: 'Single table with executive chairs. Ideal for board meetings and focused discussions.' }
+    ]
+  }
 };
 
 interface HallModalProps {
@@ -462,7 +503,7 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
               <div className="arrangements-section">
                 <h3 className="arrangements-heading">Seating Arrangements</h3>
                 <p className="arrangements-intro">
-                  Kilimanjaro can be arranged in multiple configurations to suit your event needs. Select an arrangement to view capacity details.
+                  {hall.title} can be arranged in multiple configurations to suit your event needs. Select an arrangement to view capacity details.
                 </p>
 
                 <div className="arrangements-grid">
