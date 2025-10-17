@@ -34,12 +34,12 @@ export default function Contact({ mapSrc }: ContactProps) {
         <header className="contact-header">
           <p className="contact-eyebrow">Contact us</p>
           <h1 className="contact-title">Get in Touch with Our Team</h1>
-          <p className="contact-lead">We’re here to answer your questions, discuss your project, and help you find the best solutions for your software needs. Reach out to us, and let’s start building something great together.</p>
+          <p className="contact-lead">We're here to help you plan the perfect stay at Epashikino Resort & Spa. Whether you have questions about our rooms, want to arrange a special event, or need assistance with your booking, our dedicated team is ready to ensure you have an exceptional experience with us.</p>
         </header>
 
         <div className="contact-grid">
-          <section className="contact-card" aria-label="Let’s Talk About Your Project">
-            <h3 className="contact-card-title">Let’s Talk About Your Project</h3>
+          <section className="contact-card" aria-label="Let's Talk About Your Project">
+            <h3 className="contact-card-title">Let's Talk About Your Project</h3>
             <form className="contact-form" onSubmit={onSubmit}>
               <label className="contact-field">
                 <span className="contact-label">Name</span>
@@ -47,7 +47,7 @@ export default function Contact({ mapSrc }: ContactProps) {
               </label>
               <label className="contact-field">
                 <span className="contact-label">Email Address</span>
-                <input className="input" type="email" name="email" placeholder="We’ll get back to you here" required />
+                <input className="input" type="email" name="email" placeholder="We'll get back to you here" required />
               </label>
               <label className="contact-field">
                 <span className="contact-label">Company Name</span>
@@ -55,7 +55,7 @@ export default function Contact({ mapSrc }: ContactProps) {
               </label>
               <label className="contact-field">
                 <span className="contact-label">Subject</span>
-                <input className="input" type="text" name="subject" placeholder="What’s this about?" required />
+                <input className="input" type="text" name="subject" placeholder="What's this about?" required />
               </label>
               <label className="contact-field">
                 <span className="contact-label">Message</span>
