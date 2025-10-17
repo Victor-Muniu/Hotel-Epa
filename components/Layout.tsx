@@ -28,6 +28,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Link className="nav-link" href="/rooms">Accommodation</Link>
             <Link className="nav-link" href="/conference">Conferences</Link>
             <Link className="nav-link" href="/attractions">Attractions</Link>
+            <Link className="nav-link" href="/contact">Contact</Link>
           </nav>
 
           <div className="topbar-actions">
