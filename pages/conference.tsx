@@ -13,6 +13,7 @@ export default function ConferenceAndMeetings() {
   const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>(null);
   const [selectedCapacityRange, setSelectedCapacityRange] = useState<string | null>(null);
   const [filteredCards, setFilteredCards] = useState<typeof CARD_DATA | null>(null);
+  const [category, setCategory] = useState<'boardroom' | 'halls'>('halls');
 
   function activeFilters() {
     return {
@@ -30,6 +31,7 @@ export default function ConferenceAndMeetings() {
     setSelectedRoomStyle(null);
     setSelectedCapacityRange(null);
     setAttendees(0);
+    setCategory('halls');
     setFilteredCards(null);
   }
 
@@ -43,8 +45,11 @@ export default function ConferenceAndMeetings() {
   function applyFilters() {
     const attendeeCount = Number(attendees) || 0;
     const selectedAmenityNames = Object.keys(selectedAmenities).filter(k => selectedAmenities[k]);
+    const selectedPackageNames = Object.keys(selectedPackages).filter(k => selectedPackages[k]);
 
-    const result = CARD_DATA.filter(c => {
+    const baseCards = CARD_DATA.filter(c => category === 'boardroom' ? c.id === 'pkg6' : c.id !== 'pkg6');
+
+    const result = baseCards.filter(c => {
       const hall = HALL_DATA[c.id as keyof typeof HALL_DATA];
 
       // if capacity range or seating arrangement is selected, require hall data
@@ -96,6 +101,18 @@ export default function ConferenceAndMeetings() {
         if (!found) return false;
       }
 
+      // package filter (chips/checkboxes)
+      if (selectedPackageNames.length > 0) {
+        const text = `${(c.metaLeft||'')} ${(c.metaRight||'')} ${(hall?.description||'')}`.toLowerCase();
+        const matches = selectedPackageNames.some(p => {
+          if (p === 'Team Building') return /(team|facilitator|gear|outdoor)/i.test(text);
+          if (p === 'Full Day') return /(lunch|meals|hot\s*lunch)/i.test(text);
+          if (p === 'Half Day') return /(tea|snack)/i.test(text);
+          return false;
+        });
+        if (!matches) return false;
+      }
+
       return true;
     });
 
@@ -103,7 +120,7 @@ export default function ConferenceAndMeetings() {
   }
 
   // Re-run filters on change so the UI updates immediately
-  useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages]);
+  useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages, category]);
 
   return (
     <>
@@ -116,11 +133,11 @@ export default function ConferenceAndMeetings() {
         <div className="homes-container">
           <header className="homes-searchbar" role="search">
             <nav className="seg-tabs" aria-label="Category">
-              <button className="seg-btn" aria-pressed={false}>
+              <button className={`seg-btn ${category==='boardroom'?'active':''}`} aria-pressed={category==='boardroom'} onClick={()=> setCategory('boardroom')}>
                 <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
                 Boardroom
               </button>
-              <button className="seg-btn active" aria-pressed>
+              <button className={`seg-btn ${category==='halls'?'active':''}`} aria-pressed={category==='halls'} onClick={()=> setCategory('halls')}>
                 <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
                 Conference Halls
               </button>
@@ -158,19 +175,19 @@ export default function ConferenceAndMeetings() {
 
           <div className="chip-toolbar">
             <div className="chip-row">
-              <button className="chip active"><span className="chip-ico" aria-hidden="true">📅</span> Full Day</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">⏱️</span> Half Day</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">🤝</span> Team Building</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">🏢</span> Boardroom</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">🎥</span> Projector & Sound</button>
-              <button className="chip"><span className="chip-ico" aria-hidden="true">📶</span> High‑Speed Wi‑Fi</button>
+              <button className={`chip ${selectedPackages['Full Day']?'active':''}`} aria-pressed={!!selectedPackages['Full Day']} onClick={()=> togglePackage('Full Day')}><span className="chip-ico" aria-hidden="true">📅</span> Full Day</button>
+              <button className={`chip ${selectedPackages['Half Day']?'active':''}`} aria-pressed={!!selectedPackages['Half Day']} onClick={()=> togglePackage('Half Day')}><span className="chip-ico" aria-hidden="true">⏱️</span> Half Day</button>
+              <button className={`chip ${selectedPackages['Team Building']?'active':''}`} aria-pressed={!!selectedPackages['Team Building']} onClick={()=> togglePackage('Team Building')}><span className="chip-ico" aria-hidden="true">🤝</span> Team Building</button>
+              <button className={`chip ${category==='boardroom'?'active':''}`} aria-pressed={category==='boardroom'} onClick={()=> setCategory('boardroom')}><span className="chip-ico" aria-hidden="true">🏢</span> Boardroom</button>
+              <button className={`chip ${selectedAmenities['Projector'] && selectedAmenities['Sound System'] ? 'active' : ''}`} aria-pressed={selectedAmenities['Projector'] && selectedAmenities['Sound System']} onClick={()=> setSelectedAmenities(prev=> ({...prev, 'Projector': !(prev['Projector'] && prev['Sound System']), 'Sound System': !(prev['Projector'] && prev['Sound System']) }))}><span className="chip-ico" aria-hidden="true">🎥</span> Projector & Sound</button>
+              <button className={`chip ${selectedAmenities['High‑Speed Wi‑Fi']?'active':''}`} aria-pressed={!!selectedAmenities['High‑Speed Wi‑Fi']} onClick={()=> toggleAmenity('High‑Speed Wi‑Fi')}><span className="chip-ico" aria-hidden="true">📶</span> High‑Speed Wi‑Fi</button>
             </div>
             <div className="chip-actions" style={{ display: 'none' }}></div>
           </div>
 
           <section className="homes-body">
             <div className="grid-cards">
-              {(filteredCards || CARD_DATA).map((c) => (
+              {(filteredCards || CARD_DATA.filter(c => category === 'boardroom' ? c.id === 'pkg6' : c.id !== 'pkg6')).map((c) => (
                 <article key={c.id} className="home-card" role="button" tabIndex={0} onClick={() => (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} style={{ cursor: (c.id === 'pkg1' || c.id === 'pkg2') ? 'pointer' : 'default' }}>
                   <div className="media">
                     <img src={c.img} alt={c.title} />
@@ -194,7 +211,7 @@ export default function ConferenceAndMeetings() {
                           <path d="M8 17h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
                           <path d="M12 6v-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
                         </svg>
-                        <span className="amenity-label">Projector</span>
+                        <span className="amenity-label">{c.id === 'pkg6' ? 'Tele‑conference' : 'Projector'}</span>
                       </span>
 
                       <span className="amenity">
@@ -288,5 +305,5 @@ const CARD_DATA = [
   { id: 'pkg3', title: 'Kibo', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F2178499d3afd41e6a1a009b48c6d971a?format=webp&width=800', price: 5000, rating: 4.9, metaLeft: 'Facilitators & Gear', metaRight: 'Meals Included' },
   { id: 'pkg4', title: 'Mawenzi', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F3eed4abdf32f4ec9b4e0a1512a408204?format=webp&width=800', price: 3800, rating: 4.9, metaLeft: 'Tele‑conference Ready', metaRight: 'Snacks & Water' },
   { id: 'pkg5', title: 'Lenana', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F329fd56dc90044a9a1fd823642d3d4ea?format=webp&width=800', price: 0, rating: 4.8, metaLeft: 'Bottled Water', metaRight: 'Stationery' },
-  { id: 'pkg6', title: 'Boardroom', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fd82dd3cc4afe45b68218b5634f827510?format=webp&width=800', price: 4200, rating: 4.8, metaLeft: 'Projector & Sound', metaRight: 'Meals Included' },
+  { id: 'pkg6', title: 'Boardroom', img: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fd82dd3cc4afe45b68218b5634f827510?format=webp&width=800', price: 4200, rating: 4.8, metaLeft: 'Tele‑conference & Sound', metaRight: 'Meals Included' },
 ];
