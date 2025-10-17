@@ -171,7 +171,7 @@ export default function Rooms() {
             </div>
             <aside className="listing-aside" aria-label="Floor plan and room tour">
               <div className="aside-tabs">
-                <button className={`tab ${activeTab === 'floor' ? 'active' : ''}`} type="button" onClick={() => setActiveTab('floor')}>Floor plan</button>
+                <Link href="/explore_rooms" className={`tab ${activeTab === 'floor' ? 'active' : ''}`}>Floor plan</Link>
                 <button className={`tab ${activeTab === 'tour' ? 'active' : ''}`} type="button" onClick={openTour}>Room tour</button>
               </div>
               <div className="aside-media">
