@@ -252,6 +252,31 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
                     </div>
                   </div>
 
+                  {hall.sessionDetails && (
+                    <div className="info-section">
+                      <h3 className="section-heading">Session Inclusions</h3>
+                      <div className="session-grid">
+                        <div className="session-col">
+                          <h4 className="session-title">Half Day ��� Half Board</h4>
+                          <ul className="session-list">
+                            {hall.sessionDetails.halfDay.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="session-col">
+                          <h4 className="session-title">Full Day — Full Board</h4>
+                          <ul className="session-list">
+                            {hall.sessionDetails.fullDay.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <p className="hall-description">{hall.description}</p>
                 </div>
               </div>
