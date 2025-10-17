@@ -63,11 +63,6 @@ export default function ConferenceAndMeetings() {
               <button className="chip"><span className="chip-ico" aria-hidden="true">🎥</span> Projector & Sound</button>
               <button className="chip"><span className="chip-ico" aria-hidden="true">📶</span> High‑Speed Wi‑Fi</button>
             </div>
-            <div className="chip-actions">
-              <button className="chip-ghost">Latest</button>
-              <button className="chip-ghost">Map View</button>
-              <button className="chip-ghost active">Card View</button>
-            </div>
           </div>
 
           <section className="homes-body">
