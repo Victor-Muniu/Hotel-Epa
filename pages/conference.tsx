@@ -141,12 +141,13 @@ export default function ConferenceAndMeetings() {
               </label>
               <label className="pill-input">
                 <span className="pill-label">Attendees</span>
-                <select className="pill-field" aria-label="Attendees" value={`${attendees} Guests`} onChange={(e)=> setAttendees(Number(e.target.value.split(' ')[0]))}>
-                  <option value="10 Guests">10 Guests</option>
-                  <option value="25 Guests">25 Guests</option>
-                  <option value="50 Guests">50 Guests</option>
-                  <option value="100 Guests">100 Guests</option>
-                  <option value="150 Guests">150 Guests</option>
+                <select className="pill-field" aria-label="Attendees" value={attendees} onChange={(e)=> setAttendees(Number(e.target.value)||0)}>
+                  <option value={0}>Any</option>
+                  <option value={10}>10 Guests</option>
+                  <option value={25}>25 Guests</option>
+                  <option value={50}>50 Guests</option>
+                  <option value={100}>100 Guests</option>
+                  <option value={150}>150 Guests</option>
                 </select>
               </label>
               <button className="btn primary-purple" type="button" onClick={applyFilters}>Check Availability</button>
