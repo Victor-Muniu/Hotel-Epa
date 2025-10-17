@@ -159,6 +159,17 @@ export default function ExploreRooms() {
                     </ul>
                   </div>
 
+                  {!loading && roomTypes.length > 0 && (
+                    <div className="room-types-available">
+                      <h3 className="types-title">Available Room Types</h3>
+                      <div className="types-list">
+                        {roomTypes.map((type) => (
+                          <span key={type} className="type-badge">{type}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="room-actions">
                     <Link className="btn btn-primary" href="/rooms">Book This Room</Link>
                   </div>
