@@ -42,14 +42,14 @@ const HALL_DATA: Record<string, HallData> = {
     amenities: [
       'Writing materials (provided)',
       'Complementary Wi‑Fi',
-      'Water for both sessions',
+      'Water available (see session inclusions)',
       'Projector access'
     ],
     sessionDetails: {
       halfDay: [
         'Writing materials (provided)',
         'Complementary Wi‑Fi',
-        'Water for both sessions',
+        'Water for one session',
         'Projector access',
         '10:00 — Tea & snacks',
         'Lunch buffet (separate from tea & snacks)'
