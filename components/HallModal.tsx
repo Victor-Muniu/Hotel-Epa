@@ -14,6 +14,10 @@ interface HallData {
   arrangements: Arrangement[];
   description: string;
   amenities: string[];
+  sessionDetails?: {
+    halfDay: string[];
+    fullDay: string[];
+  };
 }
 
 interface QuoteFormData {
