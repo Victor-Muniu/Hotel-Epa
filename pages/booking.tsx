@@ -154,7 +154,6 @@ export default function Booking() {
 
           <div className="booking-layout">
             <div className="rooms-section">
-              <h2 className="section-label">Select a Room</h2>
               <div className="gallery-grid-2x2">
                 {selectedRoom?.images.slice(0, 4).map((image, idx) => (
                   <div key={idx} className="gallery-cell">
@@ -169,7 +168,6 @@ export default function Booking() {
             </div>
 
             <div className="form-section-container">
-              <h2 className="section-label">Booking Details</h2>
               <form className="booking-form" onSubmit={submit}>
                 <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
