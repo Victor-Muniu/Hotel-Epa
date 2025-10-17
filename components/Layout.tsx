@@ -1,11 +1,8 @@
 import Link from 'next/link';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const [year, setYear] = useState<string>("");
-  useEffect(() => {
-    setYear(String(new Date().getFullYear()));
-  }, []);
+  const year = String(new Date().getFullYear());
   return (
     <div className="site-wrapper">
       <header className="topbar" role="banner">
