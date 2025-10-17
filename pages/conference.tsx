@@ -6,11 +6,11 @@ export default function ConferenceAndMeetings() {
   const [minPrice, setMinPrice] = useState(1500); // KSh
   const [maxPrice, setMaxPrice] = useState(6500); // KSh
   const [selectedHall, setSelectedHall] = useState<string | null>(null);
-  const [attendees, setAttendees] = useState(50);
-  const [selectedPackages, setSelectedPackages] = useState<Record<string, boolean>>({ 'Full Day': true, 'Half Day': false, 'Team Building': false });
+  const [attendees, setAttendees] = useState(0);
+  const [selectedPackages, setSelectedPackages] = useState<Record<string, boolean>>({ 'Full Day': false, 'Half Day': false, 'Team Building': false });
   const amenityOptions = ['High‑Speed Wi‑Fi','Projector','Sound System','Tele‑conference'];
-  const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({ 'High‑Speed Wi‑Fi': true, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
-  const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>('U‑Shape');
+  const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({ 'High‑Speed Wi‑Fi': false, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
+  const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>(null);
   const [selectedCapacityRange, setSelectedCapacityRange] = useState<string | null>(null);
   const [filteredCards, setFilteredCards] = useState<typeof CARD_DATA | null>(null);
 
