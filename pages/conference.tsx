@@ -196,9 +196,11 @@ export default function ConferenceAndMeetings() {
               <div className="filter-block">
                 <div className="filter-title">Package type</div>
                 <div className="stack">
-                  <label className="checkbox"><input type="checkbox" defaultChecked /> Full Day</label>
-                  <label className="checkbox"><input type="checkbox" /> Half Day</label>
-                  <label className="checkbox"><input type="checkbox" /> Team Building</label>
+                  {Object.keys(selectedPackages).map((k) => (
+                    <label className="checkbox" key={k}>
+                      <input type="checkbox" checked={!!selectedPackages[k]} onChange={() => togglePackage(k)} /> {k}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -208,7 +210,7 @@ export default function ConferenceAndMeetings() {
                   <div>
                     <div className="sub">Connectivity</div>
                     <div className="counter-row">
-                      {['High‑Speed Wi‑Fi','Projector','Sound System','Tele‑conference'].map((x)=> <button key={'a'+x} className={`counter ${x==='High‑Speed Wi‑Fi'?'active':''}`} type="button">{x}</button>)}
+                      {amenityOptions.map((x)=> <button key={'a'+x} className={`counter ${selectedAmenities[x]?'active':''}`} type="button" onClick={() => toggleAmenity(x)}>{x}</button>)}
                     </div>
                   </div>
                   <div>
@@ -220,7 +222,7 @@ export default function ConferenceAndMeetings() {
                   <div>
                     <div className="sub">Capacity</div>
                     <div className="counter-row">
-                      {['Up to 20','Up to 50','Up to 100','100+'].map((x)=> <button key={'cap'+x} className={`counter ${x==='Up to 50'?'active':''}`} type="button">{x}</button>)}
+                      {['Up to 20','Up to 50','Up to 100','100+'].map((x)=> <button key={'cap'+x} className={`counter ${x===selectedRoomStyle?'active':''}`} type="button" onClick={() => setSelectedRoomStyle(x)}>{x}</button>)}
                     </div>
                   </div>
                 </div>
@@ -229,14 +231,12 @@ export default function ConferenceAndMeetings() {
               <div className="filter-block">
                 <div className="filter-title">Room style</div>
                 <div className="seg-grid">
-                  <button className="seg-card active" type="button">
-                    <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
-                    <span>U‑Shape</span>
-                  </button>
-                  <button className="seg-card" type="button">
-                    <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
-                    <span>Classroom</span>
-                  </button>
+                  {['U‑Shape','Classroom'].map((s) => (
+                    <button key={s} className={`seg-card ${s===selectedRoomStyle?'active':''}`} type="button" onClick={() => setSelectedRoomStyle(s)}>
+                      <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
+                      <span>{s}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </aside>
