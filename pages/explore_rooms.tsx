@@ -248,6 +248,11 @@ export default function ExploreRooms() {
         .feature-item { display: flex; align-items: center; gap: 10px; color: rgba(0,0,0,0.75); font-size: 0.95rem; }
         .feature-icon { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; color: var(--brand-brown); font-weight: 700; }
 
+        .room-types-available { background: rgba(111,78,55,0.05); border: 1px solid rgba(111,78,55,0.1); border-radius: 0; padding: 14px; }
+        .types-title { margin: 0 0 10px; font-size: 0.95rem; font-weight: 700; color: var(--text-black); }
+        .types-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .type-badge { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; background: var(--brand-brown); color: #fff; font-size: 0.85rem; font-weight: 600; }
+
         .room-actions { display: flex; gap: 12px; }
 
         .room-gallery-grid { display: grid; gap: 16px; }
