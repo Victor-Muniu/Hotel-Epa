@@ -29,7 +29,7 @@ interface QuoteFormData {
   packageType: string;
 }
 
-const HALL_DATA: Record<string, HallData> = {
+export const HALL_DATA: Record<string, HallData> = {
   pkg1: {
     id: 'pkg1',
     title: 'Kilimanjaro',
