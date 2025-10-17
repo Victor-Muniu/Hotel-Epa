@@ -82,7 +82,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <li><a href="#">About Us</a></li>
                 <li><a href="#">How It Works</a></li>
                 <li><a href="#">FAQs</a></li>
-                <li><a href="#">Contact Support</a></li>
+                <li><Link href="/contact">Contact Support</Link></li>
                 <li><a href="#">Blog</a></li>
                 <li><a href="#">Careers</a></li>
               </ul>
