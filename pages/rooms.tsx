@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RoomTour from '../components/RoomTour';
 
 export default function Rooms() {
@@ -10,6 +10,10 @@ export default function Rooms() {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'floor' | 'tour'>('floor');
   const [tourOpen, setTourOpen] = useState(false);
+  const [numRooms, setNumRooms] = useState<number>(1);
+  const [roomSelections, setRoomSelections] = useState<{ [key: number]: string }>({ 0: '' });
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const tourSlides = [
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Faa5ae259ac784d40825512253e7db2fb?format=webp&width=1600', alt: 'Elegant bedroom overview' },
@@ -30,6 +34,7 @@ export default function Rooms() {
     setSubmitting(true);
     const form = new FormData(e.currentTarget);
     const body = Object.fromEntries(form.entries());
+    body.room_types = JSON.stringify(roomSelections);
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
     setSubmitting(false);
@@ -44,6 +49,41 @@ export default function Rooms() {
     const el = document.getElementById('booking');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  useEffect(() => {
+    async function fetchRoomTypes() {
+      try {
+        const res = await fetch('/api/room-types');
+        const json = await res.json();
+        if (json.types && json.types.length > 0) {
+          setRoomTypes(json.types);
+          setRoomSelections({ 0: json.types[0] });
+        }
+      } catch (error) {
+        console.error('Failed to fetch room types:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRoomTypes();
+  }, []);
+
+  const handleNumRoomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const num = parseInt(e.target.value) || 1;
+    setNumRooms(num);
+    const newSelections: { [key: number]: string } = {};
+    for (let i = 0; i < num; i++) {
+      newSelections[i] = roomSelections[i] || (roomTypes[0] || '');
+    }
+    setRoomSelections(newSelections);
+  };
+
+  const handleRoomTypeChange = (roomIndex: number, roomType: string) => {
+    setRoomSelections(prev => ({
+      ...prev,
+      [roomIndex]: roomType
+    }));
+  };
 
   return (
     <>
@@ -98,7 +138,32 @@ export default function Rooms() {
                   <input className="input" type="date" name="start_date" required />
                   <input className="input" type="date" name="end_date" required />
                 </div>
-                <div className="count-row"><input className="input" type="number" name="guests" placeholder="Adults" min={1} /><input className="input" type="number" name="children" placeholder="Children" min={0} /><input className="input" type="number" name="rooms" placeholder="Rooms" min={1} /></div>
+                <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
+                {numRooms > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Room Types</h4>
+                    <div className="room-types-grid">
+                      {Array.from({ length: numRooms }).map((_, idx) => (
+                        <div key={idx} className="room-type-selector">
+                          <label className="room-type-title">Room {idx + 1}</label>
+                          <select
+                            className="input"
+                            value={roomSelections[idx] || ''}
+                            onChange={(e) => handleRoomTypeChange(idx, e.target.value)}
+                            disabled={roomTypes.length === 0}
+                          >
+                            <option value="">Select a room type</option>
+                            {roomTypes.map(type => (
+                              <option key={type} value={type}>
+                                {type}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Send Request'}</button>
                 {status && <p role="status">{status}</p>}
@@ -198,7 +263,7 @@ export default function Rooms() {
             </header>
             <div className="modal-body">
               <form className="form booking-form" onSubmit={submit}>
-                <input type="hidden" name="room" value={selectedRoom || ''} />
+                <input type="hidden" name="room_id" value={selectedRoom || ''} />
                 <fieldset className="board-types">
                   <legend>Board type</legend>
                   <label className="iconline"><input type="radio" name="type" value="Bed Only" required /> Bed Only</label>
@@ -215,7 +280,32 @@ export default function Rooms() {
                   <input className="input" type="date" name="start_date" required />
                   <input className="input" type="date" name="end_date" required />
                 </div>
-                <div className="count-row"><input className="input" type="number" name="guests" placeholder="Adults" min={1} /><input className="input" type="number" name="children" placeholder="Children" min={0} /><input className="input" type="number" name="rooms" placeholder="Rooms" min={1} /></div>
+                <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
+                {numRooms > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Room Types</h4>
+                    <div className="room-types-grid">
+                      {Array.from({ length: numRooms }).map((_, idx) => (
+                        <div key={idx} className="room-type-selector">
+                          <label className="room-type-title">Room {idx + 1}</label>
+                          <select
+                            className="input"
+                            value={roomSelections[idx] || ''}
+                            onChange={(e) => handleRoomTypeChange(idx, e.target.value)}
+                            disabled={roomTypes.length === 0}
+                          >
+                            <option value="">Select a room type</option>
+                            {roomTypes.map(type => (
+                              <option key={type} value={type}>
+                                {type}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Send Request'}</button>
                 {status && <p role="status">{status}</p>}
