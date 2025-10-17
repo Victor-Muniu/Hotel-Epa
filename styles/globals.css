@@ -1320,6 +1320,35 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   .faq-answer-text { padding: 0 14px 14px; }
 }
 
+/* Privacy Policy page */
+.privacy-page { margin-top: 86px; background: var(--text-white); color: var(--text-black); }
+.privacy-container { width: 92%; max-width: 1000px; margin: 0 auto; padding: 24px 0 60px; }
+.privacy-header { margin-bottom: 40px; }
+.privacy-eyebrow { margin: 0 0 6px; color: rgba(0,0,0,.55); font-weight: 600; }
+.privacy-title { margin: 0 0 6px; font-size: 1.8rem; font-weight: 800; }
+.privacy-lead { margin: 0; color: rgba(0,0,0,.6); line-height: 1.6; }
+
+.privacy-content { display: grid; gap: 28px; }
+.privacy-section { display: grid; gap: 12px; }
+.privacy-section-title { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-black); }
+.privacy-subsection-title { margin: 8px 0 6px; font-size: 1rem; font-weight: 600; color: var(--text-black); }
+.privacy-section p { margin: 0; color: rgba(0,0,0,.7); line-height: 1.6; }
+.privacy-list { margin: 8px 0; padding-left: 20px; color: rgba(0,0,0,.7); }
+.privacy-list li { margin: 6px 0; line-height: 1.6; }
+.privacy-list strong { color: var(--text-black); }
+
+.privacy-contact { background: var(--brand-cream); padding: 16px; border-radius: 8px; border: 1px solid rgba(0,0,0,.08); margin: 12px 0; }
+.privacy-contact p { margin: 0; color: rgba(0,0,0,.8); line-height: 1.7; }
+
+.privacy-last-updated { margin: 0; color: rgba(0,0,0,.6); font-size: .9rem; }
+
+@media (max-width: 900px) {
+  .privacy-container { padding: 16px 0 40px; }
+  .privacy-title { font-size: 1.5rem; }
+  .privacy-section-title { font-size: 1.1rem; }
+  .privacy-content { gap: 24px; }
+}
+
 /* Rooms list page */
 .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-top: 16px; }
 .room-card { background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.04); display: flex; flex-direction: column; transition: box-shadow .2s ease; }
