@@ -1039,6 +1039,40 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  justify-items: center;
+}
+
+/* Make inputs and submit button 80% of modal width */
+.quote-form, .quote-form * {
+  box-sizing: border-box;
+}
+.quote-form {
+  justify-items: center;
+}
+.quote-form .form-group {
+  width: 80%;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Force row groups to stack so each input becomes 80% of modal */
+.quote-form .form-row .form-group {
+  grid-column: 1 / -1;
+}
+.quote-form-submit {
+  width: 80%;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .quote-form .form-group,
+  .quote-form-submit {
+    width: 95%;
+    max-width: 95%;
+  }
 }
 
 .quote-form-submit {
