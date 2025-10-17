@@ -45,33 +45,48 @@ export default function ConferenceAndMeetings() {
     const selectedAmenityNames = Object.keys(selectedAmenities).filter(k => selectedAmenities[k]);
 
     const result = CARD_DATA.filter(c => {
-      // price filter
-      if (typeof c.price === 'number') {
-        if (c.price < minPrice || c.price > maxPrice) return false;
-      }
-
-      // capacity filter using HALL_DATA when available
       const hall = HALL_DATA[c.id as keyof typeof HALL_DATA];
-      if (hall) {
-        if (attendeeCount > 0 && hall.maxCapacity < attendeeCount) return false;
+
+      // capacity by attendee count
+      if (attendeeCount > 0 && hall) {
+        if (hall.maxCapacity < attendeeCount) return false;
       }
 
-      // amenities filter: check hall data first, fallback to meta strings
+      // capacity range filter (Up to X)
+      if (selectedCapacityRange && hall) {
+        if (/Up to (\d+)/i.test(selectedCapacityRange)) {
+          const cap = Number(selectedCapacityRange.match(/Up to (\d+)/i)?.[1] || 0);
+          if (hall.maxCapacity > cap) return false;
+        } else if (selectedCapacityRange === '100+') {
+          // allow halls with capacity >=100
+          if (hall.maxCapacity < 100) return false;
+        }
+      }
+
+      // amenities filter using keywords mapping
+      const amenityKeywords: Record<string,string[]> = {
+        'High‑Speed Wi‑Fi': ['wifi','wi‑fi','highspeed','high-speed','complementary','internet'],
+        'Projector': ['projector','screen'],
+        'Sound System': ['sound','pa','audio'],
+        'Tele‑conference': ['tele','conference','tele-conference']
+      };
+
       for (const am of selectedAmenityNames) {
-        const lowerAm = am.toLowerCase();
+        const keywords = amenityKeywords[am] || [am.toLowerCase()];
         let has = false;
         if (hall) {
-          has = hall.amenities.some(a => a.toLowerCase().includes(lowerAm) || lowerAm.includes(a.toLowerCase()));
+          const hallText = hall.amenities.join(' ').toLowerCase();
+          has = keywords.some(k => hallText.includes(k));
         }
         if (!has) {
           const left = (c.metaLeft || '').toLowerCase();
           const right = (c.metaRight || '').toLowerCase();
-          if (left.includes(lowerAm) || right.includes(lowerAm)) has = true;
+          has = keywords.some(k => left.includes(k) || right.includes(k));
         }
         if (!has) return false;
       }
 
-      // room style filter
+      // seating arrangement filter
       if (selectedRoomStyle && hall) {
         const found = hall.arrangements.some(a => a.name.toLowerCase() === selectedRoomStyle.toLowerCase());
         if (!found) return false;
