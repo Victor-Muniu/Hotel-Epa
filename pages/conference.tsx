@@ -6,6 +6,62 @@ export default function ConferenceAndMeetings() {
   const [minPrice, setMinPrice] = useState(1500); // KSh
   const [maxPrice, setMaxPrice] = useState(6500); // KSh
   const [selectedHall, setSelectedHall] = useState<string | null>(null);
+  const [attendees, setAttendees] = useState(50);
+  const [selectedPackages, setSelectedPackages] = useState<Record<string, boolean>>({ 'Full Day': true, 'Half Day': false, 'Team Building': false });
+  const amenityOptions = ['High‑Speed Wi‑Fi','Projector','Sound System','Tele‑conference'];
+  const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({ 'High‑Speed Wi‑Fi': true, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
+  const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>('U‑Shape');
+  const [filteredCards, setFilteredCards] = useState<typeof CARD_DATA | null>(null);
+
+  function togglePackage(name: string) {
+    setSelectedPackages(prev => ({ ...prev, [name]: !prev[name] }));
+  }
+  function toggleAmenity(name: string) {
+    setSelectedAmenities(prev => ({ ...prev, [name]: !prev[name] }));
+  }
+
+  function applyFilters() {
+    const attendeeCount = Number(attendees) || 0;
+    const selectedAmenityNames = Object.keys(selectedAmenities).filter(k => selectedAmenities[k]);
+
+    const result = CARD_DATA.filter(c => {
+      // price filter
+      if (typeof c.price === 'number') {
+        if (c.price < minPrice || c.price > maxPrice) return false;
+      }
+
+      // capacity filter using HALL_DATA when available
+      const hall = HALL_DATA[c.id as keyof typeof HALL_DATA];
+      if (hall) {
+        if (attendeeCount > 0 && hall.maxCapacity < attendeeCount) return false;
+      }
+
+      // amenities filter: check hall data first, fallback to meta strings
+      for (const am of selectedAmenityNames) {
+        const lowerAm = am.toLowerCase();
+        let has = false;
+        if (hall) {
+          has = hall.amenities.some(a => a.toLowerCase().includes(lowerAm) || lowerAm.includes(a.toLowerCase()));
+        }
+        if (!has) {
+          const left = (c.metaLeft || '').toLowerCase();
+          const right = (c.metaRight || '').toLowerCase();
+          if (left.includes(lowerAm) || right.includes(lowerAm)) has = true;
+        }
+        if (!has) return false;
+      }
+
+      // room style filter
+      if (selectedRoomStyle && hall) {
+        const found = hall.arrangements.some(a => a.name.toLowerCase() === selectedRoomStyle.toLowerCase());
+        if (!found) return false;
+      }
+
+      return true;
+    });
+
+    setFilteredCards(result);
+  }
 
   return (
     <>
