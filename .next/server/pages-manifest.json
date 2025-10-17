@@ -3,5 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/rooms": "pages/rooms.js"
+  "/bookings": "pages/bookings.js",
+  "/booking": "pages/booking.js",
+  "/api/room-types": "pages/api/room-types.js"
 }
