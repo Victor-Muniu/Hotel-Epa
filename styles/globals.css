@@ -402,14 +402,25 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
   background: var(--brand-brown);
   color: #fff;
   border: 1px solid var(--brand-brown);
-  padding: 10px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.08s ease, box-shadow 0.12s ease;
-  width: 100%;
+  width: 25%;
+  max-width: 170px;
+  min-width: 120px;
+  align-self: flex-start;
 }
 .btn-more-details:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(111,78,55,0.16); }
+
+@media (max-width: 900px) {
+  .btn-more-details { width: 35%; }
+}
+
+@media (max-width: 600px) {
+  .btn-more-details { width: 100%; }
+}
 
 /* keep legacy classes for other card variants */
 .home-card .addr { display: none; }
