@@ -39,10 +39,28 @@ const HALL_DATA: Record<string, HallData> = {
       'Writing materials (provided)',
       'Complementary Wi‑Fi',
       'Water for both sessions',
-      'Projector access',
-      'Lunch buffet (10:00) — provided for both Full Day and Half Day',
-      'PA system (provided at 16:00 for Full Day only)'
+      'Projector access'
     ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
     arrangements: [
       {
         name: 'Theater',
