@@ -243,6 +243,48 @@ export const HALL_DATA: Record<string, HallData> = {
       { name: 'Hollow Square', capacity: 22, description: 'Tables arranged in a square facing inward.' },
       { name: 'Cabaret', capacity: 28, description: 'Round tables facing the stage.' }
     ]
+  },
+  pkg5: {
+    id: 'pkg5',
+    title: 'Lenana',
+    maxCapacity: 10,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F329fd56dc90044a9a1fd823642d3d4ea?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F7247bd4a6e364afba02337258d35f68e?format=webp&width=1200'
+    ],
+    description: 'Small, intimate room for executive discussions and private meetings.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Theater', capacity: 10, description: 'Rows of chairs facing the stage.' },
+      { name: 'Classroom', capacity: 8, description: 'Rows of tables with chairs for training.' },
+      { name: 'U-Shape', capacity: 6, description: 'Tables arranged in U-shape for discussions.' },
+      { name: 'Boardroom', capacity: 6, description: 'Single table setup for executive meetings.' }
+    ]
   }
 };
 
