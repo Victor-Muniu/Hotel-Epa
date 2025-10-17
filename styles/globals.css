@@ -461,7 +461,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .room-tab.active { background: var(--brand-brown); color: #fff; border-color: var(--brand-brown); }
 
 .room-details-card { background: linear-gradient(135deg, #f8f5f2 0%, #faf9f7 100%); border: 1px solid rgba(111,78,55,0.12); border-radius: 12px; padding: 20px; }
-.room-details-title { margin: 0 0 10px; font-size: 1.3rem; font-weight: 700; color: var(--brand-brown); }
+.room-details-title { margin: 0 0 8px; font-size: 1.5rem; font-weight: 700; color: var(--brand-brown); }
+.room-details-meta { margin: 0 0 14px; font-size: 0.95rem; color: rgba(0,0,0,0.65); font-weight: 500; }
 .room-details-desc { margin: 0 0 16px; color: rgba(0,0,0,0.7); line-height: 1.6; }
 
 .room-details-amenities { }
