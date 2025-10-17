@@ -1042,36 +1042,52 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   justify-items: center;
 }
 
-/* Make inputs and submit button 80% of modal width */
+/* Make the quote form 80% of modal width; two-date inputs remain side-by-side */
 .quote-form, .quote-form * {
   box-sizing: border-box;
 }
 .quote-form {
-  justify-items: center;
+  width: 80%;
+  max-width: 80%;
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
 }
+
+/* form groups fill their available column */
 .quote-form .form-group {
-  width: 80%;
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
 }
-/* Force row groups to stack so each input becomes 80% of modal */
-.quote-form .form-row .form-group {
-  grid-column: 1 / -1;
+
+/* keep the two date inputs side-by-side inside the 80% form container */
+.quote-form .form-row {
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
+
+/* Submit fills the form width (i.e. 80% of modal) */
 .quote-form-submit {
-  width: 80%;
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  max-width: 100%;
   display: block;
+  margin: 8px 0 0 0;
 }
 
 @media (max-width: 600px) {
-  .quote-form .form-group,
-  .quote-form-submit {
+  .quote-form {
     width: 95%;
     max-width: 95%;
+  }
+
+  .quote-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-form-submit {
+    width: 100%;
   }
 }
 
