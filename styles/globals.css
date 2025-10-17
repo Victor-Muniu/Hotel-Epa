@@ -434,6 +434,72 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 ::-webkit-scrollbar-thumb { background: var(--brand-brown); border: 2px solid var(--text-white); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { filter: brightness(0.95); }
 
+/* Booking Page */
+.booking-page { margin-top: 86px; font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: var(--text-white); }
+.booking-container { width: 92%; max-width: 1240px; margin: 0 auto; padding: 40px 0 60px; }
+.booking-header { text-align: center; margin-bottom: 48px; }
+.booking-title { margin: 0 0 12px; font-size: 2.2rem; font-weight: 800; color: var(--brand-brown); }
+.booking-subtitle { margin: 0; color: rgba(0,0,0,0.65); font-size: 1.05rem; }
+
+.booking-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.rooms-section { display: grid; gap: 24px; }
+.form-section-container { display: grid; gap: 16px; }
+
+.section-label { margin: 0 0 16px; font-size: 1.2rem; font-weight: 700; color: var(--text-black); }
+
+.gallery-grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+.gallery-cell { position: relative; overflow: hidden; border-radius: 12px; background: #e8e6e1; aspect-ratio: 1 / 1; }
+.gallery-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.room-types-section { background: rgba(111,78,55,0.05); border: 1px solid rgba(111,78,55,0.1); border-radius: 8px; padding: 16px; margin: 0; }
+.room-types-label { margin: 0 0 12px; font-size: 0.95rem; font-weight: 700; color: var(--text-black); }
+.room-types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.room-type-selector { display: grid; gap: 6px; }
+.room-type-title { font-size: 0.85rem; font-weight: 600; color: rgba(0,0,0,0.75); }
+
+.booking-form { display: grid; gap: 16px; background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+
+.form-group { display: grid; gap: 6px; }
+.form-label { font-size: 0.85rem; font-weight: 600; color: rgba(0,0,0,0.8); }
+
+.form-input { padding: 10px 12px; border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; background: #fff; color: var(--text-black); font-size: 0.95rem; outline: none; transition: border-color 0.2s ease; }
+.form-input:focus { border-color: var(--brand-brown); box-shadow: 0 0 0 2px rgba(111,78,55,0.08); }
+.form-input::placeholder { color: rgba(0,0,0,0.4); }
+
+.form-textarea { resize: vertical; font-family: inherit; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.booking-submit-btn { width: 100%; padding: 12px 16px; background: var(--brand-brown); color: var(--text-white); border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; margin-top: 8px; }
+.booking-submit-btn:hover:not(:disabled) { background: #5a3f2d; box-shadow: 0 4px 12px rgba(111,78,55,0.3); }
+.booking-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.booking-status { padding: 12px 14px; border-radius: 8px; font-size: 0.9rem; margin-top: 8px; }
+.booking-status.success { background: rgba(34, 197, 94, 0.1); color: rgb(22, 163, 74); border: 1px solid rgba(34, 197, 94, 0.2); }
+.booking-status.error { background: rgba(239, 68, 68, 0.1); color: rgb(220, 38, 38); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+.loading-state { text-align: center; padding: 60px 20px; color: rgba(0,0,0,0.65); }
+
+@media (max-width: 1000px) {
+  .booking-layout { grid-template-columns: 1fr; }
+  .rooms-gallery { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .booking-container { padding: 24px 0 40px; }
+  .booking-header { margin-bottom: 32px; }
+  .booking-title { font-size: 1.8rem; }
+  .rooms-gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .form-row { grid-template-columns: 1fr; }
+  .booking-form { padding: 16px; }
+}
+
+@media (max-width: 600px) {
+  .booking-title { font-size: 1.5rem; }
+  .rooms-gallery { grid-template-columns: 1fr; }
+  .room-gallery-media { height: 120px; }
+}
+
 /* Hotel detail (attractions mimic) */
 .hotel-page { margin-top: 86px; font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
 .hotel-container { width: 92%; max-width: 1240px; margin: 0 auto; padding: 16px 0 60px; }
