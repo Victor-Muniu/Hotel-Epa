@@ -98,7 +98,7 @@ export default function Rooms() {
                   <input className="input" type="date" name="start_date" required />
                   <input className="input" type="date" name="end_date" required />
                 </div>
-                <div className="count-row"><input className="input" type="number" name="guests" placeholder="Adults" min={1} /><input className="input" type="number" name="children" placeholder="Children" min={0} /><input className="input" type="number" name="rooms" placeholder="Rooms" min={1} /></div>
+                <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} /></div>
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Send Request'}</button>
                 {status && <p role="status">{status}</p>}
@@ -198,7 +198,7 @@ export default function Rooms() {
             </header>
             <div className="modal-body">
               <form className="form booking-form" onSubmit={submit}>
-                <input type="hidden" name="room" value={selectedRoom || ''} />
+                <input type="hidden" name="room_id" value={selectedRoom || ''} />
                 <fieldset className="board-types">
                   <legend>Board type</legend>
                   <label className="iconline"><input type="radio" name="type" value="Bed Only" required /> Bed Only</label>
@@ -215,7 +215,7 @@ export default function Rooms() {
                   <input className="input" type="date" name="start_date" required />
                   <input className="input" type="date" name="end_date" required />
                 </div>
-                <div className="count-row"><input className="input" type="number" name="guests" placeholder="Adults" min={1} /><input className="input" type="number" name="children" placeholder="Children" min={0} /><input className="input" type="number" name="rooms" placeholder="Rooms" min={1} /></div>
+                <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} /></div>
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Send Request'}</button>
                 {status && <p role="status">{status}</p>}
