@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HallModal, { HALL_DATA } from '../components/HallModal';
 
 export default function ConferenceAndMeetings() {
