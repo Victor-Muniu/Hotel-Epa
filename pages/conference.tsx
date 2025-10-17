@@ -158,6 +158,7 @@ export default function ConferenceAndMeetings() {
             </aside>
           </section>
         </div>
+        {selectedHall && <HallModal hallId={selectedHall} onClose={() => setSelectedHall(null)} />}
       </main>
     </>
   );
