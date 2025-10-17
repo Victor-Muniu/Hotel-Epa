@@ -181,16 +181,7 @@ export default function ConferenceAndMeetings() {
             <aside className="filters" aria-label="Filters">
               <div className="filters-head">
                 <strong>Filters</strong>
-                <button className="link-clear" type="button">Clear all filter (3)</button>
-              </div>
-
-              <div className="filter-block">
-                <div className="filter-title">Budget (per person)</div>
-                <p className="muted">Typical range for conference packages at Epashikino</p>
-                <div className="row-2">
-                  <label className="field"><span>Minimum</span><input className="input" type="number" value={minPrice} onChange={(e)=>setMinPrice(Number(e.target.value)||0)} /></label>
-                  <label className="field"><span>Maximum</span><input className="input" type="number" value={maxPrice} onChange={(e)=>setMaxPrice(Number(e.target.value)||0)} /></label>
-                </div>
+                <button className="link-clear" type="button" onClick={() => clearFilters()}>Clear all filters ({Object.values(activeFilters()).filter(Boolean).length})</button>
               </div>
 
               <div className="filter-block">
