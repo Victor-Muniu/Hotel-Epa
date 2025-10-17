@@ -72,7 +72,7 @@ export default function ConferenceAndMeetings() {
           <section className="homes-body">
             <div className="grid-cards">
               {CARD_DATA.map((c) => (
-                <article key={c.id} className="home-card" role="button" tabIndex={0} onClick={() => c.id === 'pkg1' && setSelectedHall(c.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && c.id === 'pkg1' && setSelectedHall(c.id)} style={{ cursor: c.id === 'pkg1' ? 'pointer' : 'default' }}>
+                <article key={c.id} className="home-card" role="button" tabIndex={0} onClick={() => (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} style={{ cursor: (c.id === 'pkg1' || c.id === 'pkg2') ? 'pointer' : 'default' }}>
                   <div className="media">
                     <img src={c.img} alt={c.title} />
                   </div>
