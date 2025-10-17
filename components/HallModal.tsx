@@ -107,6 +107,53 @@ const HALL_DATA: Record<string, HallData> = {
         description: 'Rounds tables facing the stage. Balance between theater and dining.'
       }
     ]
+  },
+  pkg2: {
+    id: 'pkg2',
+    title: 'Menengai',
+    maxCapacity: 80,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Ffc47cbdcd5c4492ab8ae3ff13ca152f5?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fadf3787a06344ebab9e02ef5f6554acd?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F128a93132ba042148cb2fe0029c99229?format=webp&width=1200'
+    ],
+    description: 'Bright and versatile conference space suitable for medium-sized events and meetings.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Theater', capacity: 80, description: 'Rows of chairs facing the stage.' },
+      { name: 'Classroom', capacity: 60, description: 'Rows of tables with chairs for training.' },
+      { name: 'U-Shape', capacity: 30, description: 'Tables arranged in U-shape for discussions.' },
+      { name: 'Boardroom', capacity: 20, description: 'Single table setup for executive meetings.' },
+      { name: 'Banquet', capacity: 50, description: 'Round tables for dining and social events.' },
+      { name: 'Cocktail', capacity: 80, description: 'Standing reception with high-top tables.' },
+      { name: 'Hollow Square', capacity: 40, description: 'Tables arranged in a square facing inward.' },
+      { name: 'Cabaret', capacity: 50, description: 'Round tables facing the stage.' }
+    ]
   }
 };
 
