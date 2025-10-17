@@ -77,27 +77,17 @@ export default function ConferenceAndMeetings() {
                     <img src={c.img} alt={c.title} />
                     <button className="fav" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.54 0 3.04.99 3.57 2.36h.86C11.46 4.99 12.96 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z" fill="currentColor"/></svg></button>
                   </div>
-                  <div className="info">
+                  <div className="info info-compact">
                     <h3 className="title">{c.title}</h3>
                     <div className="card-actions">
                       <button
                         type="button"
-                        className="btn-more-details"
+                        className="btn-more-details primary"
                         onClick={(e) => { e.stopPropagation(); setSelectedHall(c.id); }}
                         aria-label={`More details about ${c.title}`}
                       >
                         More details
                       </button>
-                    </div>
-                    <p className="addr">Epashikino Resort & Spa, Elementaita</p>
-                    <div className="meta">
-                      <span className="iconline"><svg viewBox="0 0 24 24"><path d="M4 10h16v10H4zM8 7h8" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>{c.metaLeft}</span>
-                      <span className="iconline"><svg viewBox="0 0 24 24"><path d="M6 12h12" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>{c.metaRight}</span>
-                    </div>
-                    <div className="price">
-                      <strong>KSh {c.price.toLocaleString()}</strong>
-                      <span>/person</span>
-                      <a className="fee" href="#">Snacks, meals, Wi‑Fi included</a>
                     </div>
                   </div>
                 </article>
