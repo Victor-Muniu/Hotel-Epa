@@ -11,7 +11,27 @@ export default function ConferenceAndMeetings() {
   const amenityOptions = ['High‑Speed Wi‑Fi','Projector','Sound System','Tele‑conference'];
   const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({ 'High‑Speed Wi‑Fi': true, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
   const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>('U‑Shape');
+  const [selectedCapacityRange, setSelectedCapacityRange] = useState<string | null>(null);
   const [filteredCards, setFilteredCards] = useState<typeof CARD_DATA | null>(null);
+
+  function activeFilters() {
+    return {
+      packages: Object.values(selectedPackages).some(Boolean),
+      attendees: attendees && attendees !== 50,
+      amenities: Object.values(selectedAmenities).some(Boolean),
+      seating: !!selectedRoomStyle,
+      capacity: !!selectedCapacityRange,
+    };
+  }
+
+  function clearFilters() {
+    setSelectedPackages({ 'Full Day': true, 'Half Day': false, 'Team Building': false });
+    setSelectedAmenities({ 'High‑Speed Wi‑Fi': true, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
+    setSelectedRoomStyle('U‑Shape');
+    setSelectedCapacityRange(null);
+    setAttendees(50);
+    setFilteredCards(null);
+  }
 
   function togglePackage(name: string) {
     setSelectedPackages(prev => ({ ...prev, [name]: !prev[name] }));
