@@ -936,17 +936,14 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   position: relative;
   width: 100%;
   perspective: 1000px;
-  min-height: 400px;
 }
 
 .flipper-front,
 .flipper-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transition: transform 0.6s ease;
+  width: 100%;
 }
 
 .flipper-front {
@@ -955,19 +952,23 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 
 .flipper-back {
   transform: rotateY(180deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
 }
 
 .hall-modal-flipper.flipped .flipper-front {
   transform: rotateY(180deg);
   pointer-events: none;
+  visibility: hidden;
 }
 
 .hall-modal-flipper.flipped .flipper-back {
   transform: rotateY(0deg);
   pointer-events: auto;
+  visibility: visible;
 }
 
 .quote-form-container {
