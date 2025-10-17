@@ -115,38 +115,48 @@ export default function Booking() {
           <div className="booking-layout">
             <div className="rooms-section">
               <h2 className="section-label">Select a Room</h2>
-              <div className="rooms-gallery">
+              <div className="rooms-gallery-grid">
+                <div className="gallery-main">
+                  {selectedRoom && selectedRoom.images[0] && (
+                    <img
+                      src={selectedRoom.images[0]}
+                      alt={selectedRoom.name}
+                      className="gallery-hero-img"
+                    />
+                  )}
+                </div>
+                <div className="gallery-thumbnails">
+                  {selectedRoom?.images.map((image, idx) => (
+                    <img
+                      key={idx}
+                      src={image}
+                      alt={`${selectedRoom.name} ${idx + 1}`}
+                      className="gallery-thumb"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="room-selector-tabs">
                 {ROOMS.map((room) => (
-                  <div
+                  <button
                     key={room.id}
-                    className={`room-gallery-card ${
+                    className={`room-tab ${
                       selectedRoomId === room.id ? 'active' : ''
                     }`}
                     onClick={() => setSelectedRoomId(room.id)}
                   >
-                    <div className="room-gallery-media">
-                      <img
-                        src={room.image}
-                        alt={room.name}
-                        className="room-gallery-img"
-                      />
-                    </div>
-                    <div className="room-gallery-info">
-                      <h3 className="room-gallery-name">{room.name}</h3>
-                      <p className="room-gallery-meta">
-                        {room.capacity} guest{room.capacity !== 1 ? 's' : ''} • {room.beds} bed{room.beds !== 1 ? 's' : ''}
-                      </p>
-                      <p className="room-gallery-price">
-                        ${room.price} <span className="price-period">per night</span>
-                      </p>
-                    </div>
-                  </div>
+                    {room.name}
+                  </button>
                 ))}
               </div>
 
               {selectedRoom && (
                 <div className="room-details-card">
                   <h3 className="room-details-title">{selectedRoom.name}</h3>
+                  <p className="room-details-meta">
+                    {selectedRoom.capacity} guest{selectedRoom.capacity !== 1 ? 's' : ''} • {selectedRoom.beds} bed{selectedRoom.beds !== 1 ? 's' : ''}
+                  </p>
                   <p className="room-details-desc">{selectedRoom.description}</p>
                   <div className="room-details-amenities">
                     <h4 className="amenities-title">Amenities</h4>
