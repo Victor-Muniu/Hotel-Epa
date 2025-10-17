@@ -286,12 +286,14 @@ export default function Booking() {
                           <label className="room-type-title">Room {idx + 1}</label>
                           <select
                             className="form-input"
-                            value={roomSelections[idx] || 'double'}
+                            value={roomSelections[idx] || ''}
                             onChange={(e) => handleRoomTypeChange(idx, e.target.value)}
+                            disabled={roomTypes.length === 0}
                           >
-                            {ROOM_TYPES.map(type => (
-                              <option key={type.id} value={type.id}>
-                                {type.label}
+                            <option value="">Select a room type</option>
+                            {roomTypes.map(type => (
+                              <option key={type} value={type}>
+                                {type}
                               </option>
                             ))}
                           </select>
