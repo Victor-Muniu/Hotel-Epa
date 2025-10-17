@@ -243,7 +243,8 @@ export default function ExploreRooms() {
         .room-types-available { background: rgba(111,78,55,0.05); border: 1px solid rgba(111,78,55,0.1); border-radius: 0; padding: 14px; }
         .types-title { margin: 0 0 10px; font-size: 0.95rem; font-weight: 700; color: var(--text-black); }
         .types-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .type-badge { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; background: var(--brand-brown); color: #fff; font-size: 0.85rem; font-weight: 600; }
+        .type-badge { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; background: #e8e6e1; color: var(--text-black); font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(111,78,55,0.2); }
+        .type-badge-active { background: var(--brand-brown); color: #fff; border-color: var(--brand-brown); }
 
         .room-actions { display: flex; gap: 12px; }
 
