@@ -521,7 +521,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  overflow-y: auto;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
