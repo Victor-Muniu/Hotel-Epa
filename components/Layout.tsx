@@ -71,8 +71,6 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <li><a href="#">Wedding Packages</a></li>
                 <li><a href="#">Adventure &amp; Nature Tours</a></li>
                 <li><a href="#">Family Stays</a></li>
-                <li><a href="#">Massage &amp; Wellness</a></li>
-                <li><a href="#">Rooftop Lounge Access</a></li>
               </ul>
             </div>
 
@@ -81,8 +79,8 @@ export default function Layout({ children }: { children: ReactNode }) {
               <ul>
                 <li><a href="#">About Us</a></li>
                 <li><a href="#">How It Works</a></li>
-                <li><a href="#">FAQs</a></li>
-                <li><a href="#">Contact Support</a></li>
+                <li><Link href="/faq">FAQs</Link></li>
+                <li><Link href="/contact">Contact Support</Link></li>
                 <li><a href="#">Blog</a></li>
                 <li><a href="#">Careers</a></li>
               </ul>
