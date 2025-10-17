@@ -63,11 +63,7 @@ export default function ConferenceAndMeetings() {
               <button className="chip"><span className="chip-ico" aria-hidden="true">🎥</span> Projector & Sound</button>
               <button className="chip"><span className="chip-ico" aria-hidden="true">📶</span> High‑Speed Wi‑Fi</button>
             </div>
-            <div className="chip-actions">
-              <button className="chip-ghost">Latest</button>
-              <button className="chip-ghost">Map View</button>
-              <button className="chip-ghost active">Card View</button>
-            </div>
+            <div className="chip-actions" style={{ display: 'none' }}></div>
           </div>
 
           <section className="homes-body">
@@ -165,10 +161,10 @@ export default function ConferenceAndMeetings() {
 }
 
 const CARD_DATA = [
-  { id: 'pkg1', title: 'Full Day Conference – Elementaita Hall', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F8ad5f6b88c954e60a993a062691b0542?format=webp&width=800', price: 4500, rating: 4.9, metaLeft: 'Projector & Sound', metaRight: 'Snacks & Hot Lunch' },
-  { id: 'pkg2', title: 'Half Day Conference – Naivasha Hall', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2Fc2fce71f1d8141c38739a7b044a4659e?format=webp&width=800', price: 3200, rating: 4.8, metaLeft: 'Projector & Wi‑Fi', metaRight: 'Snacks & Tea' },
-  { id: 'pkg3', title: 'Team Building – Gardens & Grounds', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F2178499d3afd41e6a1a009b48c6d971a?format=webp&width=800', price: 5000, rating: 4.9, metaLeft: 'Facilitators & Gear', metaRight: 'Meals Included' },
-  { id: 'pkg4', title: 'Executive Boardroom – Tele‑conference', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F8488b00f0b5f4ce2b58cf6ffd4c3e8a6?format=webp&width=800', price: 3800, rating: 4.9, metaLeft: 'Tele‑conference Ready', metaRight: 'Snacks & Water' },
-  { id: 'pkg5', title: 'Conference Setup – Details', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2Ff2dbf3219b3b4abb9e55c5df84facc97?format=webp&width=800', price: 0, rating: 4.8, metaLeft: 'Bottled Water', metaRight: 'Stationery' },
-  { id: 'pkg6', title: 'U‑Shape Hall – Lakeside Wing', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F73429092cd0d4b37939fadbbedf2dda0?format=webp&width=800', price: 4200, rating: 4.8, metaLeft: 'Projector & Sound', metaRight: 'Meals Included' },
+  { id: 'pkg1', title: 'Kilimanjaro', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F8ad5f6b88c954e60a993a062691b0542?format=webp&width=800', price: 4500, rating: 4.9, metaLeft: 'Projector & Sound', metaRight: 'Snacks & Hot Lunch' },
+  { id: 'pkg2', title: 'Menengai', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2Fc2fce71f1d8141c38739a7b044a4659e?format=webp&width=800', price: 3200, rating: 4.8, metaLeft: 'Projector & Wi‑Fi', metaRight: 'Snacks & Tea' },
+  { id: 'pkg3', title: 'Kibo', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F2178499d3afd41e6a1a009b48c6d971a?format=webp&width=800', price: 5000, rating: 4.9, metaLeft: 'Facilitators & Gear', metaRight: 'Meals Included' },
+  { id: 'pkg4', title: 'Mawenzi', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F8488b00f0b5f4ce2b58cf6ffd4c3e8a6?format=webp&width=800', price: 3800, rating: 4.9, metaLeft: 'Tele‑conference Ready', metaRight: 'Snacks & Water' },
+  { id: 'pkg5', title: 'Lenana', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2Ff2dbf3219b3b4abb9e55c5df84facc97?format=webp&width=800', price: 0, rating: 4.8, metaLeft: 'Bottled Water', metaRight: 'Stationery' },
+  { id: 'pkg6', title: 'Boardroom', img: 'https://cdn.builder.io/api/v1/image/assets%2F4705a7fec00444bfa14d396c0191674a%2F73429092cd0d4b37939fadbbedf2dda0?format=webp&width=800', price: 4200, rating: 4.8, metaLeft: 'Projector & Sound', metaRight: 'Meals Included' },
 ];
