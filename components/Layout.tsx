@@ -90,7 +90,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               <h4>Legal</h4>
               <ul>
                 <li><a href="#">Terms &amp; Conditions</a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                <li><Link href="/privacy">Privacy Policy</Link></li>
                 <li><a href="#">Cancellation Policy</a></li>
                 <li><a href="#">Cookie Preferences</a></li>
                 <li><a href="#">Accessibility Statement</a></li>
