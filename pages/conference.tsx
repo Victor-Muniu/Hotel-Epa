@@ -79,6 +79,35 @@ export default function ConferenceAndMeetings() {
                   </div>
                   <div className="info info-compact">
                     <h3 className="title">{c.title}</h3>
+
+                    <div className="card-amenities" aria-hidden>
+                      <span className="amenity">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                          <path d="M12 18c1.657 0 3-1.343 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M8.5 14.5a7 7 0 0 1 7 0" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M5 11a11 11 0 0 1 14 0" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="amenity-label">High‑speed internet</span>
+                      </span>
+
+                      <span className="amenity">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                          <rect x="3" y="6" width="18" height="10" rx="1" stroke="currentColor" strokeWidth="1.4"/>
+                          <path d="M8 17h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                          <path d="M12 6v-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                        </svg>
+                        <span className="amenity-label">Projector</span>
+                      </span>
+
+                      <span className="amenity">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                          <path d="M3 21l4-4 11-11a2 2 0 0 1 2.828 0l.172.172a2 2 0 0 1 0 2.828L11 20l-4 1z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M14 7l3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="amenity-label">Writing materials</span>
+                      </span>
+                    </div>
+
                     <div className="card-actions">
                       <button
                         type="button"
