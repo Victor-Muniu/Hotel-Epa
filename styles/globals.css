@@ -520,6 +520,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   background: rgba(255, 255, 255, 0.98);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   overflow-y: auto;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -928,6 +929,176 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 
   .btn-inquiry {
     width: 100%;
+  }
+}
+
+/* Hall Modal Flip Animation */
+.hall-modal-flipper {
+  position: relative;
+  width: 100%;
+  perspective: 1000px;
+}
+
+.flipper-front,
+.flipper-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.6s ease;
+  width: 100%;
+}
+
+.flipper-front {
+  transform: rotateY(0deg);
+}
+
+.flipper-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.hall-modal-flipper.flipped .flipper-front {
+  transform: rotateY(180deg);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.hall-modal-flipper.flipped .flipper-back {
+  transform: rotateY(0deg);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.quote-form-container {
+  width: 100%;
+  padding: 24px;
+  max-width: 100%;
+  min-height: auto;
+}
+
+.quote-form-title {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-black);
+}
+
+.quote-form-subtitle {
+  margin: 0 0 20px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 0.95rem;
+}
+
+.quote-form {
+  display: grid;
+  gap: 16px;
+}
+
+.quote-form .form-group {
+  display: grid;
+  gap: 6px;
+}
+
+.quote-form .form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.quote-form .form-input {
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-black);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.quote-form .form-input:focus {
+  border-color: var(--brand-brown);
+  box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.08);
+}
+
+.quote-form .form-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.quote-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.quote-form-submit {
+  padding: 12px 24px;
+  background: var(--brand-brown);
+  color: #fff;
+  border: 1px solid var(--brand-brown);
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
+.quote-form-submit:hover:not(:disabled) {
+  background: #5a3f2d;
+  box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+}
+
+.quote-form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.quote-form-status {
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.quote-form-status.success {
+  background: rgba(34, 197, 94, 0.1);
+  color: rgb(22, 163, 74);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.quote-form-status.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: rgb(220, 38, 38);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+@media (max-width: 768px) {
+  .quote-form-container {
+    padding: 16px;
+  }
+
+  .quote-form-title {
+    font-size: 1.25rem;
+  }
+
+  .quote-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .quote-form-container {
+    padding: 12px;
+  }
+
+  .quote-form-title {
+    font-size: 1.1rem;
   }
 }
 

@@ -16,6 +16,15 @@ interface HallData {
   amenities: string[];
 }
 
+interface QuoteFormData {
+  organizationName: string;
+  email: string;
+  phoneNumber: string;
+  conferenceStartDate: string;
+  conferenceEndDate: string;
+  packageType: string;
+}
+
 const HALL_DATA: Record<string, HallData> = {
   pkg1: {
     id: 'pkg1',
@@ -81,6 +90,16 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
   const hall = HALL_DATA[hallId];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedArrangement, setSelectedArrangement] = useState<Arrangement | null>(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [formData, setFormData] = useState<QuoteFormData>({
+    organizationName: '',
+    email: '',
+    phoneNumber: '',
+    conferenceStartDate: '',
+    conferenceEndDate: '',
+    packageType: 'Full Day Conference'
+  });
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   if (!hall) return null;
 
@@ -90,6 +109,55 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + hall.images.length) % hall.images.length);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitStatus('loading');
+
+    try {
+      const response = await fetch('/api/booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...formData,
+          hallName: hall.title,
+          type: 'quote_request'
+        })
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          organizationName: '',
+          email: '',
+          phoneNumber: '',
+          conferenceStartDate: '',
+          conferenceEndDate: '',
+          packageType: 'Full Day Conference'
+        });
+        setTimeout(() => {
+          setIsFlipped(false);
+          setSubmitStatus('idle');
+        }, 2000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus('idle'), 3000);
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+    }
   };
 
   return (
@@ -102,101 +170,218 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
           </button>
         </div>
 
-        <div className="hall-modal-body">
-          <div className="hall-gallery">
-            <div className="gallery-carousel">
-              <img
-                src={hall.images[currentImageIndex]}
-                alt={`${hall.title} - Image ${currentImageIndex + 1}`}
-                className="gallery-image"
-              />
-              {hall.images.length > 1 && (
-                <>
-                  <button className="carousel-btn prev-btn" onClick={prevImage} aria-label="Previous image">
-                    ‹
-                  </button>
-                  <button className="carousel-btn next-btn" onClick={nextImage} aria-label="Next image">
-                    ›
-                  </button>
-                  <div className="carousel-indicators">
-                    {hall.images.map((_, idx) => (
-                      <span
-                        key={idx}
-                        className={`indicator ${idx === currentImageIndex ? 'active' : ''}`}
-                        onClick={() => setCurrentImageIndex(idx)}
-                        aria-label={`View image ${idx + 1}`}
-                      />
-                    ))}
+        <div className={`hall-modal-flipper ${isFlipped ? 'flipped' : ''}`}>
+          <div className="flipper-front">
+            <div className="hall-modal-body">
+              <div className="hall-gallery">
+                <div className="gallery-carousel">
+                  <img
+                    src={hall.images[currentImageIndex]}
+                    alt={`${hall.title} - Image ${currentImageIndex + 1}`}
+                    className="gallery-image"
+                  />
+                  {hall.images.length > 1 && (
+                    <>
+                      <button className="carousel-btn prev-btn" onClick={prevImage} aria-label="Previous image">
+                        ‹
+                      </button>
+                      <button className="carousel-btn next-btn" onClick={nextImage} aria-label="Next image">
+                        ›
+                      </button>
+                      <div className="carousel-indicators">
+                        {hall.images.map((_, idx) => (
+                          <span
+                            key={idx}
+                            className={`indicator ${idx === currentImageIndex ? 'active' : ''}`}
+                            onClick={() => setCurrentImageIndex(idx)}
+                            aria-label={`View image ${idx + 1}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="hall-info">
+                  <div className="info-section">
+                    <h3 className="section-heading">Capacity</h3>
+                    <p className="capacity-badge">
+                      <span className="capacity-number">{hall.maxCapacity}</span>
+                      <span className="capacity-label">Maximum Guests</span>
+                    </p>
                   </div>
-                </>
-              )}
-            </div>
 
-            <div className="hall-info">
-              <div className="info-section">
-                <h3 className="section-heading">Capacity</h3>
-                <p className="capacity-badge">
-                  <span className="capacity-number">{hall.maxCapacity}</span>
-                  <span className="capacity-label">Maximum Guests</span>
-                </p>
-              </div>
-
-              <div className="info-section">
-                <h3 className="section-heading">Amenities</h3>
-                <div className="amenities-list">
-                  {hall.amenities.map((amenity, idx) => (
-                    <div key={idx} className="amenity-item">
-                      <span className="amenity-icon">✓</span>
-                      <span className="amenity-text">{amenity}</span>
+                  <div className="info-section">
+                    <h3 className="section-heading">Amenities</h3>
+                    <div className="amenities-list">
+                      {hall.amenities.map((amenity, idx) => (
+                        <div key={idx} className="amenity-item">
+                          <span className="amenity-icon">✓</span>
+                          <span className="amenity-text">{amenity}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  <p className="hall-description">{hall.description}</p>
                 </div>
               </div>
 
-              <p className="hall-description">{hall.description}</p>
+              <div className="arrangements-section">
+                <h3 className="arrangements-heading">Seating Arrangements</h3>
+                <p className="arrangements-intro">
+                  Kilimanjaro can be arranged in multiple configurations to suit your event needs. Select an arrangement to view capacity details.
+                </p>
+
+                <div className="arrangements-grid">
+                  {hall.arrangements.map((arrangement) => (
+                    <button
+                      key={arrangement.name}
+                      className={`arrangement-card ${selectedArrangement?.name === arrangement.name ? 'active' : ''}`}
+                      onClick={() => setSelectedArrangement(arrangement)}
+                    >
+                      <div className="arrangement-card-content">
+                        <h4 className="arrangement-name">{arrangement.name}</h4>
+                        <div className="arrangement-capacity">
+                          <span className="capacity-number">{arrangement.capacity}</span>
+                          <span className="capacity-label">guests</span>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {selectedArrangement && (
+                  <div className="arrangement-details">
+                    <h4 className="detail-title">{selectedArrangement.name} Configuration</h4>
+                    <p className="detail-text">{selectedArrangement.description}</p>
+                    <div className="detail-capacity">
+                      <span className="label">Capacity:</span>
+                      <span className="value">{selectedArrangement.capacity} people</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="arrangements-section">
-            <h3 className="arrangements-heading">Seating Arrangements</h3>
-            <p className="arrangements-intro">
-              Kilimanjaro can be arranged in multiple configurations to suit your event needs. Select an arrangement to view capacity details.
-            </p>
+          <div className="flipper-back">
+            <div className="quote-form-container">
+              <h3 className="quote-form-title">Request a Quote</h3>
+              <p className="quote-form-subtitle">For {hall.title}</p>
 
-            <div className="arrangements-grid">
-              {hall.arrangements.map((arrangement) => (
-                <button
-                  key={arrangement.name}
-                  className={`arrangement-card ${selectedArrangement?.name === arrangement.name ? 'active' : ''}`}
-                  onClick={() => setSelectedArrangement(arrangement)}
-                >
-                  <div className="arrangement-card-content">
-                    <h4 className="arrangement-name">{arrangement.name}</h4>
-                    <div className="arrangement-capacity">
-                      <span className="capacity-number">{arrangement.capacity}</span>
-                      <span className="capacity-label">guests</span>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {selectedArrangement && (
-              <div className="arrangement-details">
-                <h4 className="detail-title">{selectedArrangement.name} Configuration</h4>
-                <p className="detail-text">{selectedArrangement.description}</p>
-                <div className="detail-capacity">
-                  <span className="label">Capacity:</span>
-                  <span className="value">{selectedArrangement.capacity} people</span>
+              <form onSubmit={handleSubmit} className="quote-form">
+                <div className="form-group">
+                  <label htmlFor="organizationName" className="form-label">Organization Name</label>
+                  <input
+                    type="text"
+                    id="organizationName"
+                    name="organizationName"
+                    value={formData.organizationName}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required
+                    placeholder="Enter organization name"
+                  />
                 </div>
-              </div>
-            )}
+
+                <div className="form-group">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required
+                    placeholder="Enter email address"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required
+                    placeholder="Enter phone number"
+                  />
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="conferenceStartDate" className="form-label">Conference Start Date</label>
+                    <input
+                      type="date"
+                      id="conferenceStartDate"
+                      name="conferenceStartDate"
+                      value={formData.conferenceStartDate}
+                      onChange={handleInputChange}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="conferenceEndDate" className="form-label">Conference End Date</label>
+                    <input
+                      type="date"
+                      id="conferenceEndDate"
+                      name="conferenceEndDate"
+                      value={formData.conferenceEndDate}
+                      onChange={handleInputChange}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="packageType" className="form-label">Package Type</label>
+                  <select
+                    id="packageType"
+                    name="packageType"
+                    value={formData.packageType}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required
+                  >
+                    <option value="Full Day Conference">Full Day Conference</option>
+                    <option value="Half Day Conference">Half Day Conference</option>
+                  </select>
+                </div>
+
+                <button type="submit" className="quote-form-submit" disabled={submitStatus === 'loading'}>
+                  {submitStatus === 'loading' ? 'Submitting...' : 'Submit Quote Request'}
+                </button>
+
+                {submitStatus === 'success' && (
+                  <div className="quote-form-status success">
+                    ✓ Quote request submitted successfully!
+                  </div>
+                )}
+                {submitStatus === 'error' && (
+                  <div className="quote-form-status error">
+                    ✗ Failed to submit quote request. Please try again.
+                  </div>
+                )}
+              </form>
+            </div>
           </div>
         </div>
 
         <div className="hall-modal-footer">
-          <button className="btn-inquiry" onClick={onClose}>
-            Inquiry Now
+          <button
+            className="btn-inquiry"
+            onClick={() => setIsFlipped(!isFlipped)}
+            aria-label={isFlipped ? 'Back to hall details' : 'Request a quote'}
+          >
+            {isFlipped ? '← Back' : 'Request Quote'}
           </button>
         </div>
       </div>
