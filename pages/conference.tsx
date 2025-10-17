@@ -55,12 +55,12 @@ export default function ConferenceAndMeetings() {
         if (!hall || hall.maxCapacity < attendeeCount) return false;
       }
 
-      // capacity range filter (Up to X)
+      // capacity range filter: interpret selection as minimum required capacity
       if (selectedCapacityRange) {
         if (!hall) return false;
         if (/Up to (\d+)/i.test(selectedCapacityRange)) {
           const cap = Number(selectedCapacityRange.match(/Up to (\d+)/i)?.[1] || 0);
-          if (hall.maxCapacity > cap) return false;
+          if (hall.maxCapacity < cap) return false;
         } else if (selectedCapacityRange === '100+') {
           if (hall.maxCapacity < 100) return false;
         }
