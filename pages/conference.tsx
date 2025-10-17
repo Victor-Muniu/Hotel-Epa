@@ -13,6 +13,7 @@ export default function ConferenceAndMeetings() {
   const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>(null);
   const [selectedCapacityRange, setSelectedCapacityRange] = useState<string | null>(null);
   const [filteredCards, setFilteredCards] = useState<typeof CARD_DATA | null>(null);
+  const [category, setCategory] = useState<'boardroom' | 'halls'>('halls');
 
   function activeFilters() {
     return {
@@ -44,7 +45,9 @@ export default function ConferenceAndMeetings() {
     const attendeeCount = Number(attendees) || 0;
     const selectedAmenityNames = Object.keys(selectedAmenities).filter(k => selectedAmenities[k]);
 
-    const result = CARD_DATA.filter(c => {
+    const baseCards = CARD_DATA.filter(c => category === 'boardroom' ? c.id === 'pkg6' : c.id !== 'pkg6');
+
+    const result = baseCards.filter(c => {
       const hall = HALL_DATA[c.id as keyof typeof HALL_DATA];
 
       // if capacity range or seating arrangement is selected, require hall data
@@ -103,7 +106,7 @@ export default function ConferenceAndMeetings() {
   }
 
   // Re-run filters on change so the UI updates immediately
-  useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages]);
+  useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages, category]);
 
   return (
     <>
@@ -116,11 +119,11 @@ export default function ConferenceAndMeetings() {
         <div className="homes-container">
           <header className="homes-searchbar" role="search">
             <nav className="seg-tabs" aria-label="Category">
-              <button className="seg-btn" aria-pressed={false}>
+              <button className={`seg-btn ${category==='boardroom'?'active':''}`} aria-pressed={category==='boardroom'} onClick={()=> setCategory('boardroom')}>
                 <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
                 Boardroom
               </button>
-              <button className="seg-btn active" aria-pressed>
+              <button className={`seg-btn ${category==='halls'?'active':''}`} aria-pressed={category==='halls'} onClick={()=> setCategory('halls')}>
                 <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
                 Conference Halls
               </button>
@@ -170,7 +173,7 @@ export default function ConferenceAndMeetings() {
 
           <section className="homes-body">
             <div className="grid-cards">
-              {(filteredCards || CARD_DATA).map((c) => (
+              {(filteredCards || CARD_DATA.filter(c => category === 'boardroom' ? c.id === 'pkg6' : c.id !== 'pkg6')).map((c) => (
                 <article key={c.id} className="home-card" role="button" tabIndex={0} onClick={() => (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} style={{ cursor: (c.id === 'pkg1' || c.id === 'pkg2') ? 'pointer' : 'default' }}>
                   <div className="media">
                     <img src={c.img} alt={c.title} />
