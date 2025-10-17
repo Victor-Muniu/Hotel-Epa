@@ -115,39 +115,15 @@ export default function Booking() {
           <div className="booking-layout">
             <div className="rooms-section">
               <h2 className="section-label">Select a Room</h2>
-              <div className="rooms-gallery-grid">
-                <div className="gallery-main">
-                  {selectedRoom && selectedRoom.images[0] && (
+              <div className="gallery-grid-2x2">
+                {selectedRoom?.images.slice(0, 4).map((image, idx) => (
+                  <div key={idx} className="gallery-cell">
                     <img
-                      src={selectedRoom.images[0]}
-                      alt={selectedRoom.name}
-                      className="gallery-hero-img"
-                    />
-                  )}
-                </div>
-                <div className="gallery-thumbnails">
-                  {selectedRoom?.images.map((image, idx) => (
-                    <img
-                      key={idx}
                       src={image}
                       alt={`${selectedRoom.name} ${idx + 1}`}
-                      className="gallery-thumb"
+                      className="gallery-image"
                     />
-                  ))}
-                </div>
-              </div>
-
-              <div className="room-selector-tabs">
-                {ROOMS.map((room) => (
-                  <button
-                    key={room.id}
-                    className={`room-tab ${
-                      selectedRoomId === room.id ? 'active' : ''
-                    }`}
-                    onClick={() => setSelectedRoomId(room.id)}
-                  >
-                    {room.name}
-                  </button>
+                  </div>
                 ))}
               </div>
 
