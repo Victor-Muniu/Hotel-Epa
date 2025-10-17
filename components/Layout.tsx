@@ -58,11 +58,9 @@ export default function Layout({ children }: { children: ReactNode }) {
               <h4>Explore</h4>
               <ul>
                 <li><Link href="/">Home</Link></li>
-                <li><Link href="/rooms">Villas</Link></li>
-                <li><a href="#">Penthouses</a></li>
-                <li><a href="#">The Private Beach</a></li>
-                <li><a href="#">Apartments</a></li>
-                <li><a href="#">Hotels Near Me</a></li>
+                <li><Link href="/rooms">Accommodation</Link></li>
+                <li><Link href="/conference">Conferences</Link></li>
+                <li><Link href="/attractions">Attractions</Link></li>
               </ul>
             </div>
 
