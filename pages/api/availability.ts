@@ -58,33 +58,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         { start: 'start_date', end: 'end_date' }
       ];
 
-      const filters: Array<'room_type' | 'type' | 'room_id'> = ['room_type', 'type', 'room_id'];
-
       for (const pair of datePairs) {
-        for (const filter of filters) {
-          try {
-            let q = db.from('room_reservations').select('*');
+        try {
+          let q: any = db.from('room_reservations').select('*');
 
-            // Date overlap: start <= checkOut AND end >= checkIn
-            q = q.or(`and(${pair.start}.lte.${checkOut},${pair.end}.gte.${checkIn})`);
+          // Date overlap: start <= checkOut AND end >= checkIn
+          q = q.or(`and(${pair.start}.lte.${checkOut},${pair.end}.gte.${checkIn})`);
 
-            if (filter === 'room_id' && roomIds.length > 0) {
-              q = q.in('room_id', roomIds);
-            } else if (filter === 'room_type' || filter === 'type') {
-              q = q.eq(filter as any, roomType);
+          if (roomIds.length > 0) {
+            q = q.in('room_id', roomIds);
+          } else {
+            q = q.eq('room_type', roomType);
+          }
+
+          const { data, error } = await q;
+          if (!error && Array.isArray(data)) {
+            const rows = data as any[];
+            const usedIds = new Set<string>();
+            for (const r of rows) {
+              if (r.room_id != null) usedIds.add(String(r.room_id));
             }
-
-            const { data, error } = await q;
-            if (!error && Array.isArray(data)) {
-              const rows = data as any[];
-              const usedIds = new Set<string>();
-              for (const r of rows) {
-                if (r.room_id != null) usedIds.add(String(r.room_id));
-              }
-              return { rows, usedIds };
-            }
-          } catch (_) {}
-        }
+            return { rows, usedIds };
+          }
+        } catch (_) {}
       }
       return { rows: [], usedIds: new Set<string>() };
     }
