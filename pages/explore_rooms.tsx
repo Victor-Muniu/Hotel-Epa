@@ -155,11 +155,9 @@ export default function ExploreRooms() {
 
                   {!loading && roomTypes.length > 0 && (
                     <div className="room-types-available">
-                      <h3 className="types-title">Available Room Types</h3>
+                      <h3 className="types-title">This Room Type</h3>
                       <div className="types-list">
-                        {roomTypes.map((type) => (
-                          <span key={type} className="type-badge">{type}</span>
-                        ))}
+                        <span className="type-badge type-badge-active">{rooms[selectedRoom].roomType}</span>
                       </div>
                     </div>
                   )}
