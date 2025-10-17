@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ExploreRooms() {
   const [selectedRoom, setSelectedRoom] = useState<number>(0);
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const rooms = [
     {
@@ -77,6 +79,23 @@ export default function ExploreRooms() {
       features: ['2 Double Beds', '70m²', 'Teal Accents', 'Large Windows', 'Entertainment Area']
     }
   ];
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/room-types');
+        const json = await res.json();
+        if (mounted && Array.isArray(json.types)) {
+          setRoomTypes(json.types);
+        }
+      } catch (_) {
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   return (
     <>
