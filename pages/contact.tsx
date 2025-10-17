@@ -84,7 +84,7 @@ export default function Contact({ mapSrc }: ContactProps) {
 
             <div className="contact-office">
               <h4 className="office-title">Visit Our Office</h4>
-              <p className="office-addr">123 SaaS Street, Innovation City, Techland 56789</p>
+              <p className="office-addr">Epashikino Resort & Spa along Nairobi Nakuru High way Opposite lake elementaita</p>
               <a className="btn btn-soft" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent('Epashikino Resort & Spa')}`} target="_blank" rel="noopener noreferrer"><span className="btn-dot" aria-hidden="true"></span>Get a Direction</a>
             </div>
           </aside>
