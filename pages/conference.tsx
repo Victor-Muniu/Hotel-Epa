@@ -264,7 +264,7 @@ export default function ConferenceAndMeetings() {
               <div className="filter-block">
                 <div className="filter-title">Seating arrangement</div>
                 <div className="seg-grid">
-                  {['U‑Shape','Classroom'].map((s) => (
+                  {['Theater','Classroom','U‑Shape','Boardroom','Banquet','Cocktail','Hollow Square','Cabaret'].map((s) => (
                     <button key={s} className={`seg-card ${s===selectedRoomStyle?'active':''}`} type="button" onClick={() => setSelectedRoomStyle(s)}>
                       <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
                       <span>{s}</span>
