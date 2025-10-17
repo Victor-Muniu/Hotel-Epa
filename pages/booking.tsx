@@ -66,18 +66,32 @@ const ROOMS: Room[] = [
   },
 ];
 
-const ROOM_TYPES = [
-  { id: 'single', label: 'Single', beds: 1 },
-  { id: 'double', label: 'Double', beds: 2 },
-  { id: 'suite', label: 'Suite', beds: 3 },
-];
-
 export default function Booking() {
   const [selectedRoomId, setSelectedRoomId] = useState<string>('1');
   const [numRooms, setNumRooms] = useState<number>(1);
-  const [roomSelections, setRoomSelections] = useState<{ [key: number]: string }>({ 0: 'double' });
+  const [roomSelections, setRoomSelections] = useState<{ [key: number]: string }>({ 0: '' });
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchRoomTypes() {
+      try {
+        const res = await fetch('/api/room-types');
+        const json = await res.json();
+        if (json.types && json.types.length > 0) {
+          setRoomTypes(json.types);
+          setRoomSelections({ 0: json.types[0] });
+        }
+      } catch (error) {
+        console.error('Failed to fetch room types:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRoomTypes();
+  }, []);
 
   const selectedRoom = ROOMS.find(r => r.id === selectedRoomId);
 
