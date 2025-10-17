@@ -25,11 +25,11 @@ export default function ConferenceAndMeetings() {
   }
 
   function clearFilters() {
-    setSelectedPackages({ 'Full Day': true, 'Half Day': false, 'Team Building': false });
-    setSelectedAmenities({ 'High‑Speed Wi‑Fi': true, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
-    setSelectedRoomStyle('U‑Shape');
+    setSelectedPackages({ 'Full Day': false, 'Half Day': false, 'Team Building': false });
+    setSelectedAmenities({ 'High‑Speed Wi‑Fi': false, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
+    setSelectedRoomStyle(null);
     setSelectedCapacityRange(null);
-    setAttendees(50);
+    setAttendees(0);
     setFilteredCards(null);
   }
 
