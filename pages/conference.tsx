@@ -79,6 +79,16 @@ export default function ConferenceAndMeetings() {
                   </div>
                   <div className="info">
                     <h3 className="title">{c.title}</h3>
+                    <div className="card-actions">
+                      <button
+                        type="button"
+                        className="btn-more-details"
+                        onClick={(e) => { e.stopPropagation(); setSelectedHall(c.id); }}
+                        aria-label={`More details about ${c.title}`}
+                      >
+                        More details
+                      </button>
+                    </div>
                     <p className="addr">Epashikino Resort & Spa, Elementaita</p>
                     <div className="meta">
                       <span className="iconline"><svg viewBox="0 0 24 24"><path d="M4 10h16v10H4zM8 7h8" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>{c.metaLeft}</span>
