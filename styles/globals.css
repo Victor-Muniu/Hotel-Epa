@@ -975,6 +975,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   width: 100%;
   padding: 24px;
   max-width: 100%;
+  min-height: auto;
 }
 
 .quote-form-title {
