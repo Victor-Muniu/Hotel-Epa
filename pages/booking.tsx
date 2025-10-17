@@ -120,32 +120,12 @@ export default function Booking() {
                   <div key={idx} className="gallery-cell">
                     <img
                       src={image}
-                      alt={`${selectedRoom.name} ${idx + 1}`}
+                      alt={`Room ${idx + 1}`}
                       className="gallery-image"
                     />
                   </div>
                 ))}
               </div>
-
-              {selectedRoom && (
-                <div className="room-details-card">
-                  <h3 className="room-details-title">{selectedRoom.name}</h3>
-                  <p className="room-details-meta">
-                    {selectedRoom.capacity} guest{selectedRoom.capacity !== 1 ? 's' : ''} • {selectedRoom.beds} bed{selectedRoom.beds !== 1 ? 's' : ''}
-                  </p>
-                  <p className="room-details-desc">{selectedRoom.description}</p>
-                  <div className="room-details-amenities">
-                    <h4 className="amenities-title">Amenities</h4>
-                    <ul className="amenities-list">
-                      {selectedRoom.amenities.map((amenity, idx) => (
-                        <li key={idx} className="amenity-item">
-                          ✓ {amenity}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className="form-section-container">
