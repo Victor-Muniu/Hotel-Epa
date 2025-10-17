@@ -1078,10 +1078,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 }
 
 @media (max-width: 768px) {
-  .hall-modal-flipper {
-    min-height: 500px;
-  }
-
   .quote-form-container {
     padding: 16px;
   }
@@ -1096,10 +1092,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 }
 
 @media (max-width: 600px) {
-  .hall-modal-flipper {
-    min-height: 550px;
-  }
-
   .quote-form-container {
     padding: 12px;
   }
