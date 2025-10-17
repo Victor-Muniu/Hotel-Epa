@@ -233,14 +233,14 @@ export default function ConferenceAndMeetings() {
                   <div>
                     <div className="sub">Capacity</div>
                     <div className="counter-row">
-                      {['Up to 20','Up to 50','Up to 100','100+'].map((x)=> <button key={'cap'+x} className={`counter ${x===selectedRoomStyle?'active':''}`} type="button" onClick={() => setSelectedRoomStyle(x)}>{x}</button>)}
+                      {['Up to 20','Up to 50','Up to 100','100+'].map((x)=> <button key={'cap'+x} className={`counter ${x===selectedCapacityRange?'active':''}`} type="button" onClick={() => setSelectedCapacityRange(x)}>{x}</button>)}
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="filter-block">
-                <div className="filter-title">Room style</div>
+                <div className="filter-title">Seating arrangement</div>
                 <div className="seg-grid">
                   {['U‑Shape','Classroom'].map((s) => (
                     <button key={s} className={`seg-card ${s===selectedRoomStyle?'active':''}`} type="button" onClick={() => setSelectedRoomStyle(s)}>
