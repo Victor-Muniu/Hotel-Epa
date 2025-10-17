@@ -35,7 +35,14 @@ const HALL_DATA: Record<string, HallData> = {
       'https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F10a5b3405c5845a29378bede4dfe85f0?format=webp&width=800'
     ],
     description: 'Premium conference hall with elegant décor and modern facilities. Perfect for corporate events, conferences, and large meetings.',
-    amenities: ['Projector & Sound System', 'High-Speed Wi-Fi', 'Snacks & Hot Lunch', 'Tele-conference Ready'],
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water for both sessions',
+      'Projector access',
+      'Lunch buffet (10:00) — provided for both Full Day and Half Day',
+      'PA system (provided at 16:00 for Full Day only)'
+    ],
     arrangements: [
       {
         name: 'Theater',
