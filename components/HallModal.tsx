@@ -14,6 +14,10 @@ interface HallData {
   arrangements: Arrangement[];
   description: string;
   amenities: string[];
+  sessionDetails?: {
+    halfDay: string[];
+    fullDay: string[];
+  };
 }
 
 interface QuoteFormData {
@@ -25,7 +29,7 @@ interface QuoteFormData {
   packageType: string;
 }
 
-const HALL_DATA: Record<string, HallData> = {
+export const HALL_DATA: Record<string, HallData> = {
   pkg1: {
     id: 'pkg1',
     title: 'Kilimanjaro',
@@ -35,7 +39,32 @@ const HALL_DATA: Record<string, HallData> = {
       'https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F10a5b3405c5845a29378bede4dfe85f0?format=webp&width=800'
     ],
     description: 'Premium conference hall with elegant décor and modern facilities. Perfect for corporate events, conferences, and large meetings.',
-    amenities: ['Projector & Sound System', 'High-Speed Wi-Fi', 'Snacks & Hot Lunch', 'Tele-conference Ready'],
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
     arrangements: [
       {
         name: 'Theater',
@@ -77,6 +106,53 @@ const HALL_DATA: Record<string, HallData> = {
         capacity: 100,
         description: 'Rounds tables facing the stage. Balance between theater and dining.'
       }
+    ]
+  },
+  pkg2: {
+    id: 'pkg2',
+    title: 'Menengai',
+    maxCapacity: 80,
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Ffc47cbdcd5c4492ab8ae3ff13ca152f5?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Fadf3787a06344ebab9e02ef5f6554acd?format=webp&width=1200',
+      'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F128a93132ba042148cb2fe0029c99229?format=webp&width=1200'
+    ],
+    description: 'Bright and versatile conference space suitable for medium-sized events and meetings.',
+    amenities: [
+      'Writing materials (provided)',
+      'Complementary Wi‑Fi',
+      'Water available (see session inclusions)',
+      'Projector access'
+    ],
+    sessionDetails: {
+      halfDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for one session',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)'
+      ],
+      fullDay: [
+        'Writing materials (provided)',
+        'Complementary Wi‑Fi',
+        'Water for both sessions',
+        'Projector access',
+        '10:00 — Tea & snacks',
+        '16:00 — Tea & snacks',
+        'Lunch buffet (separate from tea & snacks)',
+        'PA system (available during the 16:00 session)'
+      ]
+    },
+    arrangements: [
+      { name: 'Theater', capacity: 80, description: 'Rows of chairs facing the stage.' },
+      { name: 'Classroom', capacity: 60, description: 'Rows of tables with chairs for training.' },
+      { name: 'U-Shape', capacity: 30, description: 'Tables arranged in U-shape for discussions.' },
+      { name: 'Boardroom', capacity: 20, description: 'Single table setup for executive meetings.' },
+      { name: 'Banquet', capacity: 50, description: 'Round tables for dining and social events.' },
+      { name: 'Cocktail', capacity: 80, description: 'Standing reception with high-top tables.' },
+      { name: 'Hollow Square', capacity: 40, description: 'Tables arranged in a square facing inward.' },
+      { name: 'Cabaret', capacity: 50, description: 'Round tables facing the stage.' }
     ]
   }
 };
@@ -226,6 +302,31 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
                   <p className="hall-description">{hall.description}</p>
                 </div>
               </div>
+
+              {hall.sessionDetails && (
+                <div className="info-section hall-session">
+                  <h3 className="section-heading">Session Inclusions</h3>
+                  <div className="session-grid">
+                    <div className="session-col">
+                      <h4 className="session-title">Half Day — Half Board</h4>
+                      <ul className="session-list">
+                        {hall.sessionDetails.halfDay.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="session-col">
+                      <h4 className="session-title">Full Day — Full Board</h4>
+                      <ul className="session-list">
+                        {hall.sessionDetails.fullDay.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="arrangements-section">
                 <h3 className="arrangements-heading">Seating Arrangements</h3>

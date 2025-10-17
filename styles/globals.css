@@ -5,7 +5,8 @@ html, body, #__next { height: 100%; }
 body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; background: var(--text-white); color: var(--text-black); overflow-x: hidden; }
 
 .site-wrapper { display: flex; flex-direction: column; min-height: 100%; }
-.topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; height: 62px; padding: 0 12px; max-width: 980px; margin: 0 auto; border-radius: 999px; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: hidden; }
+.topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 50; display: block; height: 62px; padding: 0; width: 100%; max-width: none; margin: 0; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: hidden; }
+.topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; }
 .branding { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; padding: 8px 10px; border-radius: 999px; background: transparent; }
 .brand-logo { height: 36px; width: auto; border-radius: 0; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; background: transparent; }
 .brand-title { font-size: 0.95rem; font-weight: 700; letter-spacing: .2px; }
@@ -391,16 +392,61 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .home-card { background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
 .home-card .media { position: relative; height: 170px; background: #eee; }
 .home-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.home-card .fav { position: absolute; right: 10px; top: 10px; width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 1px solid rgba(0,0,0,.08); display: grid; place-items: center; color: #333; cursor: pointer; }
 .home-card .badge { position: absolute; left: 10px; top: 10px; display: inline-flex; gap: 6px; align-items: center; background: #fff; padding: 6px 8px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 700; }
 .badge .star { width: 14px; height: 14px; color: #e6b400; }
-.home-card .info { padding: 12px; }
-.home-card .title { margin: 0 0 4px; font-size: 1rem; }
-.home-card .addr { margin: 0 0 8px; color: rgba(0,0,0,.6); font-size: .92rem; }
-.home-card .meta { display: flex; gap: 12px; color: rgba(0,0,0,.7); font-size: .92rem; }
-.home-card .price { margin-top: 8px; display: flex; gap: 8px; align-items: baseline; }
-.home-card .price strong { font-size: 1.05rem; }
-.fee { color: rgba(0,0,0,.5); text-decoration: underline; }
+.home-card .info { padding: 12px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.home-card .info-compact { align-items: stretch; }
+.home-card .title { margin: 0 0 4px; font-size: 1rem; font-weight: 800; }
+
+.card-amenities { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+.amenity { display: inline-flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.03); padding: 6px 8px; border-radius: 999px; color: rgba(0,0,0,0.8); font-size: 0.85rem; }
+.amenity svg { color: var(--brand-brown); display: block; }
+.amenity-label { display: inline-block; }
+
+.home-card .card-actions { margin: 6px 0 10px; }
+.btn-more-details {
+  background: var(--brand-brown);
+  color: #fff;
+  border: 1px solid var(--brand-brown);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.12s ease;
+  width: 25%;
+  max-width: 170px;
+  min-width: 120px;
+  align-self: flex-start;
+}
+.btn-more-details:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(111,78,55,0.16); }
+
+@media (max-width: 900px) {
+  .btn-more-details { width: 35%; }
+}
+
+@media (max-width: 600px) {
+  .btn-more-details { width: 100%; }
+  .card-amenities { justify-content: flex-start; }
+}
+
+/* keep legacy classes for other card variants */
+.home-card .addr { display: none; }
+.home-card .meta { display: none; }
+.home-card .price { display: none; }
+.fee { display: none; }
+
+/* Session inclusions grid in hall modal */
+.hall-session { grid-column: 1 / -1; margin: 16px 24px; }
+.session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.session-col { background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; }
+.session-title { margin: 0 0 8px; font-size: 0.95rem; font-weight: 700; }
+.session-list { margin: 0; padding: 0 0 0 18px; color: rgba(0,0,0,0.8); }
+.session-list li { margin: 6px 0; }
+
+@media (max-width: 800px) {
+  .session-grid { grid-template-columns: 1fr; }
+  .hall-session { margin: 12px 16px; }
+}
 
 .filters { position: sticky; top: 90px; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 14px; padding: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
 .filters-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -521,7 +567,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  overflow-y: auto;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
@@ -937,6 +982,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   position: relative;
   width: 100%;
   perspective: 1000px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .flipper-front,
@@ -995,6 +1043,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .quote-form {
   display: grid;
   gap: 16px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .quote-form .form-group {
@@ -1017,6 +1067,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .quote-form .form-input:focus {
@@ -1032,6 +1085,56 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  justify-items: center;
+}
+
+/* Make the quote form 80% of modal width; two-date inputs remain side-by-side */
+.quote-form, .quote-form * {
+  box-sizing: border-box;
+}
+.quote-form {
+  width: 80%;
+  max-width: 80%;
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
+}
+
+/* form groups fill their available column */
+.quote-form .form-group {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* keep the two date inputs side-by-side inside the 80% form container */
+.quote-form .form-row {
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Submit fills the form width (i.e. 80% of modal) */
+.quote-form-submit {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  margin: 8px 0 0 0;
+}
+
+@media (max-width: 600px) {
+  .quote-form {
+    width: 95%;
+    max-width: 95%;
+  }
+
+  .quote-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-form-submit {
+    width: 100%;
+  }
 }
 
 .quote-form-submit {

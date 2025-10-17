@@ -9,33 +9,35 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="site-wrapper">
       <header className="topbar" role="banner">
-        <div className="brand-cluster">
-          <Link href="/" className="branding" aria-label="Epashikino Resort & Spa">
-            <img
-              className="brand-logo"
-              src="https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=256"
-              srcSet="https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=256 1x, https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=512 2x, https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=768 3x"
-              alt="Epashikino logo"
-              decoding="async"
-              loading="eager"
-            />
-          </Link>
-        </div>
+        <div className="topbar-inner">
+          <div className="brand-cluster">
+            <Link href="/" className="branding" aria-label="Epashikino Resort & Spa">
+              <img
+                className="brand-logo"
+                src="https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=256"
+                srcSet="https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=256 1x, https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=512 2x, https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F8984cd6c6da84e4680b3bfa7588de42d?format=webp&width=768 3x"
+                alt="Epashikino logo"
+                decoding="async"
+                loading="eager"
+              />
+            </Link>
+          </div>
 
-        <nav className="primary-nav" aria-label="Primary">
-          <Link className="nav-link" href="/">Home</Link>
-          <Link className="nav-link" href="/rooms">Accommodation</Link>
-          <Link className="nav-link" href="/conference">Conferences</Link>
-          <Link className="nav-link" href="/attractions">Attractions</Link>
-        </nav>
+          <nav className="primary-nav" aria-label="Primary">
+            <Link className="nav-link" href="/">Home</Link>
+            <Link className="nav-link" href="/rooms">Accommodation</Link>
+            <Link className="nav-link" href="/conference">Conferences</Link>
+            <Link className="nav-link" href="/attractions">Attractions</Link>
+          </nav>
 
-        <div className="topbar-actions">
-          <Link className="action-btn" href="/rooms-list" aria-label="Book Now">
-            <span>Book Now</span>
-            <span className="action-icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 5l6 5-6 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </span>
-          </Link>
+          <div className="topbar-actions">
+            <Link className="action-btn" href="/rooms-list" aria-label="Book Now">
+              <span>Book Now</span>
+              <span className="action-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 5l6 5-6 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </span>
+            </Link>
+          </div>
         </div>
       </header>
       {children}

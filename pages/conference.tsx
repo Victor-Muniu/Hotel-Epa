@@ -1,11 +1,109 @@
 import Head from 'next/head';
-import { useState } from 'react';
-import HallModal from '../components/HallModal';
+import { useState, useEffect } from 'react';
+import HallModal, { HALL_DATA } from '../components/HallModal';
 
 export default function ConferenceAndMeetings() {
   const [minPrice, setMinPrice] = useState(1500); // KSh
   const [maxPrice, setMaxPrice] = useState(6500); // KSh
   const [selectedHall, setSelectedHall] = useState<string | null>(null);
+  const [attendees, setAttendees] = useState(0);
+  const [selectedPackages, setSelectedPackages] = useState<Record<string, boolean>>({ 'Full Day': false, 'Half Day': false, 'Team Building': false });
+  const amenityOptions = ['High‑Speed Wi‑Fi','Projector','Sound System','Tele‑conference'];
+  const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({ 'High‑Speed Wi‑Fi': false, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
+  const [selectedRoomStyle, setSelectedRoomStyle] = useState<string | null>(null);
+  const [selectedCapacityRange, setSelectedCapacityRange] = useState<string | null>(null);
+  const [filteredCards, setFilteredCards] = useState<typeof CARD_DATA | null>(null);
+
+  function activeFilters() {
+    return {
+      packages: Object.values(selectedPackages).some(Boolean),
+      attendees: attendees && attendees !== 50,
+      amenities: Object.values(selectedAmenities).some(Boolean),
+      seating: !!selectedRoomStyle,
+      capacity: !!selectedCapacityRange,
+    };
+  }
+
+  function clearFilters() {
+    setSelectedPackages({ 'Full Day': false, 'Half Day': false, 'Team Building': false });
+    setSelectedAmenities({ 'High‑Speed Wi‑Fi': false, 'Projector': false, 'Sound System': false, 'Tele‑conference': false });
+    setSelectedRoomStyle(null);
+    setSelectedCapacityRange(null);
+    setAttendees(0);
+    setFilteredCards(null);
+  }
+
+  function togglePackage(name: string) {
+    setSelectedPackages(prev => ({ ...prev, [name]: !prev[name] }));
+  }
+  function toggleAmenity(name: string) {
+    setSelectedAmenities(prev => ({ ...prev, [name]: !prev[name] }));
+  }
+
+  function applyFilters() {
+    const attendeeCount = Number(attendees) || 0;
+    const selectedAmenityNames = Object.keys(selectedAmenities).filter(k => selectedAmenities[k]);
+
+    const result = CARD_DATA.filter(c => {
+      const hall = HALL_DATA[c.id as keyof typeof HALL_DATA];
+
+      // if capacity range or seating arrangement is selected, require hall data
+      if ((selectedCapacityRange || selectedRoomStyle) && !hall) return false;
+
+      // capacity by attendee count
+      if (attendeeCount > 0) {
+        if (!hall || hall.maxCapacity < attendeeCount) return false;
+      }
+
+      // capacity range filter: interpret selection as minimum required capacity
+      if (selectedCapacityRange) {
+        if (!hall) return false;
+        if (/Up to (\d+)/i.test(selectedCapacityRange)) {
+          const cap = Number(selectedCapacityRange.match(/Up to (\d+)/i)?.[1] || 0);
+          if (hall.maxCapacity < cap) return false;
+        } else if (selectedCapacityRange === '100+') {
+          if (hall.maxCapacity < 100) return false;
+        }
+      }
+
+      // amenities filter using keywords mapping
+      const amenityKeywords: Record<string,string[]> = {
+        'High‑Speed Wi‑Fi': ['wifi','wi‑fi','highspeed','high-speed','complementary','internet'],
+        'Projector': ['projector','screen'],
+        'Sound System': ['sound','pa','audio'],
+        'Tele‑conference': ['tele','conference','tele-conference']
+      };
+
+      for (const am of selectedAmenityNames) {
+        const keywords = amenityKeywords[am] || [am.toLowerCase()];
+        let has = false;
+        if (hall) {
+          const hallText = hall.amenities.join(' ').toLowerCase();
+          has = keywords.some(k => hallText.includes(k));
+        }
+        if (!has) {
+          const left = (c.metaLeft || '').toLowerCase();
+          const right = (c.metaRight || '').toLowerCase();
+          has = keywords.some(k => left.includes(k) || right.includes(k));
+        }
+        if (!has) return false;
+      }
+
+      // seating arrangement filter
+      if (selectedRoomStyle) {
+        if (!hall) return false;
+        const found = hall.arrangements.some(a => a.name.toLowerCase() === selectedRoomStyle.toLowerCase());
+        if (!found) return false;
+      }
+
+      return true;
+    });
+
+    setFilteredCards(result);
+  }
+
+  // Re-run filters on change so the UI updates immediately
+  useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages]);
 
   return (
     <>
@@ -43,15 +141,16 @@ export default function ConferenceAndMeetings() {
               </label>
               <label className="pill-input">
                 <span className="pill-label">Attendees</span>
-                <select className="pill-field" aria-label="Attendees" defaultValue="50 Guests">
-                  <option>10 Guests</option>
-                  <option>25 Guests</option>
-                  <option>50 Guests</option>
-                  <option>100 Guests</option>
-                  <option>150 Guests</option>
+                <select className="pill-field" aria-label="Attendees" value={attendees} onChange={(e)=> setAttendees(Number(e.target.value)||0)}>
+                  <option value={0}>Any</option>
+                  <option value={10}>10 Guests</option>
+                  <option value={25}>25 Guests</option>
+                  <option value={50}>50 Guests</option>
+                  <option value={100}>100 Guests</option>
+                  <option value={150}>150 Guests</option>
                 </select>
               </label>
-              <button className="btn primary-purple" type="button">Check Availability</button>
+              <button className="btn primary-purple" type="button" onClick={applyFilters}>Check Availability</button>
             </div>
           </header>
 
@@ -71,23 +170,51 @@ export default function ConferenceAndMeetings() {
 
           <section className="homes-body">
             <div className="grid-cards">
-              {CARD_DATA.map((c) => (
-                <article key={c.id} className="home-card" role="button" tabIndex={0} onClick={() => c.id === 'pkg1' && setSelectedHall(c.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && c.id === 'pkg1' && setSelectedHall(c.id)} style={{ cursor: c.id === 'pkg1' ? 'pointer' : 'default' }}>
+              {(filteredCards || CARD_DATA).map((c) => (
+                <article key={c.id} className="home-card" role="button" tabIndex={0} onClick={() => (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (c.id === 'pkg1' || c.id === 'pkg2') && setSelectedHall(c.id)} style={{ cursor: (c.id === 'pkg1' || c.id === 'pkg2') ? 'pointer' : 'default' }}>
                   <div className="media">
                     <img src={c.img} alt={c.title} />
-                    <button className="fav" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.54 0 3.04.99 3.57 2.36h.86C11.46 4.99 12.96 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z" fill="currentColor"/></svg></button>
                   </div>
-                  <div className="info">
+                  <div className="info info-compact">
                     <h3 className="title">{c.title}</h3>
-                    <p className="addr">Epashikino Resort & Spa, Elementaita</p>
-                    <div className="meta">
-                      <span className="iconline"><svg viewBox="0 0 24 24"><path d="M4 10h16v10H4zM8 7h8" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>{c.metaLeft}</span>
-                      <span className="iconline"><svg viewBox="0 0 24 24"><path d="M6 12h12" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>{c.metaRight}</span>
+
+                    <div className="card-amenities" aria-hidden>
+                      <span className="amenity">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                          <path d="M12 18c1.657 0 3-1.343 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M8.5 14.5a7 7 0 0 1 7 0" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M5 11a11 11 0 0 1 14 0" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="amenity-label">High‑speed internet</span>
+                      </span>
+
+                      <span className="amenity">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                          <rect x="3" y="6" width="18" height="10" rx="1" stroke="currentColor" strokeWidth="1.4"/>
+                          <path d="M8 17h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                          <path d="M12 6v-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                        </svg>
+                        <span className="amenity-label">Projector</span>
+                      </span>
+
+                      <span className="amenity">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                          <path d="M3 21l4-4 11-11a2 2 0 0 1 2.828 0l.172.172a2 2 0 0 1 0 2.828L11 20l-4 1z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M14 7l3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="amenity-label">Writing materials</span>
+                      </span>
                     </div>
-                    <div className="price">
-                      <strong>KSh {c.price.toLocaleString()}</strong>
-                      <span>/person</span>
-                      <a className="fee" href="#">Snacks, meals, Wi‑Fi included</a>
+
+                    <div className="card-actions">
+                      <button
+                        type="button"
+                        className="btn-more-details primary"
+                        onClick={(e) => { e.stopPropagation(); setSelectedHall(c.id); }}
+                        aria-label={`More details about ${c.title}`}
+                      >
+                        More details
+                      </button>
                     </div>
                   </div>
                 </article>
@@ -97,24 +224,17 @@ export default function ConferenceAndMeetings() {
             <aside className="filters" aria-label="Filters">
               <div className="filters-head">
                 <strong>Filters</strong>
-                <button className="link-clear" type="button">Clear all filter (3)</button>
-              </div>
-
-              <div className="filter-block">
-                <div className="filter-title">Budget (per person)</div>
-                <p className="muted">Typical range for conference packages at Epashikino</p>
-                <div className="row-2">
-                  <label className="field"><span>Minimum</span><input className="input" type="number" value={minPrice} onChange={(e)=>setMinPrice(Number(e.target.value)||0)} /></label>
-                  <label className="field"><span>Maximum</span><input className="input" type="number" value={maxPrice} onChange={(e)=>setMaxPrice(Number(e.target.value)||0)} /></label>
-                </div>
+                <button className="link-clear" type="button" onClick={() => clearFilters()}>Clear all filters ({Object.values(activeFilters()).filter(Boolean).length})</button>
               </div>
 
               <div className="filter-block">
                 <div className="filter-title">Package type</div>
                 <div className="stack">
-                  <label className="checkbox"><input type="checkbox" defaultChecked /> Full Day</label>
-                  <label className="checkbox"><input type="checkbox" /> Half Day</label>
-                  <label className="checkbox"><input type="checkbox" /> Team Building</label>
+                  {Object.keys(selectedPackages).map((k) => (
+                    <label className="checkbox" key={k}>
+                      <input type="checkbox" checked={!!selectedPackages[k]} onChange={() => togglePackage(k)} /> {k}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -124,7 +244,7 @@ export default function ConferenceAndMeetings() {
                   <div>
                     <div className="sub">Connectivity</div>
                     <div className="counter-row">
-                      {['High‑Speed Wi‑Fi','Projector','Sound System','Tele‑conference'].map((x)=> <button key={'a'+x} className={`counter ${x==='High‑Speed Wi‑Fi'?'active':''}`} type="button">{x}</button>)}
+                      {amenityOptions.map((x)=> <button key={'a'+x} className={`counter ${selectedAmenities[x]?'active':''}`} type="button" onClick={() => toggleAmenity(x)}>{x}</button>)}
                     </div>
                   </div>
                   <div>
@@ -136,23 +256,21 @@ export default function ConferenceAndMeetings() {
                   <div>
                     <div className="sub">Capacity</div>
                     <div className="counter-row">
-                      {['Up to 20','Up to 50','Up to 100','100+'].map((x)=> <button key={'cap'+x} className={`counter ${x==='Up to 50'?'active':''}`} type="button">{x}</button>)}
+                      {['Up to 20','Up to 50','Up to 100','100+'].map((x)=> <button key={'cap'+x} className={`counter ${x===selectedCapacityRange?'active':''}`} type="button" onClick={() => setSelectedCapacityRange(x)}>{x}</button>)}
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="filter-block">
-                <div className="filter-title">Room style</div>
+                <div className="filter-title">Seating arrangement</div>
                 <div className="seg-grid">
-                  <button className="seg-card active" type="button">
-                    <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
-                    <span>U‑Shape</span>
-                  </button>
-                  <button className="seg-card" type="button">
-                    <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
-                    <span>Classroom</span>
-                  </button>
+                  {['Theater','Classroom','U‑Shape','Boardroom','Banquet','Cocktail','Hollow Square','Cabaret'].map((s) => (
+                    <button key={s} className={`seg-card ${s===selectedRoomStyle?'active':''}`} type="button" onClick={() => setSelectedRoomStyle(s)}>
+                      <span className="seg-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v8H3z" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg></span>
+                      <span>{s}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </aside>
