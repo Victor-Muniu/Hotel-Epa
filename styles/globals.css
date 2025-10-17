@@ -1021,6 +1021,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .quote-form .form-input:focus {
