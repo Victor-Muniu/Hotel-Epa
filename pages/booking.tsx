@@ -66,12 +66,37 @@ const ROOMS: Room[] = [
   },
 ];
 
+const ROOM_TYPES = [
+  { id: 'single', label: 'Single', beds: 1 },
+  { id: 'double', label: 'Double', beds: 2 },
+  { id: 'suite', label: 'Suite', beds: 3 },
+];
+
 export default function Booking() {
   const [selectedRoomId, setSelectedRoomId] = useState<string>('1');
+  const [numRooms, setNumRooms] = useState<number>(1);
+  const [roomSelections, setRoomSelections] = useState<{ [key: number]: string }>({ 0: 'double' });
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const selectedRoom = ROOMS.find(r => r.id === selectedRoomId);
+
+  const handleNumRoomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const num = parseInt(e.target.value) || 1;
+    setNumRooms(num);
+    const newSelections: { [key: number]: string } = {};
+    for (let i = 0; i < num; i++) {
+      newSelections[i] = roomSelections[i] || 'double';
+    }
+    setRoomSelections(newSelections);
+  };
+
+  const handleRoomTypeChange = (roomIndex: number, roomType: string) => {
+    setRoomSelections(prev => ({
+      ...prev,
+      [roomIndex]: roomType
+    }));
+  };
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -79,6 +104,7 @@ export default function Booking() {
     setSubmitting(true);
     const form = new FormData(e.currentTarget);
     const body = Object.fromEntries(form.entries());
+    body.room_types = JSON.stringify(roomSelections);
     
     try {
       const res = await fetch('/api/booking', {
@@ -134,14 +160,25 @@ export default function Booking() {
                 <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
 
-                <div className="form-group">
-                  <label className="form-label">Full Name *</label>
-                  <input
-                    className="form-input"
-                    name="full_name"
-                    placeholder="John Doe"
-                    required
-                  />
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">First Name *</label>
+                    <input
+                      className="form-input"
+                      name="first_name"
+                      placeholder="John"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Last Name *</label>
+                    <input
+                      className="form-input"
+                      name="last_name"
+                      placeholder="Doe"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="form-row">
@@ -156,11 +193,12 @@ export default function Booking() {
                     />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Phone</label>
+                    <label className="form-label">Phone Number *</label>
                     <input
                       className="form-input"
                       name="phone"
                       placeholder="+1 (555) 000-0000"
+                      required
                     />
                   </div>
                 </div>
@@ -186,17 +224,68 @@ export default function Booking() {
                   </div>
                 </div>
 
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Number of Adults *</label>
+                    <input
+                      className="form-input"
+                      name="adults"
+                      type="number"
+                      placeholder="1"
+                      min={1}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Number of Kids</label>
+                    <input
+                      className="form-input"
+                      name="kids"
+                      type="number"
+                      placeholder="0"
+                      min={0}
+                      defaultValue="0"
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
-                  <label className="form-label">Number of Guests *</label>
+                  <label className="form-label">Number of Rooms *</label>
                   <input
                     className="form-input"
-                    name="guests"
+                    name="num_rooms"
                     type="number"
                     placeholder="1"
                     min={1}
+                    value={numRooms}
+                    onChange={handleNumRoomsChange}
                     required
                   />
                 </div>
+
+                {numRooms > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Room Types</h4>
+                    <div className="room-types-grid">
+                      {Array.from({ length: numRooms }).map((_, idx) => (
+                        <div key={idx} className="room-type-selector">
+                          <label className="room-type-title">Room {idx + 1}</label>
+                          <select
+                            className="form-input"
+                            value={roomSelections[idx] || 'double'}
+                            onChange={(e) => handleRoomTypeChange(idx, e.target.value)}
+                          >
+                            {ROOM_TYPES.map(type => (
+                              <option key={type.id} value={type.id}>
+                                {type.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label className="form-label">Special Requests</label>
