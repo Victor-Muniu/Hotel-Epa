@@ -73,8 +73,8 @@ export default function Contact({ mapSrc }: ContactProps) {
           <aside className="contact-aside" aria-label="Prefer a Direct Approach?">
             <h3 className="contact-aside-title">Prefer a Direct Approach?</h3>
             <ul className="contact-lines">
-              <li><span className="ico" aria-hidden>📞</span> <a href="tel:+254705455001">+254 705 455 001</a> / <a href="tel:+254788455001">+254 788 455 001</a></li>
-              <li><span className="ico" aria-hidden>✉️</span> <a href="mailto:reservations@epashikinoresort.com">reservations@epashikinoresort.com</a></li>
+              <li><span className="ico" aria-hidden>📞</span> +254 705 455 001 / +254 788 455 001</li>
+              <li><span className="ico" aria-hidden>✉️</span> reservations@epashikinoresort.com</li>
               <li><span className="ico" aria-hidden>⏰</span> Monday to Friday, 9 AM – 6 PM (GMT)</li>
             </ul>
 
