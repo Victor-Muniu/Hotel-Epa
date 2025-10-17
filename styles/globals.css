@@ -451,15 +451,11 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .gallery-cell { position: relative; overflow: hidden; border-radius: 12px; background: #e8e6e1; aspect-ratio: 1 / 1; }
 .gallery-image { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.room-details-card { background: linear-gradient(135deg, #f8f5f2 0%, #faf9f7 100%); border: 1px solid rgba(111,78,55,0.12); border-radius: 12px; padding: 20px; }
-.room-details-title { margin: 0 0 8px; font-size: 1.5rem; font-weight: 700; color: var(--brand-brown); }
-.room-details-meta { margin: 0 0 14px; font-size: 0.95rem; color: rgba(0,0,0,0.65); font-weight: 500; }
-.room-details-desc { margin: 0 0 16px; color: rgba(0,0,0,0.7); line-height: 1.6; }
-
-.room-details-amenities { }
-.amenities-title { margin: 0 0 10px; font-size: 0.95rem; font-weight: 700; color: var(--text-black); }
-.amenities-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; color: rgba(0,0,0,0.7); font-size: 0.9rem; }
-.amenity-item { display: flex; align-items: flex-start; gap: 8px; }
+.room-types-section { background: rgba(111,78,55,0.05); border: 1px solid rgba(111,78,55,0.1); border-radius: 8px; padding: 16px; margin: 0; }
+.room-types-label { margin: 0 0 12px; font-size: 0.95rem; font-weight: 700; color: var(--text-black); }
+.room-types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.room-type-selector { display: grid; gap: 6px; }
+.room-type-title { font-size: 0.85rem; font-weight: 600; color: rgba(0,0,0,0.75); }
 
 .booking-form { display: grid; gap: 16px; background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
 
