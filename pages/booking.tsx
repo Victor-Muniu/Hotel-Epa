@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import { getRooms } from '../lib/roomsData';
 import type { Room } from '../lib/roomsData';
 
 const SAMPLE_ROOMS: Room[] = [
@@ -83,26 +82,10 @@ const SAMPLE_ROOMS: Room[] = [
 ];
 
 export default function Booking() {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [selectedRoomId, setSelectedRoomId] = useState<string>('');
+  const [rooms, setRooms] = useState<Room[]>(SAMPLE_ROOMS);
+  const [selectedRoomId, setSelectedRoomId] = useState<string>('1');
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadRooms() {
-      let data = await getRooms();
-      if (!data || data.length === 0) {
-        data = SAMPLE_ROOMS;
-      }
-      setRooms(data);
-      if (data.length > 0) {
-        setSelectedRoomId(data[0].id);
-      }
-      setLoading(false);
-    }
-    loadRooms();
-  }, []);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -110,15 +93,20 @@ export default function Booking() {
     setSubmitting(true);
     const form = new FormData(e.currentTarget);
     const body = Object.fromEntries(form.entries());
-    const res = await fetch('/api/booking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const json = await res.json();
-    setSubmitting(false);
-    setStatus(json.message);
-    if (res.ok) e.currentTarget.reset();
+    try {
+      const res = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      setSubmitting(false);
+      setStatus(json.message);
+      if (res.ok) e.currentTarget.reset();
+    } catch (error) {
+      setSubmitting(false);
+      setStatus('Error submitting booking. Please try again.');
+    }
   }
 
   return (
@@ -135,182 +123,176 @@ export default function Booking() {
             </p>
           </div>
 
-          {loading ? (
-            <div className="loading-state">Loading rooms...</div>
-          ) : (
-            <>
-              <div className="booking-layout">
-                <div className="rooms-section">
-                  <h2 className="section-label">Select a Room</h2>
-                  <div className="rooms-gallery">
-                    {rooms.map((room) => (
-                      <div
-                        key={room.id}
-                        className={`room-gallery-card ${
-                          selectedRoomId === room.id ? 'active' : ''
-                        }`}
-                        onClick={() => setSelectedRoomId(room.id)}
-                      >
-                        {room.images && room.images.length > 0 && (
-                          <div className="room-gallery-media">
-                            <img
-                              src={room.images[0]}
-                              alt={room.name}
-                              className="room-gallery-img"
-                            />
-                          </div>
-                        )}
-                        <div className="room-gallery-info">
-                          <h3 className="room-gallery-name">{room.name}</h3>
-                          <p className="room-gallery-meta">
-                            {room.capacity} guest{room.capacity !== 1 ? 's' : ''}
-                            {room.beds && ` • ${room.beds} bed${room.beds !== 1 ? 's' : ''}`}
-                          </p>
-                          <p className="room-gallery-price">
-                            ${room.price} <span className="price-period">per night</span>
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {selectedRoomId && (
-                    <div className="room-details-card">
-                      {rooms.find((r) => r.id === selectedRoomId) && (
-                        <>
-                          <h3 className="room-details-title">
-                            {rooms.find((r) => r.id === selectedRoomId)?.name}
-                          </h3>
-                          <p className="room-details-desc">
-                            {rooms.find((r) => r.id === selectedRoomId)?.description}
-                          </p>
-                          {rooms.find((r) => r.id === selectedRoomId)?.amenities && (
-                            <div className="room-details-amenities">
-                              <h4 className="amenities-title">Amenities</h4>
-                              <ul className="amenities-list">
-                                {rooms
-                                  .find((r) => r.id === selectedRoomId)
-                                  ?.amenities.slice(0, 6)
-                                  .map((amenity, idx) => (
-                                    <li key={idx} className="amenity-item">
-                                      ✓ {amenity}
-                                    </li>
-                                  ))}
-                              </ul>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="form-section-container">
-                  <h2 className="section-label">Booking Details</h2>
-                  <form className="booking-form" onSubmit={submit}>
-                    <input type="hidden" name="type" value="room" />
-                    <input type="hidden" name="room_id" value={selectedRoomId} />
-
-                    <div className="form-group">
-                      <label className="form-label">Full Name *</label>
-                      <input
-                        className="form-input"
-                        name="full_name"
-                        placeholder="John Doe"
-                        required
-                      />
-                    </div>
-
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label className="form-label">Email *</label>
-                        <input
-                          className="form-input"
-                          type="email"
-                          name="email"
-                          placeholder="you@example.com"
-                          required
+          <div className="booking-layout">
+            <div className="rooms-section">
+              <h2 className="section-label">Select a Room</h2>
+              <div className="rooms-gallery">
+                {rooms.map((room) => (
+                  <div
+                    key={room.id}
+                    className={`room-gallery-card ${
+                      selectedRoomId === room.id ? 'active' : ''
+                    }`}
+                    onClick={() => setSelectedRoomId(room.id)}
+                  >
+                    {room.images && room.images.length > 0 && (
+                      <div className="room-gallery-media">
+                        <img
+                          src={room.images[0]}
+                          alt={room.name}
+                          className="room-gallery-img"
                         />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label">Phone</label>
-                        <input
-                          className="form-input"
-                          name="phone"
-                          placeholder="+1 (555) 000-0000"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label className="form-label">Check-in Date *</label>
-                        <input
-                          className="form-input"
-                          type="date"
-                          name="start_date"
-                          required
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label">Check-out Date *</label>
-                        <input
-                          className="form-input"
-                          type="date"
-                          name="end_date"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Number of Guests *</label>
-                      <input
-                        className="form-input"
-                        name="guests"
-                        type="number"
-                        placeholder="1"
-                        min={1}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Special Requests</label>
-                      <textarea
-                        className="form-input form-textarea"
-                        name="notes"
-                        placeholder="Tell us about any special requests or preferences..."
-                        rows={4}
-                      ></textarea>
-                    </div>
-
-                    <button
-                      className="booking-submit-btn"
-                      disabled={submitting}
-                      type="submit"
-                    >
-                      {submitting ? 'Processing...' : 'Complete Booking'}
-                    </button>
-
-                    {status && (
-                      <div
-                        className={`booking-status ${
-                          status.includes('success') ||
-                          status.includes('successfully') ||
-                          status.includes('Thank you')
-                            ? 'success'
-                            : 'error'
-                        }`}
-                      >
-                        {status}
                       </div>
                     )}
-                  </form>
-                </div>
+                    <div className="room-gallery-info">
+                      <h3 className="room-gallery-name">{room.name}</h3>
+                      <p className="room-gallery-meta">
+                        {room.capacity} guest{room.capacity !== 1 ? 's' : ''}
+                        {room.beds && ` • ${room.beds} bed${room.beds !== 1 ? 's' : ''}`}
+                      </p>
+                      <p className="room-gallery-price">
+                        ${room.price} <span className="price-period">per night</span>
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </>
-          )}
+
+              {selectedRoomId && (
+                <div className="room-details-card">
+                  {rooms.find((r) => r.id === selectedRoomId) && (
+                    <>
+                      <h3 className="room-details-title">
+                        {rooms.find((r) => r.id === selectedRoomId)?.name}
+                      </h3>
+                      <p className="room-details-desc">
+                        {rooms.find((r) => r.id === selectedRoomId)?.description}
+                      </p>
+                      {rooms.find((r) => r.id === selectedRoomId)?.amenities && (
+                        <div className="room-details-amenities">
+                          <h4 className="amenities-title">Amenities</h4>
+                          <ul className="amenities-list">
+                            {rooms
+                              .find((r) => r.id === selectedRoomId)
+                              ?.amenities.slice(0, 6)
+                              .map((amenity, idx) => (
+                                <li key={idx} className="amenity-item">
+                                  ✓ {amenity}
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="form-section-container">
+              <h2 className="section-label">Booking Details</h2>
+              <form className="booking-form" onSubmit={submit}>
+                <input type="hidden" name="type" value="room" />
+                <input type="hidden" name="room_id" value={selectedRoomId} />
+
+                <div className="form-group">
+                  <label className="form-label">Full Name *</label>
+                  <input
+                    className="form-input"
+                    name="full_name"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Email *</label>
+                    <input
+                      className="form-input"
+                      type="email"
+                      name="email"
+                      placeholder="you@example.com"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Phone</label>
+                    <input
+                      className="form-input"
+                      name="phone"
+                      placeholder="+1 (555) 000-0000"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Check-in Date *</label>
+                    <input
+                      className="form-input"
+                      type="date"
+                      name="start_date"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Check-out Date *</label>
+                    <input
+                      className="form-input"
+                      type="date"
+                      name="end_date"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Number of Guests *</label>
+                  <input
+                    className="form-input"
+                    name="guests"
+                    type="number"
+                    placeholder="1"
+                    min={1}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Special Requests</label>
+                  <textarea
+                    className="form-input form-textarea"
+                    name="notes"
+                    placeholder="Tell us about any special requests or preferences..."
+                    rows={4}
+                  ></textarea>
+                </div>
+
+                <button
+                  className="booking-submit-btn"
+                  disabled={submitting}
+                  type="submit"
+                >
+                  {submitting ? 'Processing...' : 'Complete Booking'}
+                </button>
+
+                {status && (
+                  <div
+                    className={`booking-status ${
+                      status.includes('success') ||
+                      status.includes('successfully') ||
+                      status.includes('Thank you')
+                        ? 'success'
+                        : 'error'
+                    }`}
+                  >
+                    {status}
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </>
