@@ -369,6 +369,14 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    if (name === 'conferenceStartDate') {
+      setFormData((prev) => ({
+        ...prev,
+        conferenceStartDate: value,
+        conferenceEndDate: prev.conferenceEndDate && prev.conferenceEndDate < value ? value : prev.conferenceEndDate
+      }));
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value
