@@ -191,7 +191,6 @@ export default function Rooms() {
                 <input className="input" type="email" name="email" placeholder="Email" required />
                 <input className="input" name="phone" placeholder="Phone" />
                 <input className="input" name="nationality" placeholder="Nationality" required />
-                <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
                   <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                   <input className="input" type="date" name="end_date" value={endDate} min={minCheckout} onChange={(e) => { let v = e.target.value; const s = startDate || today; const minC = s ? addDays(s, 1) : minCheckout; if (v && s && v <= s) v = minC; setEndDate(v); const ds = enumerateNights(startDate || today, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
@@ -346,7 +345,6 @@ export default function Rooms() {
                 <input className="input" type="email" name="email" placeholder="Email" required />
                 <input className="input" name="phone" placeholder="Phone" />
                 <input className="input" name="nationality" placeholder="Nationality" required />
-                <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
                   <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                   <input className="input" type="date" name="end_date" value={endDate} min={minCheckout} onChange={(e) => { let v = e.target.value; const s = startDate || today; const minC = s ? addDays(s, 1) : minCheckout; if (v && s && v <= s) v = minC; setEndDate(v); const ds = enumerateNights(startDate || today, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
