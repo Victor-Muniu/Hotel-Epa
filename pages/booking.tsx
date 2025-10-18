@@ -103,6 +103,23 @@ export default function Booking() {
 
   const selectedRoom = ROOMS.find(r => r.id === selectedRoomId);
 
+  function enumerateNights(start: string, end: string): string[] {
+    if (!start || !end) return [];
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const out: string[] = [];
+    for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+
+  function applyDefaultToAll(type: string, dates: string[]) {
+    const next: Record<string, string> = {};
+    for (const d of dates) next[d] = type;
+    setBoardPlan(next);
+  }
+
   const handleNumRoomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const num = parseInt(e.target.value) || 1;
     setNumRooms(num);
