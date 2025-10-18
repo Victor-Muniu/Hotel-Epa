@@ -15,6 +15,14 @@ export default function Rooms() {
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Per-night board plan state
+  const BOARD_TYPES = ['Bed Only', 'Bed and Breakfast', 'Half Board', 'Full Board'];
+  const [defaultBoardType, setDefaultBoardType] = useState<string>('Bed Only');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [nights, setNights] = useState<string[]>([]);
+  const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
+
   const tourSlides = [
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Faa5ae259ac784d40825512253e7db2fb?format=webp&width=1600', alt: 'Elegant bedroom overview' },
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F9a42056b6d524f8681950c1bb20936ba?format=webp&width=1600', alt: 'Wide view with balcony light' },
