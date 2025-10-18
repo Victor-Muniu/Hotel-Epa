@@ -385,6 +385,15 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const start = formData.conferenceStartDate;
+    const end = formData.conferenceEndDate;
+    const today = todayStr;
+    if (!start || !end || start < today || end < start) {
+      setSubmitStatus('error');
+      return;
+    }
+
     setSubmitStatus('loading');
 
     try {
@@ -392,8 +401,8 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
         inquiry_type: 'conference',
         email: formData.email,
         phone: formData.phoneNumber,
-        start_date: formData.conferenceStartDate,
-        end_date: formData.conferenceEndDate,
+        start_date: start,
+        end_date: end,
         organization_name: formData.organizationName,
         hall_name: hall.title,
         package_type: formData.packageType,
