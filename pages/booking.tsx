@@ -83,7 +83,23 @@ export default function Booking() {
   const [nights, setNights] = useState<string[]>([]);
   const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
 
+  const toLocalDateString = (d: Date) => {
+    const tzOffset = d.getTimezoneOffset() * 60000;
+    return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+  };
+  const addDays = (dateStr: string, days: number) => {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + days);
+    return toLocalDateString(d);
+  };
+
+  const [today, setToday] = useState<string>('');
+  const [minCheckout, setMinCheckout] = useState<string>('');
+
   useEffect(() => {
+    const t = toLocalDateString(new Date());
+    setToday(t);
+    setMinCheckout(addDays(t, 1));
     async function fetchRoomTypes() {
       try {
         const res = await fetch('/api/room-types');
@@ -141,12 +157,31 @@ export default function Booking() {
     e.preventDefault();
     setStatus(null);
     setSubmitting(true);
+
+    const t = today || toLocalDateString(new Date());
+    const s = startDate;
+    const en = endDate;
+    if (!s || !en) {
+      setSubmitting(false);
+      setStatus('Please select both check-in and check-out dates.');
+      return;
+    }
+    if (s < t) {
+      setSubmitting(false);
+      setStatus('Please select a check-in date that is today or later.');
+      return;
+    }
+    if (en <= s) {
+      setSubmitting(false);
+      setStatus('Check-out must be at least one day after check-in.');
+      return;
+    }
+
     const form = new FormData(e.currentTarget);
     const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
-    body.type = body.type || defaultBoardType;
 
     try {
       const res = await fetch('/api/booking', {
@@ -200,14 +235,6 @@ export default function Booking() {
                 <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
 
-                <fieldset className="board-types">
-                  <legend>Board type</legend>
-                  {BOARD_TYPES.map((t) => (
-                    <label key={t} className="iconline">
-                      <input type="radio" name="type" value={t} checked={defaultBoardType === t} onChange={() => { setDefaultBoardType(t); applyDefaultToAll(t, nights); }} /> {t}
-                    </label>
-                  ))}
-                </fieldset>
 
                 <div className="form-row">
                   <div className="form-group">
@@ -260,7 +287,20 @@ export default function Booking() {
                       type="date"
                       name="start_date"
                       value={startDate}
-                      onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }}
+                      min={today}
+                      onChange={(e) => {
+                        let v = e.target.value;
+                        if (today && v && v < today) v = today;
+                        setStartDate(v);
+                        const nextMinCheckout = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1);
+                        setMinCheckout(nextMinCheckout);
+                        if (endDate && endDate <= v) {
+                          setEndDate(nextMinCheckout);
+                        }
+                        const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinCheckout);
+                        setNights(ds);
+                        applyDefaultToAll(defaultBoardType, ds);
+                      }}
                       required
                     />
                   </div>
@@ -271,7 +311,17 @@ export default function Booking() {
                       type="date"
                       name="end_date"
                       value={endDate}
-                      onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }}
+                      min={minCheckout}
+                      onChange={(e) => {
+                        let v = e.target.value;
+                        const s = startDate || today;
+                        const minC = s ? addDays(s, 1) : minCheckout;
+                        if (v && s && v <= s) v = minC;
+                        setEndDate(v);
+                        const ds = enumerateNights(startDate || today, v);
+                        setNights(ds);
+                        applyDefaultToAll(defaultBoardType, ds);
+                      }}
                       required
                     />
                   </div>

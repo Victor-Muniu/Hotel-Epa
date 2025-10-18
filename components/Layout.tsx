@@ -26,17 +26,8 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Link className="nav-link" href="/conference">Conferences</Link>
             <Link className="nav-link" href="/attractions">Attractions</Link>
             <Link className="nav-link" href="/contact">Contact</Link>
-            <Link className="nav-link" href="/quote">Get Quote</Link>
           </nav>
 
-          <div className="topbar-actions">
-            <Link className="action-btn" href="/rooms-list" aria-label="Book Now">
-              <span>Book Now</span>
-              <span className="action-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 5l6 5-6 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </span>
-            </Link>
-          </div>
         </div>
       </header>
       {children}

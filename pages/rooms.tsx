@@ -23,6 +23,19 @@ export default function Rooms() {
   const [nights, setNights] = useState<string[]>([]);
   const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
 
+  const toLocalDateString = (d: Date) => {
+    const tzOffset = d.getTimezoneOffset() * 60000;
+    return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+  };
+  const addDays = (dateStr: string, days: number) => {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + 1 * days);
+    return toLocalDateString(d);
+  };
+
+  const [today, setToday] = useState<string>('');
+  const [minCheckout, setMinCheckout] = useState<string>('');
+
   const tourSlides = [
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Faa5ae259ac784d40825512253e7db2fb?format=webp&width=1600', alt: 'Elegant bedroom overview' },
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F9a42056b6d524f8681950c1bb20936ba?format=webp&width=1600', alt: 'Wide view with balcony light' },
@@ -40,12 +53,32 @@ export default function Rooms() {
     e.preventDefault();
     setStatus(null);
     setSubmitting(true);
+
+    const t = today || toLocalDateString(new Date());
+    const s = startDate;
+    const en = endDate;
+    if (!s || !en) {
+      setSubmitting(false);
+      setStatus('Please select both check-in and check-out dates.');
+      return;
+    }
+    if (s < t) {
+      setSubmitting(false);
+      setStatus('Please select a check-in date that is today or later.');
+      return;
+    }
+    if (en <= s) {
+      setSubmitting(false);
+      setStatus('Check-out must be at least one day after check-in.');
+      return;
+    }
+
     const form = new FormData(e.currentTarget);
     const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
-    if (!body.type) body.type = defaultBoardType;
+
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
     setSubmitting(false);
@@ -79,6 +112,9 @@ export default function Rooms() {
   }
 
   useEffect(() => {
+    const t = toLocalDateString(new Date());
+    setToday(t);
+    setMinCheckout(addDays(t, 1));
     async function fetchRoomTypes() {
       try {
         const res = await fetch('/api/room-types');
@@ -150,21 +186,15 @@ export default function Rooms() {
               <h3 className="section-heading">Book your stay</h3>
               <p className="lead">Choose your board type and share your details. We’ll confirm availability at Epashikino Resort & Spa.</p>
               <form id="booking" className="form booking-form" onSubmit={submit}>
-                <fieldset className="board-types">
-                  <legend>Board type</legend>
-                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required onChange={() => { setDefaultBoardType('Bed Only'); applyDefaultToAll('Bed Only', nights); }} /> Bed Only</label>
-                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" onChange={() => { setDefaultBoardType('Bed and Breakfast'); applyDefaultToAll('Bed and Breakfast', nights); }} /> Bed and Breakfast</label>
-                  <label className="iconline"><input type="radio" name="type" value="Half Board" onChange={() => { setDefaultBoardType('Half Board'); applyDefaultToAll('Half Board', nights); }} /> Half Board</label>
-                  <label className="iconline"><input type="radio" name="type" value="Full Board" onChange={() => { setDefaultBoardType('Full Board'); applyDefaultToAll('Full Board', nights); }} /> Full Board</label>
-                </fieldset>
+
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
                 <input className="input" name="phone" placeholder="Phone" />
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
-                  <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
-                  <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="end_date" value={endDate} min={minCheckout} onChange={(e) => { let v = e.target.value; const s = startDate || today; const minC = s ? addDays(s, 1) : minCheckout; if (v && s && v <= s) v = minC; setEndDate(v); const ds = enumerateNights(startDate || today, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
 
                 {nights.length > 0 && (
@@ -212,7 +242,7 @@ export default function Rooms() {
                   </div>
                 )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
-                <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Send Request'}</button>
+                <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
                 {status && <p role="status">{status}</p>}
               </form>
             </div>
@@ -311,21 +341,15 @@ export default function Rooms() {
             <div className="modal-body">
               <form className="form booking-form" onSubmit={submit}>
                 <input type="hidden" name="room_id" value={selectedRoom || ''} />
-                <fieldset className="board-types">
-                  <legend>Board type</legend>
-                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required onChange={() => { setDefaultBoardType('Bed Only'); applyDefaultToAll('Bed Only', nights); }} /> Bed Only</label>
-                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" onChange={() => { setDefaultBoardType('Bed and Breakfast'); applyDefaultToAll('Bed and Breakfast', nights); }} /> Bed and Breakfast</label>
-                  <label className="iconline"><input type="radio" name="type" value="Half Board" onChange={() => { setDefaultBoardType('Half Board'); applyDefaultToAll('Half Board', nights); }} /> Half Board</label>
-                  <label className="iconline"><input type="radio" name="type" value="Full Board" onChange={() => { setDefaultBoardType('Full Board'); applyDefaultToAll('Full Board', nights); }} /> Full Board</label>
-                </fieldset>
+
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
                 <input className="input" name="phone" placeholder="Phone" />
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
-                  <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
-                  <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="end_date" value={endDate} min={minCheckout} onChange={(e) => { let v = e.target.value; const s = startDate || today; const minC = s ? addDays(s, 1) : minCheckout; if (v && s && v <= s) v = minC; setEndDate(v); const ds = enumerateNights(startDate || today, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
 
                 {nights.length > 0 && (
@@ -373,7 +397,7 @@ export default function Rooms() {
                   </div>
                 )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
-                <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Send Request'}</button>
+                <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
                 {status && <p role="status">{status}</p>}
               </form>
             </div>

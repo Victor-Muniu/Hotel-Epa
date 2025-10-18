@@ -148,7 +148,7 @@ export default function RoomsList() {
                             type="button" 
                             onClick={() => openBooking(room.id)}
                           >
-                            Book Now
+                            Make your reservations
                           </button>
                         </div>
                       </div>
