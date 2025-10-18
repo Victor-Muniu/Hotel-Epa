@@ -75,6 +75,14 @@ export default function Booking() {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Per-night board plan state
+  const BOARD_TYPES = ['Bed Only', 'Bed and Breakfast', 'Half Board', 'Full Board'];
+  const [defaultBoardType, setDefaultBoardType] = useState<string>('Bed Only');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [nights, setNights] = useState<string[]>([]);
+  const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
+
   useEffect(() => {
     async function fetchRoomTypes() {
       try {
