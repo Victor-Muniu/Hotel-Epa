@@ -277,6 +277,24 @@ export default function Booking() {
                   </div>
                 </div>
 
+                {nights.length > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Board plan per night</h4>
+                    <div className="room-types-grid">
+                      {nights.map((d) => (
+                        <div key={d} className="room-type-selector">
+                          <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                          <select className="form-input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                            {BOARD_TYPES.map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="form-row">
                   <div className="form-group">
                     <label className="form-label">Number of Adults *</label>
