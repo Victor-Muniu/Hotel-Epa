@@ -167,7 +167,7 @@ export default function ExploreRooms() {
                     <div className="room-card-meta">
                       <span>{room.roomType}</span>
                       <span>•</span>
-                      <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m²'}</span>
+                      <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m��'}</span>
                     </div>
                   </div>
                 </article>
@@ -278,7 +278,7 @@ export default function ExploreRooms() {
         .explore-header h1 { margin: 0 0 8px; font-size: 2.2rem; font-weight: 700; color: var(--text-black); }
         .explore-header p { margin: 0; color: rgba(0,0,0,0.65); font-size: 1.05rem; }
 
-        .explore-body { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; margin-bottom: 32px; }
+        .explore-body { display: none; }
 
         .explore-sidebar { position: sticky; top: 90px; height: fit-content; }
         .rooms-list { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 0; padding: 0; }
