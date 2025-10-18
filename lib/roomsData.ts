@@ -20,21 +20,22 @@ export interface Room {
 
 export interface Booking {
   id: string;
-  room_id: string;
+  room_id: string | null;
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
+  phone: string | null;
   start_date: string;
   end_date: string;
   guests: number;
   children: number;
-  total_price: number;
+  total_price: number | null;
   currency: string;
-  board_type: string;
+  board_type: string | null; // 'Bed Only' | 'Bed and Breakfast' | 'Half Board' | 'Full Board' | 'mixed'
+  board_plan?: Array<{ date: string; board_type: string }>; // per-night plan
   status: 'pending' | 'confirmed' | 'cancelled' | 'checked_in' | 'checked_out';
   payment_status: string;
-  notes: string;
+  notes: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -106,9 +107,7 @@ export async function checkRoomAvailability(
     .select('id')
     .eq('room_id', roomId)
     .eq('status', 'confirmed')
-    .or(
-      `and(start_date.lte.${endDate},end_date.gte.${startDate})`
-    );
+    .or(`and(start_date.lte.${endDate},end_date.gte.${startDate})`);
 
   if (error) {
     console.error('Error checking availability:', error);
