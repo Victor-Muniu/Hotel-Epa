@@ -459,7 +459,7 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
                         ‹
                       </button>
                       <button className="carousel-btn next-btn" onClick={nextImage} aria-label="Next image">
-                        ��
+                        ›
                       </button>
                       <div className="carousel-indicators">
                         {hall.images.map((_, idx) => (
@@ -636,6 +636,7 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
                       onChange={handleInputChange}
                       className="form-input"
                       required
+                      min={formData.conferenceStartDate || todayStr}
                     />
                   </div>
                 </div>
