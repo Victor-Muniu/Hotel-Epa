@@ -26,7 +26,6 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Link className="nav-link" href="/conference">Conferences</Link>
             <Link className="nav-link" href="/attractions">Attractions</Link>
             <Link className="nav-link" href="/contact">Contact</Link>
-            <Link className="nav-link" href="/quote">Get Quote</Link>
           </nav>
 
         </div>
