@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS public.booking_requests (
   rooms integer,
   room text,
   nationality text,
-  id_document text,
   notes text,
   created_at timestamptz DEFAULT now()
 );
