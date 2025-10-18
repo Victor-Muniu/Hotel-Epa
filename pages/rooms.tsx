@@ -294,10 +294,10 @@ export default function Rooms() {
                 <input type="hidden" name="room_id" value={selectedRoom || ''} />
                 <fieldset className="board-types">
                   <legend>Board type</legend>
-                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required /> Bed Only</label>
-                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" /> Bed and Breakfast</label>
-                  <label className="iconline"><input type="radio" name="type" value="Half Board" /> Half Board</label>
-                  <label className="iconline"><input type="radio" name="type" value="Full Board" /> Full Board</label>
+                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required onChange={() => { setDefaultBoardType('Bed Only'); applyDefaultToAll('Bed Only', nights); }} /> Bed Only</label>
+                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" onChange={() => { setDefaultBoardType('Bed and Breakfast'); applyDefaultToAll('Bed and Breakfast', nights); }} /> Bed and Breakfast</label>
+                  <label className="iconline"><input type="radio" name="type" value="Half Board" onChange={() => { setDefaultBoardType('Half Board'); applyDefaultToAll('Half Board', nights); }} /> Half Board</label>
+                  <label className="iconline"><input type="radio" name="type" value="Full Board" onChange={() => { setDefaultBoardType('Full Board'); applyDefaultToAll('Full Board', nights); }} /> Full Board</label>
                 </fieldset>
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
