@@ -163,8 +163,8 @@ export default function Rooms() {
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
-                  <input className="input" type="date" name="start_date" required />
-                  <input className="input" type="date" name="end_date" required />
+                  <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
                 <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
                 {numRooms > 0 && (
@@ -305,8 +305,8 @@ export default function Rooms() {
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
-                  <input className="input" type="date" name="start_date" required />
-                  <input className="input" type="date" name="end_date" required />
+                  <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
                 <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
                 {numRooms > 0 && (
