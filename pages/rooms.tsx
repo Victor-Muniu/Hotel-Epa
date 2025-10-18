@@ -53,6 +53,23 @@ export default function Rooms() {
   function openBooking(room?: string) { setSelectedRoom(room || null); setBookingOpen(true); }
   function openTour() { setActiveTab('tour'); setTourOpen(true); }
 
+  function enumerateNights(start: string, end: string): string[] {
+    if (!start || !end) return [];
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const out: string[] = [];
+    for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+
+  function applyDefaultToAll(type: string, dates: string[]) {
+    const next: Record<string, string> = {};
+    for (const d of dates) next[d] = type;
+    setBoardPlan(next);
+  }
+
   function scrollToBooking() {
     const el = document.getElementById('booking');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
