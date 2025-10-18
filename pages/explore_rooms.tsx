@@ -91,6 +91,8 @@ export default function ExploreRooms() {
     return () => { mounted = false; };
   }, []);
 
+  const visibleRooms = rooms.filter(r => filterType === 'Any' || r.roomType.toLowerCase() === filterType.toLowerCase());
+
   return (
     <>
       <Head>
