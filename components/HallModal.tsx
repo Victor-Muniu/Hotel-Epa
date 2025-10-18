@@ -349,6 +349,14 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
+  const todayInputValue = () => {
+    const now = new Date();
+    const tzOffset = now.getTimezoneOffset() * 60000;
+    const local = new Date(now.getTime() - tzOffset);
+    return local.toISOString().split('T')[0];
+  };
+  const todayStr = todayInputValue();
+
   if (!hall) return null;
 
   const nextImage = () => {
