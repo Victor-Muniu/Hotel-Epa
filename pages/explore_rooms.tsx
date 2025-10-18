@@ -167,7 +167,7 @@ export default function ExploreRooms() {
                     <div className="room-card-meta">
                       <span>{room.roomType}</span>
                       <span>•</span>
-                      <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m��'}</span>
+                      <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m²'}</span>
                     </div>
                   </div>
                 </article>
@@ -359,6 +359,30 @@ export default function ExploreRooms() {
           .room-features-block { padding: 12px; }
           .room-nav-item { font-size: 0.9rem; }
         }
+        /* Browse grid styles */
+        .browse-section { display: grid; gap: 20px; margin-bottom: 16px; }
+        .filters-bar { display: grid; grid-template-columns: repeat(4, auto); gap: 12px; align-items: end; background: #fff; border: 1px solid rgba(0,0,0,0.08); padding: 12px; }
+        .filter-field { display: grid; gap: 6px; }
+        .filter-label { font-size: 0.8rem; color: rgba(0,0,0,0.6); }
+        .filter-input { appearance: none; background: #fafafa; border: 1px solid rgba(0,0,0,0.1); padding: 10px 12px; border-radius: 8px; }
+        .btn-search { padding: 10px 16px; border-radius: 8px; background: var(--brand-brown); color: #fff; border: 0; cursor: pointer; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .room-card { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; display: grid; }
+        .room-card-image { margin: 0; }
+        .room-card-image img { width: 100%; height: 180px; object-fit: cover; display: block; }
+        .room-card-body { padding: 12px; display: grid; gap: 8px; }
+        .room-card-location { display: inline-flex; align-items: center; gap: 6px; color: rgba(0,0,0,0.6); font-size: 0.85rem; }
+        .room-card-location svg { width: 16px; height: 16px; }
+        .room-card-title { margin: 0; font-size: 1.05rem; color: var(--text-black); }
+        .room-card-desc { margin: 0; color: rgba(0,0,0,0.65); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .room-card-amenities { list-style: none; padding: 0; margin: 0; display: grid; grid-auto-flow: column; gap: 10px; align-items: center; }
+        .amenity { display: inline-flex; align-items: center; gap: 6px; color: rgba(0,0,0,0.75); font-size: 0.85rem; }
+        .amenity svg { width: 16px; height: 16px; }
+        .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; }
+
+        @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .filters-bar { grid-template-columns: 1fr 1fr 1fr auto; } }
+        @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .filters-bar { grid-template-columns: 1fr; } }
       `}</style>
     </>
   );
