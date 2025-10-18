@@ -6,6 +6,9 @@ export default function ExploreRooms() {
   const [selectedRoom, setSelectedRoom] = useState<number>(0);
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterLocation, setFilterLocation] = useState<string>('All');
+  const [filterType, setFilterType] = useState<string>('Any');
+  const [filterCapacity, setFilterCapacity] = useState<string>('Any');
 
   const rooms = [
     {
@@ -91,6 +94,8 @@ export default function ExploreRooms() {
     return () => { mounted = false; };
   }, []);
 
+  const visibleRooms = rooms.filter(r => filterType === 'Any' || r.roomType.toLowerCase() === filterType.toLowerCase());
+
   return (
     <>
       <Head>
@@ -104,6 +109,71 @@ export default function ExploreRooms() {
             <h1>Explore Our Rooms</h1>
             <p>Discover the perfect accommodation for your stay</p>
           </header>
+
+          <section className="browse-section" aria-label="Explore grid">
+            <form className="filters-bar" onSubmit={(e) => e.preventDefault()} role="search">
+              <label className="filter-field">
+                <span className="filter-label">Location</span>
+                <select className="filter-input" value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)}>
+                  <option>All</option>
+                  <option>On-site</option>
+                  <option>Off-site</option>
+                </select>
+              </label>
+              <label className="filter-field">
+                <span className="filter-label">Type</span>
+                <select className="filter-input" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+                  <option>Any</option>
+                  <option value="single">Single</option>
+                  <option value="double">Double</option>
+                  <option value="twin">Twin</option>
+                  <option value="family">Family</option>
+                </select>
+              </label>
+              <label className="filter-field">
+                <span className="filter-label">Guests</span>
+                <select className="filter-input" value={filterCapacity} onChange={(e) => setFilterCapacity(e.target.value)}>
+                  <option>Any</option>
+                  <option>2</option>
+                  <option>4</option>
+                  <option>6</option>
+                  <option>8</option>
+                </select>
+              </label>
+              <button className="btn-search" type="submit">Search</button>
+            </form>
+
+            <div className="card-grid">
+              {visibleRooms.map((room) => (
+                <article key={room.id} className="room-card">
+                  <figure className="room-card-image">
+                    <img src={room.image} alt={room.name} loading="lazy" decoding="async" />
+                  </figure>
+                  <div className="room-card-body">
+                    <div className="room-card-location">
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22s7-5.43 7-12A7 7 0 0 0 5 10c0 6.57 7 12 7 12z" fill="none" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
+                      Epashikino · Kenya
+                    </div>
+                    <h3 className="room-card-title">{room.name}</h3>
+                    <p className="room-card-desc">{room.description}</p>
+                    <ul className="room-card-amenities">
+                      {room.features.slice(0,3).map((f,i) => (
+                        <li key={i} className="amenity">
+                          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 13h18M4 10h16a2 2 0 0 1 2 2v6H2v-6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="room-card-meta">
+                      <span>{room.roomType}</span>
+                      <span>•</span>
+                      <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m²'}</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <div className="explore-body">
             <aside className="explore-sidebar">
@@ -208,7 +278,7 @@ export default function ExploreRooms() {
         .explore-header h1 { margin: 0 0 8px; font-size: 2.2rem; font-weight: 700; color: var(--text-black); }
         .explore-header p { margin: 0; color: rgba(0,0,0,0.65); font-size: 1.05rem; }
 
-        .explore-body { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; margin-bottom: 32px; }
+        .explore-body { display: none; }
 
         .explore-sidebar { position: sticky; top: 90px; height: fit-content; }
         .rooms-list { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 0; padding: 0; }
@@ -289,6 +359,30 @@ export default function ExploreRooms() {
           .room-features-block { padding: 12px; }
           .room-nav-item { font-size: 0.9rem; }
         }
+        /* Browse grid styles */
+        .browse-section { display: grid; gap: 20px; margin-bottom: 16px; }
+        .filters-bar { display: grid; grid-template-columns: repeat(4, auto); gap: 12px; align-items: end; background: #fff; border: 1px solid rgba(0,0,0,0.08); padding: 12px; }
+        .filter-field { display: grid; gap: 6px; }
+        .filter-label { font-size: 0.8rem; color: rgba(0,0,0,0.6); }
+        .filter-input { appearance: none; background: #fafafa; border: 1px solid rgba(0,0,0,0.1); padding: 10px 12px; border-radius: 8px; }
+        .btn-search { padding: 10px 16px; border-radius: 8px; background: var(--brand-brown); color: #fff; border: 0; cursor: pointer; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .room-card { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; display: grid; }
+        .room-card-image { margin: 0; }
+        .room-card-image img { width: 100%; height: 180px; object-fit: cover; display: block; }
+        .room-card-body { padding: 12px; display: grid; gap: 8px; }
+        .room-card-location { display: inline-flex; align-items: center; gap: 6px; color: rgba(0,0,0,0.6); font-size: 0.85rem; }
+        .room-card-location svg { width: 16px; height: 16px; }
+        .room-card-title { margin: 0; font-size: 1.05rem; color: var(--text-black); }
+        .room-card-desc { margin: 0; color: rgba(0,0,0,0.65); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .room-card-amenities { list-style: none; padding: 0; margin: 0; display: grid; grid-auto-flow: column; gap: 10px; align-items: center; }
+        .amenity { display: inline-flex; align-items: center; gap: 6px; color: rgba(0,0,0,0.75); font-size: 0.85rem; }
+        .amenity svg { width: 16px; height: 16px; }
+        .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; }
+
+        @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .filters-bar { grid-template-columns: 1fr 1fr 1fr auto; } }
+        @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .filters-bar { grid-template-columns: 1fr; } }
       `}</style>
     </>
   );
