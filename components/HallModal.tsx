@@ -372,16 +372,25 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
     setSubmitStatus('loading');
 
     try {
-      const response = await fetch('/api/booking', {
+      const payload = {
+        inquiry_type: 'conference',
+        email: formData.email,
+        phone: formData.phoneNumber,
+        start_date: formData.conferenceStartDate,
+        end_date: formData.conferenceEndDate,
+        organization_name: formData.organizationName,
+        hall_name: hall.title,
+        package_type: formData.packageType,
+        seating_arrangement: selectedArrangement?.name || null,
+        notes: `Conference quote for ${hall.title}${selectedArrangement ? `, arrangement: ${selectedArrangement.name}` : ''}`
+      };
+
+      const response = await fetch('/api/quote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          ...formData,
-          hallName: hall.title,
-          type: 'quote_request'
-        })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
