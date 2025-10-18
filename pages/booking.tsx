@@ -75,6 +75,14 @@ export default function Booking() {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Per-night board plan state
+  const BOARD_TYPES = ['Bed Only', 'Bed and Breakfast', 'Half Board', 'Full Board'];
+  const [defaultBoardType, setDefaultBoardType] = useState<string>('Bed Only');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [nights, setNights] = useState<string[]>([]);
+  const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
+
   useEffect(() => {
     async function fetchRoomTypes() {
       try {
@@ -94,6 +102,23 @@ export default function Booking() {
   }, []);
 
   const selectedRoom = ROOMS.find(r => r.id === selectedRoomId);
+
+  function enumerateNights(start: string, end: string): string[] {
+    if (!start || !end) return [];
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const out: string[] = [];
+    for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+
+  function applyDefaultToAll(type: string, dates: string[]) {
+    const next: Record<string, string> = {};
+    for (const d of dates) next[d] = type;
+    setBoardPlan(next);
+  }
 
   const handleNumRoomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const num = parseInt(e.target.value) || 1;
@@ -117,9 +142,12 @@ export default function Booking() {
     setStatus(null);
     setSubmitting(true);
     const form = new FormData(e.currentTarget);
-    const body = Object.fromEntries(form.entries());
+    const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
-    
+    const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
+    body.board_plan = JSON.stringify(plan);
+    body.type = body.type || defaultBoardType;
+
     try {
       const res = await fetch('/api/booking', {
         method: 'POST',
@@ -172,6 +200,15 @@ export default function Booking() {
                 <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
 
+                <fieldset className="board-types">
+                  <legend>Board type</legend>
+                  {BOARD_TYPES.map((t) => (
+                    <label key={t} className="iconline">
+                      <input type="radio" name="type" value={t} checked={defaultBoardType === t} onChange={() => { setDefaultBoardType(t); applyDefaultToAll(t, nights); }} /> {t}
+                    </label>
+                  ))}
+                </fieldset>
+
                 <div className="form-row">
                   <div className="form-group">
                     <label className="form-label">First Name *</label>
@@ -222,6 +259,8 @@ export default function Booking() {
                       className="form-input"
                       type="date"
                       name="start_date"
+                      value={startDate}
+                      onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }}
                       required
                     />
                   </div>
@@ -231,10 +270,30 @@ export default function Booking() {
                       className="form-input"
                       type="date"
                       name="end_date"
+                      value={endDate}
+                      onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }}
                       required
                     />
                   </div>
                 </div>
+
+                {nights.length > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Board plan per night</h4>
+                    <div className="room-types-grid">
+                      {nights.map((d) => (
+                        <div key={d} className="room-type-selector">
+                          <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                          <select className="form-input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                            {BOARD_TYPES.map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="form-row">
                   <div className="form-group">

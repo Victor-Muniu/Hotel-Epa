@@ -15,6 +15,14 @@ export default function Rooms() {
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Per-night board plan state
+  const BOARD_TYPES = ['Bed Only', 'Bed and Breakfast', 'Half Board', 'Full Board'];
+  const [defaultBoardType, setDefaultBoardType] = useState<string>('Bed Only');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [nights, setNights] = useState<string[]>([]);
+  const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
+
   const tourSlides = [
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2Faa5ae259ac784d40825512253e7db2fb?format=webp&width=1600', alt: 'Elegant bedroom overview' },
     { src: 'https://cdn.builder.io/api/v1/image/assets%2F940ebba695114a2a9f60c6ca6acee801%2F9a42056b6d524f8681950c1bb20936ba?format=webp&width=1600', alt: 'Wide view with balcony light' },
@@ -33,8 +41,11 @@ export default function Rooms() {
     setStatus(null);
     setSubmitting(true);
     const form = new FormData(e.currentTarget);
-    const body = Object.fromEntries(form.entries());
+    const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
+    const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
+    body.board_plan = JSON.stringify(plan);
+    if (!body.type) body.type = defaultBoardType;
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
     setSubmitting(false);
@@ -44,6 +55,23 @@ export default function Rooms() {
 
   function openBooking(room?: string) { setSelectedRoom(room || null); setBookingOpen(true); }
   function openTour() { setActiveTab('tour'); setTourOpen(true); }
+
+  function enumerateNights(start: string, end: string): string[] {
+    if (!start || !end) return [];
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const out: string[] = [];
+    for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+
+  function applyDefaultToAll(type: string, dates: string[]) {
+    const next: Record<string, string> = {};
+    for (const d of dates) next[d] = type;
+    setBoardPlan(next);
+  }
 
   function scrollToBooking() {
     const el = document.getElementById('booking');
@@ -124,10 +152,10 @@ export default function Rooms() {
               <form id="booking" className="form booking-form" onSubmit={submit}>
                 <fieldset className="board-types">
                   <legend>Board type</legend>
-                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required /> Bed Only</label>
-                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" /> Bed and Breakfast</label>
-                  <label className="iconline"><input type="radio" name="type" value="Half Board" /> Half Board</label>
-                  <label className="iconline"><input type="radio" name="type" value="Full Board" /> Full Board</label>
+                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required onChange={() => { setDefaultBoardType('Bed Only'); applyDefaultToAll('Bed Only', nights); }} /> Bed Only</label>
+                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" onChange={() => { setDefaultBoardType('Bed and Breakfast'); applyDefaultToAll('Bed and Breakfast', nights); }} /> Bed and Breakfast</label>
+                  <label className="iconline"><input type="radio" name="type" value="Half Board" onChange={() => { setDefaultBoardType('Half Board'); applyDefaultToAll('Half Board', nights); }} /> Half Board</label>
+                  <label className="iconline"><input type="radio" name="type" value="Full Board" onChange={() => { setDefaultBoardType('Full Board'); applyDefaultToAll('Full Board', nights); }} /> Full Board</label>
                 </fieldset>
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
@@ -135,9 +163,28 @@ export default function Rooms() {
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
-                  <input className="input" type="date" name="start_date" required />
-                  <input className="input" type="date" name="end_date" required />
+                  <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
+
+                {nights.length > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Board plan per night</h4>
+                    <div className="room-types-grid">
+                      {nights.map((d) => (
+                        <div key={d} className="room-type-selector">
+                          <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                          <select className="input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                            {BOARD_TYPES.map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
                 {numRooms > 0 && (
                   <div className="room-types-section">
@@ -266,10 +313,10 @@ export default function Rooms() {
                 <input type="hidden" name="room_id" value={selectedRoom || ''} />
                 <fieldset className="board-types">
                   <legend>Board type</legend>
-                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required /> Bed Only</label>
-                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" /> Bed and Breakfast</label>
-                  <label className="iconline"><input type="radio" name="type" value="Half Board" /> Half Board</label>
-                  <label className="iconline"><input type="radio" name="type" value="Full Board" /> Full Board</label>
+                  <label className="iconline"><input type="radio" name="type" value="Bed Only" required onChange={() => { setDefaultBoardType('Bed Only'); applyDefaultToAll('Bed Only', nights); }} /> Bed Only</label>
+                  <label className="iconline"><input type="radio" name="type" value="Bed and Breakfast" onChange={() => { setDefaultBoardType('Bed and Breakfast'); applyDefaultToAll('Bed and Breakfast', nights); }} /> Bed and Breakfast</label>
+                  <label className="iconline"><input type="radio" name="type" value="Half Board" onChange={() => { setDefaultBoardType('Half Board'); applyDefaultToAll('Half Board', nights); }} /> Half Board</label>
+                  <label className="iconline"><input type="radio" name="type" value="Full Board" onChange={() => { setDefaultBoardType('Full Board'); applyDefaultToAll('Full Board', nights); }} /> Full Board</label>
                 </fieldset>
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
@@ -277,9 +324,28 @@ export default function Rooms() {
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <input className="input" name="id_document" placeholder="Identification card or passport" required />
                 <div className="date-row">
-                  <input className="input" type="date" name="start_date" required />
-                  <input className="input" type="date" name="end_date" required />
+                  <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                  <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
+
+                {nights.length > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Board plan per night</h4>
+                    <div className="room-types-grid">
+                      {nights.map((d) => (
+                        <div key={d} className="room-type-selector">
+                          <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                          <select className="input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                            {BOARD_TYPES.map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
                 {numRooms > 0 && (
                   <div className="room-types-section">
