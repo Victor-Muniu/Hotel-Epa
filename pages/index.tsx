@@ -134,7 +134,7 @@ export default function Home() {
             <p className="hero-subtitle">Your Ultimate Joyous Place</p>
             <div className="hero-actions">
               <Link className="btn btn-primary" href="/rooms">Make your reservations</Link>
-              <Link className="btn btn-outline" href="/rooms">View Rooms</Link>
+              <Link className="btn btn-outline" href="/explore_rooms">View Rooms</Link>
             </div>
           </div>
           <aside className="hero-preview" aria-label="Highlight">
