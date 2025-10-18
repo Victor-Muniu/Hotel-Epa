@@ -43,7 +43,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try { board_plan = JSON.parse(board_plan_input); } catch { board_plan = []; }
     }
     const distinctTypes = Array.from(new Set(board_plan.map((d) => String(d.board_type || '').trim()).filter(Boolean)));
-    const board_type_summary = (req.body.type || req.body.board_type) || (distinctTypes.length <= 1 ? (distinctTypes[0] || null) : 'mixed');
+    const rawType = String(req.body.type || '');
+    const candidateType = rawType.toLowerCase() === 'room' ? (req.body.board_type || null) : (rawType || req.body.board_type || null);
+    const board_type_summary = candidateType || (distinctTypes.length <= 1 ? (distinctTypes[0] || null) : 'mixed');
 
     const bookingPayload = {
       room_id: req.body.room_id || null,

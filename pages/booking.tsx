@@ -182,7 +182,6 @@ export default function Booking() {
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
-    body.type = body.type || defaultBoardType;
 
     try {
       const res = await fetch('/api/booking', {
@@ -236,14 +235,6 @@ export default function Booking() {
                 <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
 
-                <fieldset className="board-types">
-                  <legend>Board type</legend>
-                  {BOARD_TYPES.map((t) => (
-                    <label key={t} className="iconline">
-                      <input type="radio" name="type" value={t} checked={defaultBoardType === t} onChange={() => { setDefaultBoardType(t); applyDefaultToAll(t, nights); }} /> {t}
-                    </label>
-                  ))}
-                </fieldset>
 
                 <div className="form-row">
                   <div className="form-group">
