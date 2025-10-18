@@ -86,7 +86,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       rooms,
       room: req.body.room || null,
       nationality: req.body.nationality || null,
-      id_document: req.body.id_document || null,
       notes: req.body.notes || null,
       created_at: new Date().toISOString()
     };
