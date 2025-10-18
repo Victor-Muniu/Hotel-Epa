@@ -122,6 +122,14 @@ export default function ConferenceAndMeetings() {
   // Re-run filters on change so the UI updates immediately
   useEffect(() => { applyFilters(); }, [attendees, selectedAmenities, selectedRoomStyle, selectedCapacityRange, selectedPackages, category]);
 
+  const todayInputValue = () => {
+    const now = new Date();
+    const tzOffset = now.getTimezoneOffset() * 60000;
+    const local = new Date(now.getTime() - tzOffset);
+    return local.toISOString().split('T')[0];
+  };
+  const todayStr = todayInputValue();
+
   return (
     <>
       <Head>
@@ -150,11 +158,11 @@ export default function ConferenceAndMeetings() {
               </label>
               <label className="pill-input">
                 <span className="pill-label">Check-in</span>
-                <input className="pill-field" type="date" defaultValue="" aria-label="Check-in" />
+                <input className="pill-field" type="date" defaultValue="" aria-label="Check-in" min={todayStr} />
               </label>
               <label className="pill-input">
                 <span className="pill-label">Check-out</span>
-                <input className="pill-field" type="date" defaultValue="" aria-label="Check-out" />
+                <input className="pill-field" type="date" defaultValue="" aria-label="Check-out" min={todayStr} />
               </label>
               <label className="pill-input">
                 <span className="pill-label">Attendees</span>

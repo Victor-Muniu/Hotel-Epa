@@ -30,6 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const notes = String(req.body.notes || '').trim() || null;
     const inquiry_type = String(req.body.inquiry_type || req.body.type || 'room');
 
+    const organization_name = req.body.organization_name ? String(req.body.organization_name).trim() : null;
+    const hall_name = req.body.hall_name ? String(req.body.hall_name).trim() : null;
+    const package_type = req.body.package_type ? String(req.body.package_type).trim() : null;
+    const seating_arrangement = req.body.seating_arrangement ? String(req.body.seating_arrangement).trim() : null;
+    const attendees = req.body.attendees != null ? Number(req.body.attendees) || null : null;
+    const venue = req.body.venue ? String(req.body.venue).trim() : null;
+    const source_page = req.body.source_page ? String(req.body.source_page).trim() : 'conference';
+
     if (!email) return res.status(400).json({ error: 'email is required' });
 
     const quotePayload = {
@@ -46,13 +54,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       room_types,
       notes,
       status: 'new',
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
+      organization_name,
+      hall_name,
+      package_type,
+      seating_arrangement,
+      attendees,
+      venue,
+      source_page
     } as any;
 
     const { error: qErr } = await supabase.from('quotes').insert(quotePayload);
     if (qErr) throw qErr;
 
-    // Backward compatibility to booking_requests used elsewhere
     const requestPayload = {
       type: inquiry_type,
       first_name,

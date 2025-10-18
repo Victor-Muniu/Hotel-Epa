@@ -349,6 +349,14 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
+  const todayInputValue = () => {
+    const now = new Date();
+    const tzOffset = now.getTimezoneOffset() * 60000;
+    const local = new Date(now.getTime() - tzOffset);
+    return local.toISOString().split('T')[0];
+  };
+  const todayStr = todayInputValue();
+
   if (!hall) return null;
 
   const nextImage = () => {
@@ -361,6 +369,14 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    if (name === 'conferenceStartDate') {
+      setFormData((prev) => ({
+        ...prev,
+        conferenceStartDate: value,
+        conferenceEndDate: prev.conferenceEndDate && prev.conferenceEndDate < value ? value : prev.conferenceEndDate
+      }));
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -369,19 +385,37 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const start = formData.conferenceStartDate;
+    const end = formData.conferenceEndDate;
+    const today = todayStr;
+    if (!start || !end || start < today || end < start) {
+      setSubmitStatus('error');
+      return;
+    }
+
     setSubmitStatus('loading');
 
     try {
-      const response = await fetch('/api/booking', {
+      const payload = {
+        inquiry_type: 'conference',
+        email: formData.email,
+        phone: formData.phoneNumber,
+        start_date: start,
+        end_date: end,
+        organization_name: formData.organizationName,
+        hall_name: hall.title,
+        package_type: formData.packageType,
+        seating_arrangement: selectedArrangement?.name || null,
+        notes: `Conference quote for ${hall.title}${selectedArrangement ? `, arrangement: ${selectedArrangement.name}` : ''}`
+      };
+
+      const response = await fetch('/api/quote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          ...formData,
-          hallName: hall.title,
-          type: 'quote_request'
-        })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
@@ -597,6 +631,7 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
                       onChange={handleInputChange}
                       className="form-input"
                       required
+                      min={todayStr}
                     />
                   </div>
 
@@ -610,6 +645,7 @@ export default function HallModal({ hallId, onClose }: HallModalProps) {
                       onChange={handleInputChange}
                       className="form-input"
                       required
+                      min={formData.conferenceStartDate || todayStr}
                     />
                   </div>
                 </div>
