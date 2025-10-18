@@ -270,6 +270,8 @@ export default function Booking() {
                       className="form-input"
                       type="date"
                       name="end_date"
+                      value={endDate}
+                      onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }}
                       required
                     />
                   </div>
