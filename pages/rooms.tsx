@@ -41,8 +41,11 @@ export default function Rooms() {
     setStatus(null);
     setSubmitting(true);
     const form = new FormData(e.currentTarget);
-    const body = Object.fromEntries(form.entries());
+    const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
+    const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
+    body.board_plan = JSON.stringify(plan);
+    if (!body.type) body.type = defaultBoardType;
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
     setSubmitting(false);
