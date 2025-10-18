@@ -19,6 +19,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const guests = req.body.guests ? Number(req.body.guests) : 1;
     const children = req.body.children ? Number(req.body.children) : 0;
 
+    // Date validation
+    const startDateStr: string = String(req.body.start_date || '');
+    const endDateStr: string = String(req.body.end_date || '');
+    const isYMD = (s: string) => /^\d{4}-\d{2}-\d{2}$/.test(s);
+    if (!isYMD(startDateStr) || !isYMD(endDateStr)) {
+      return res.status(400).json({ message: 'Invalid date format. Use YYYY-MM-DD.' });
+    }
+    const todayStr = new Date().toISOString().slice(0, 10);
+    if (startDateStr < todayStr) {
+      return res.status(400).json({ message: 'Check-in date cannot be in the past.' });
+    }
+    if (endDateStr <= startDateStr) {
+      return res.status(400).json({ message: 'Check-out must be after check-in.' });
+    }
+
     // Per-night board plan parsing
     const board_plan_input = req.body.board_plan;
     let board_plan: Array<{ date: string; board_type: string }> = [];
