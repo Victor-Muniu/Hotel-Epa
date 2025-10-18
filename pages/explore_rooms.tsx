@@ -6,6 +6,9 @@ export default function ExploreRooms() {
   const [selectedRoom, setSelectedRoom] = useState<number>(0);
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterLocation, setFilterLocation] = useState<string>('All');
+  const [filterType, setFilterType] = useState<string>('Any');
+  const [filterCapacity, setFilterCapacity] = useState<string>('Any');
 
   const rooms = [
     {
