@@ -19,6 +19,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const guests = req.body.guests ? Number(req.body.guests) : 1;
     const children = req.body.children ? Number(req.body.children) : 0;
 
+    // Per-night board plan parsing
+    const board_plan_input = req.body.board_plan;
+    let board_plan: Array<{ date: string; board_type: string }> = [];
+    if (Array.isArray(board_plan_input)) {
+      board_plan = board_plan_input as any;
+    } else if (typeof board_plan_input === 'string') {
+      try { board_plan = JSON.parse(board_plan_input); } catch { board_plan = []; }
+    }
+    const distinctTypes = Array.from(new Set(board_plan.map((d) => String(d.board_type || '').trim()).filter(Boolean)));
+    const board_type_summary = (req.body.type || req.body.board_type) || (distinctTypes.length <= 1 ? (distinctTypes[0] || null) : 'mixed');
+
     const bookingPayload = {
       room_id: req.body.room_id || null,
       first_name,
@@ -29,7 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       end_date: req.body.end_date,
       guests,
       children,
-      board_type: req.body.type || req.body.board_type || null,
+      board_type: board_type_summary || null,
+      board_plan,
       total_price: req.body.total_price || null,
       currency: 'USD',
       status: 'pending',
