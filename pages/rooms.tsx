@@ -166,6 +166,25 @@ export default function Rooms() {
                   <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                   <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
+
+                {nights.length > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Board plan per night</h4>
+                    <div className="room-types-grid">
+                      {nights.map((d) => (
+                        <div key={d} className="room-type-selector">
+                          <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                          <select className="input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                            {BOARD_TYPES.map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
                 {numRooms > 0 && (
                   <div className="room-types-section">
@@ -308,6 +327,25 @@ export default function Rooms() {
                   <input className="input" type="date" name="start_date" value={startDate} onChange={(e) => { const v = e.target.value; setStartDate(v); const ds = enumerateNights(v, endDate); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                   <input className="input" type="date" name="end_date" value={endDate} onChange={(e) => { const v = e.target.value; setEndDate(v); const ds = enumerateNights(startDate, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
                 </div>
+
+                {nights.length > 0 && (
+                  <div className="room-types-section">
+                    <h4 className="room-types-label">Board plan per night</h4>
+                    <div className="room-types-grid">
+                      {nights.map((d) => (
+                        <div key={d} className="room-type-selector">
+                          <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                          <select className="input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                            {BOARD_TYPES.map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
                 {numRooms > 0 && (
                   <div className="room-types-section">
