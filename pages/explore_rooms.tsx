@@ -110,6 +110,71 @@ export default function ExploreRooms() {
             <p>Discover the perfect accommodation for your stay</p>
           </header>
 
+          <section className="browse-section" aria-label="Explore grid">
+            <form className="filters-bar" onSubmit={(e) => e.preventDefault()} role="search">
+              <label className="filter-field">
+                <span className="filter-label">Location</span>
+                <select className="filter-input" value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)}>
+                  <option>All</option>
+                  <option>On-site</option>
+                  <option>Off-site</option>
+                </select>
+              </label>
+              <label className="filter-field">
+                <span className="filter-label">Type</span>
+                <select className="filter-input" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+                  <option>Any</option>
+                  <option value="single">Single</option>
+                  <option value="double">Double</option>
+                  <option value="twin">Twin</option>
+                  <option value="family">Family</option>
+                </select>
+              </label>
+              <label className="filter-field">
+                <span className="filter-label">Guests</span>
+                <select className="filter-input" value={filterCapacity} onChange={(e) => setFilterCapacity(e.target.value)}>
+                  <option>Any</option>
+                  <option>2</option>
+                  <option>4</option>
+                  <option>6</option>
+                  <option>8</option>
+                </select>
+              </label>
+              <button className="btn-search" type="submit">Search</button>
+            </form>
+
+            <div className="card-grid">
+              {visibleRooms.map((room) => (
+                <article key={room.id} className="room-card">
+                  <figure className="room-card-image">
+                    <img src={room.image} alt={room.name} loading="lazy" decoding="async" />
+                  </figure>
+                  <div className="room-card-body">
+                    <div className="room-card-location">
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22s7-5.43 7-12A7 7 0 0 0 5 10c0 6.57 7 12 7 12z" fill="none" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
+                      Epashikino · Kenya
+                    </div>
+                    <h3 className="room-card-title">{room.name}</h3>
+                    <p className="room-card-desc">{room.description}</p>
+                    <ul className="room-card-amenities">
+                      {room.features.slice(0,3).map((f,i) => (
+                        <li key={i} className="amenity">
+                          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 13h18M4 10h16a2 2 0 0 1 2 2v6H2v-6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="room-card-meta">
+                      <span>{room.roomType}</span>
+                      <span>•</span>
+                      <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m²'}</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <div className="explore-body">
             <aside className="explore-sidebar">
               <div className="rooms-list">
