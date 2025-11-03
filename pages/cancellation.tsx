@@ -212,7 +212,7 @@ export default function CancellationPolicy() {
             <h2 className="cancellation-section-title">Summary: Cancellation Policy Timeline & No-Show</h2>
             <div className="cancellation-comparison">
               <div className="comparison-column">
-                <h3>7+ Days Before Check-Out</h3>
+                <h3>7+ Days Before Check-In</h3>
                 <ul>
                   <li>Retention Fee: 10%</li>
                   <li>Refund: 90%</li>
@@ -222,7 +222,7 @@ export default function CancellationPolicy() {
                 </ul>
               </div>
               <div className="comparison-column">
-                <h3>3-6 Days Before Check-Out</h3>
+                <h3>3-6 Days Before Check-In</h3>
                 <ul>
                   <li>Retention Fee: 50%</li>
                   <li>Refund: 50%</li>
@@ -234,7 +234,7 @@ export default function CancellationPolicy() {
             </div>
             <div className="cancellation-comparison">
               <div className="comparison-column">
-                <h3>Same Day as Check-Out</h3>
+                <h3>Same Day as Check-In</h3>
                 <ul>
                   <li>Treated as No-Show</li>
                   <li>Retention Fee: 100%</li>
@@ -244,9 +244,9 @@ export default function CancellationPolicy() {
                 </ul>
               </div>
               <div className="comparison-column">
-                <h3>No-Show (Failure to Check-Out)</h3>
+                <h3>No-Show (Failure to Check-In)</h3>
                 <ul>
-                  <li>Guest fails to depart without notification</li>
+                  <li>Guest fails to arrive without notification</li>
                   <li>Resort charges 100% of booking</li>
                   <li>No refund issued</li>
                   <li>Full amount forfeited</li>
