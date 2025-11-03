@@ -171,7 +171,7 @@ export default function PrivacyPolicy() {
 
           <section className="privacy-section">
             <h2 className="privacy-section-title">11. Children's Privacy</h2>
-            <p>Our services are not intentionally directed to individuals under 18 years of age. Bookings must be made by or on behalf of adults who can provide consent. We do not knowingly collect personal data from children without parental or guardian consent. If we become aware that a child's data has been collected without proper consent, we will delete such data promptly.</p>
+            <p>Our services are designed for adult guests who make and manage their own bookings. However, if a child travels as a guest with parental or guardian consent, we collect only the necessary personal data for their accommodation and safety. Parental/guardian consent is required for any child guest. We do not knowingly collect personal data from children without proper parental or guardian authorization. If we become aware that a child's data has been collected without proper consent, we will delete such data promptly.</p>
           </section>
 
           <section className="privacy-section">
