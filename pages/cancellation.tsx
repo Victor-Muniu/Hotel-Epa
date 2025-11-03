@@ -36,17 +36,34 @@ export default function CancellationPolicy() {
 
           <section className="cancellation-section">
             <h2 className="cancellation-section-title">3. Cancellation Retention Policy</h2>
-            <h3 className="cancellation-subsection-title">Standard Cancellation Fee</h3>
-            <p>In the event of a cancellation, Epashikino Resort & Spa retains <strong>25% of the total booking revenue</strong> to cover administrative costs, operational losses, and potential loss of revenue from declining other bookings for those dates.</p>
-            <p>The remaining <strong>75% of the booking amount will be refunded</strong> to the original payment method within 7-14 business days of the cancellation request.</p>
-            
-            <h3 className="cancellation-subsection-title">Calculation Example</h3>
+            <p>Epashikino Resort & Spa retains cancellation fees based on the timing of the cancellation relative to your scheduled check-out date. The retention fee covers administrative costs, operational losses, and potential loss of revenue from declining other bookings for those dates.</p>
+
+            <h3 className="cancellation-subsection-title">Retention Fee Structure</h3>
+            <p><strong>7 Days or More Before Check-Out:</strong> <strong>10% retention fee</strong> | <strong>90% refundable</strong></p>
+            <p>If a cancellation is requested 7 or more days before your scheduled check-out date, Epashikino Resort & Spa retains 10% of the total booking revenue. The remaining 90% will be refunded to the original payment method within 7-14 business days.</p>
+
+            <p><strong>3 to 6 Days Before Check-Out:</strong> <strong>50% retention fee</strong> | <strong>50% refundable</strong></p>
+            <p>If a cancellation is requested between 3 and 6 days before your scheduled check-out date, Epashikino Resort & Spa retains 50% of the total booking revenue. The remaining 50% will be refunded to the original payment method within 7-14 business days.</p>
+
+            <p><strong>Same Day as Check-Out:</strong> <strong>No Refund (Treated as No-Show)</strong></p>
+            <p>Cancellations requested on the same day as your scheduled check-out date are treated as a no-show. The full 100% of the booking amount will be forfeited with no refund issued.</p>
+
+            <h3 className="cancellation-subsection-title">Calculation Examples</h3>
             <div className="cancellation-example">
-              <p><strong>Booking Details:</strong></p>
+              <p><strong>Example 1: Cancellation 7+ Days Before Check-Out</strong></p>
               <ul>
                 <li>Total Booking Amount: KES 50,000</li>
-                <li>Retention Fee (25%): KES 12,500</li>
-                <li>Refundable Amount (75%): KES 37,500</li>
+                <li>Retention Fee (10%): KES 5,000</li>
+                <li>Refundable Amount (90%): KES 45,000</li>
+              </ul>
+            </div>
+
+            <div className="cancellation-example">
+              <p><strong>Example 2: Cancellation 3-6 Days Before Check-Out</strong></p>
+              <ul>
+                <li>Total Booking Amount: KES 50,000</li>
+                <li>Retention Fee (50%): KES 25,000</li>
+                <li>Refundable Amount (50%): KES 25,000</li>
               </ul>
             </div>
           </section>
