@@ -70,17 +70,17 @@ export default function CancellationPolicy() {
 
           <section className="cancellation-section">
             <h2 className="cancellation-section-title">4. Cancellation Timelines and Deadlines</h2>
-            <h3 className="cancellation-subsection-title">Free Cancellation Period</h3>
-            <p>Guests may cancel their reservation <strong>up to 7 days before the scheduled check-in date</strong> without incurring the retention fee. Full refunds will be processed for cancellations made within this window.</p>
-            
-            <h3 className="cancellation-subsection-title">Standard Cancellation (25% Retention)</h3>
-            <p>Cancellations made <strong>within 7 days of the check-in date</strong> will be subject to the 25% retention fee. The 75% balance will be refunded to your account.</p>
-            
-            <h3 className="cancellation-subsection-title">Same-Day Cancellation</h3>
-            <p>Cancellations requested on the same day as check-in (after 2:00 PM) or after check-in time has passed may be treated differently. Please contact our reservations team immediately if you need to cancel on the day of arrival.</p>
-            
+            <h3 className="cancellation-subsection-title">7 Days or More Before Check-Out (10% Retention)</h3>
+            <p>Guests may cancel their reservation <strong>7 or more days before the scheduled check-out date</strong> with a 10% retention fee. A refund of 90% of the booking amount will be processed to the original payment method within 7-14 business days of the cancellation request.</p>
+
+            <h3 className="cancellation-subsection-title">3 to 6 Days Before Check-Out (50% Retention)</h3>
+            <p>Cancellations made <strong>between 3 and 6 days before the scheduled check-out date</strong> will be subject to a 50% retention fee. A refund of 50% of the booking amount will be processed to the original payment method within 7-14 business days.</p>
+
+            <h3 className="cancellation-subsection-title">Same Day as Check-Out (No Refund - Treated as No-Show)</h3>
+            <p>Cancellations requested on the same day as your scheduled check-out date are treated as a no-show. <strong>No refund will be issued, and the full 100% of the booking amount will be forfeited.</strong></p>
+
             <h3 className="cancellation-subsection-title">Late Cancellation and No-Show Fees</h3>
-            <p>If a guest does not check in on their scheduled arrival date and has not formally cancelled their reservation, the full booking amount will be charged as a no-show fee. <strong>No refund will be issued for no-shows.</strong></p>
+            <p>If a guest does not check out on their scheduled departure date and has not formally cancelled their reservation in advance, the full booking amount will be charged as a no-show fee. <strong>No refund will be issued for no-shows.</strong></p>
           </section>
 
           <section className="cancellation-section">
