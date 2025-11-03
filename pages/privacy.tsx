@@ -18,8 +18,8 @@ export default function PrivacyPolicy() {
         <div className="privacy-content">
           <section className="privacy-section">
             <h2 className="privacy-section-title">1. Introduction and Commitment</h2>
-            <p>Epashikino Resort & Spa ("we," "us," "our," or "the Resort") is committed to protecting your privacy and ensuring transparency in how we handle your personal data. We comply with all applicable data protection regulations, including but not limited to the Data Protection Act and international data protection standards.</p>
-            <p>This Privacy Policy applies to all guests, visitors, employees, and any individuals whose personal data we collect or process through our services, website, booking systems, and physical facilities.</p>
+            <p>Epashikino Resort & Spa ("we," "us," "our," or "the Resort") is committed to protecting the privacy of our guests and ensuring transparency in how we handle your personal data. We comply with all applicable data protection regulations, including but not limited to the Data Protection Act and international data protection standards.</p>
+            <p>This Privacy Policy applies exclusively to our guests—individuals who book accommodations and services at Epashikino Resort & Spa. This policy governs how we collect, use, protect, and manage guest personal data through our booking systems, website, and physical facilities during your stay and related interactions.</p>
           </section>
 
           <section className="privacy-section">
