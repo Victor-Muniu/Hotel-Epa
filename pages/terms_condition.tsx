@@ -63,7 +63,7 @@ export default function TermsAndConditions() {
             <p>Guests must conduct themselves in a respectful and lawful manner. Any guest engaging in illegal activities, harassment, violence, or conduct that endangers others or damages resort property will be immediately evicted without refund. We reserve the right to contact law enforcement if necessary.</p>
             
             <h3 className="privacy-subsection-title">Noise and Quiet Hours</h3>
-            <p>Quiet hours are observed between 10:00 PM and 7:00 AM. Guests must keep noise levels to a minimum during these times, including music, television, and conversations. Repeated violations may result in eviction.</p>
+            <p>Quiet hours are observed between 10:00 PM and 9:00 AM. Guests must keep noise levels to a minimum during these times, including music, television, and conversations. Repeated violations may result in eviction.</p>
             
             <h3 className="privacy-subsection-title">Smoking Policy</h3>
             <p>Smoking is strictly prohibited in all indoor areas including guest rooms, hallways, restaurants, and common areas. Designated smoking areas are available as indicated on-site. Violation of this policy will result in a cleaning fee of KES 5,000 to KES 10,000 charged to the guest's account.</p>
