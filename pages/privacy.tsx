@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
         <header className="privacy-header">
           <p className="privacy-eyebrow">Legal</p>
           <h1 className="privacy-title">Privacy Policy</h1>
-          <p className="privacy-lead">Your privacy and data security are of utmost importance to Epashikino Resort & Spa. This Privacy Policy explains how we collect, use, protect, and manage your personal information in compliance with applicable data protection laws.</p>
+          <p className="privacy-lead">Your privacy and data security are of utmost importance to Epashikino Resort & Spa. This Privacy Policy is designed exclusively for our guests and applies to how we collect, use, protect, and manage your personal information in compliance with applicable data protection laws.</p>
         </header>
 
         <div className="privacy-content">
