@@ -81,7 +81,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="footer-column">
               <h4>Legal</h4>
               <ul>
-                <li><a href="#">Terms &amp; Conditions</a></li>
+                <li><Link href="/terms_condition">Terms &amp; Conditions</Link></li>
                 <li><Link href="/privacy">Privacy Policy</Link></li>
                 <li><Link href="/cancellation">Cancellation Policy</Link></li>
                 <li><a href="#">Cookie Preferences</a></li>
