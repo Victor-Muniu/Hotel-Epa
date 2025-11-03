@@ -48,7 +48,7 @@ export default function TermsAndConditions() {
           <section className="privacy-section">
             <h2 className="privacy-section-title">4. Check-In and Check-Out</h2>
             <h3 className="privacy-subsection-title">Check-In Time</h3>
-            <p>Standard check-in time is 2:00 PM. Early check-in is subject to availability and may incur an additional charge. We recommend contacting us in advance if you require early check-in. Rooms will be held until 6:00 PM on your scheduled arrival date. Failure to check in by this time may result in cancellation of your reservation.</p>
+            <p>Standard check-in time is 12:00 noon. Early check-in is subject to availability and may incur an additional charge. We recommend contacting us in advance if you require early check-in. Rooms will be held until 4:00 PM on your scheduled arrival date. Failure to check in by this time may result in cancellation of your reservation.</p>
             
             <h3 className="privacy-subsection-title">Check-Out Time</h3>
             <p>Standard check-out time is 10:00 AM. Late check-out is available at an additional charge of 50% of the nightly room rate per hour or portion thereof. All luggage and personal belongings must be removed from the room by the check-out time; any items left behind may be disposed of or held for a fee.</p>
