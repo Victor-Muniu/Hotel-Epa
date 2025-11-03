@@ -9,6 +9,11 @@ export default function AboutUs() {
         <meta name="description" content="Learn about Epashikino Resort & Spa. Discover our history, commitment to excellence, and world-class accommodations in Kenya's scenic Rift Valley." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+      <div style={{position: 'relative', width: '100%', height: '300px', overflow: 'hidden', marginBottom: '40px'}}>
+        <img src="https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F11715a67bfec4a45b4e6c6f5ff24e7d3?format=webp&width=1200" alt="Epashikino Resort hero image" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}} />
+        <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2))'}}>
+        </div>
+      </div>
       <div className="privacy-container">
         <header className="privacy-header">
           <p className="privacy-eyebrow">Our Story</p>
