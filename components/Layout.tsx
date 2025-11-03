@@ -69,7 +69,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="footer-column">
               <h4>Support &amp; Company</h4>
               <ul>
-                <li><a href="#">About Us</a></li>
+                <li><Link href="/about">About Us</Link></li>
                 <li><a href="#">How It Works</a></li>
                 <li><Link href="/faq">FAQs</Link></li>
                 <li><Link href="/contact">Contact Support</Link></li>
@@ -81,7 +81,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="footer-column">
               <h4>Legal</h4>
               <ul>
-                <li><a href="#">Terms &amp; Conditions</a></li>
+                <li><Link href="/terms_condition">Terms &amp; Conditions</Link></li>
                 <li><Link href="/privacy">Privacy Policy</Link></li>
                 <li><Link href="/cancellation">Cancellation Policy</Link></li>
                 <li><a href="#">Cookie Preferences</a></li>

@@ -12,14 +12,14 @@ export default function PrivacyPolicy() {
         <header className="privacy-header">
           <p className="privacy-eyebrow">Legal</p>
           <h1 className="privacy-title">Privacy Policy</h1>
-          <p className="privacy-lead">Your privacy and data security are of utmost importance to Epashikino Resort & Spa. This Privacy Policy explains how we collect, use, protect, and manage your personal information in compliance with applicable data protection laws.</p>
+          <p className="privacy-lead">Your privacy and data security are of utmost importance to Epashikino Resort & Spa. This Privacy Policy is designed exclusively for our guests and applies to how we collect, use, protect, and manage your personal information in compliance with applicable data protection laws.</p>
         </header>
 
         <div className="privacy-content">
           <section className="privacy-section">
             <h2 className="privacy-section-title">1. Introduction and Commitment</h2>
-            <p>Epashikino Resort & Spa ("we," "us," "our," or "the Resort") is committed to protecting your privacy and ensuring transparency in how we handle your personal data. We comply with all applicable data protection regulations, including but not limited to the Data Protection Act and international data protection standards.</p>
-            <p>This Privacy Policy applies to all guests, visitors, employees, and any individuals whose personal data we collect or process through our services, website, booking systems, and physical facilities.</p>
+            <p>Epashikino Resort & Spa ("we," "us," "our," or "the Resort") is committed to protecting the privacy of our guests and ensuring transparency in how we handle your personal data. We comply with all applicable data protection regulations, including but not limited to the Data Protection Act and international data protection standards.</p>
+            <p>This Privacy Policy applies exclusively to our guests—individuals who book accommodations and services at Epashikino Resort & Spa. This policy governs how we collect, use, protect, and manage guest personal data through our booking systems, website, and physical facilities during your stay and related interactions.</p>
           </section>
 
           <section className="privacy-section">
@@ -171,7 +171,7 @@ export default function PrivacyPolicy() {
 
           <section className="privacy-section">
             <h2 className="privacy-section-title">11. Children's Privacy</h2>
-            <p>Our services are not intentionally directed to individuals under 18 years of age. Bookings must be made by or on behalf of adults who can provide consent. We do not knowingly collect personal data from children without parental or guardian consent. If we become aware that a child's data has been collected without proper consent, we will delete such data promptly.</p>
+            <p>Our services are designed for adult guests who make and manage their own bookings. However, if a child travels as a guest with parental or guardian consent, we collect only the necessary personal data for their accommodation and safety. Parental/guardian consent is required for any child guest. We do not knowingly collect personal data from children without proper parental or guardian authorization. If we become aware that a child's data has been collected without proper consent, we will delete such data promptly.</p>
           </section>
 
           <section className="privacy-section">

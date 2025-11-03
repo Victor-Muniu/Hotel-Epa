@@ -36,34 +36,51 @@ export default function CancellationPolicy() {
 
           <section className="cancellation-section">
             <h2 className="cancellation-section-title">3. Cancellation Retention Policy</h2>
-            <h3 className="cancellation-subsection-title">Standard Cancellation Fee</h3>
-            <p>In the event of a cancellation, Epashikino Resort & Spa retains <strong>25% of the total booking revenue</strong> to cover administrative costs, operational losses, and potential loss of revenue from declining other bookings for those dates.</p>
-            <p>The remaining <strong>75% of the booking amount will be refunded</strong> to the original payment method within 7-14 business days of the cancellation request.</p>
-            
-            <h3 className="cancellation-subsection-title">Calculation Example</h3>
+            <p>Epashikino Resort & Spa retains cancellation fees based on the timing of the cancellation relative to your scheduled check-out date. The retention fee covers administrative costs, operational losses, and potential loss of revenue from declining other bookings for those dates.</p>
+
+            <h3 className="cancellation-subsection-title">Retention Fee Structure</h3>
+            <p><strong>7 Days or More Before Check-Out:</strong> <strong>10% retention fee</strong> | <strong>90% refundable</strong></p>
+            <p>If a cancellation is requested 7 or more days before your scheduled check-out date, Epashikino Resort & Spa retains 10% of the total booking revenue. The remaining 90% will be refunded to the original payment method within 7-14 business days.</p>
+
+            <p><strong>3 Days Before Check-Out:</strong> <strong>50% retention fee</strong> | <strong>50% refundable</strong></p>
+            <p>If a cancellation is requested 3 days before your scheduled check-out date, Epashikino Resort & Spa retains 50% of the total booking revenue. The remaining 50% will be refunded to the original payment method within 7-14 business days.</p>
+
+            <p><strong>Same Day as Check-Out:</strong> <strong>No Refund (Treated as No-Show)</strong></p>
+            <p>Cancellations requested on the same day as your scheduled check-out date are treated as a no-show. The full 100% of the booking amount will be forfeited with no refund issued.</p>
+
+            <h3 className="cancellation-subsection-title">Calculation Examples</h3>
             <div className="cancellation-example">
-              <p><strong>Booking Details:</strong></p>
+              <p><strong>Example 1: Cancellation 7+ Days Before Check-Out</strong></p>
               <ul>
                 <li>Total Booking Amount: KES 50,000</li>
-                <li>Retention Fee (25%): KES 12,500</li>
-                <li>Refundable Amount (75%): KES 37,500</li>
+                <li>Retention Fee (10%): KES 5,000</li>
+                <li>Refundable Amount (90%): KES 45,000</li>
+              </ul>
+            </div>
+
+            <div className="cancellation-example">
+              <p><strong>Example 2: Cancellation 3 Days Before Check-Out</strong></p>
+              <ul>
+                <li>Total Booking Amount: KES 50,000</li>
+                <li>Retention Fee (50%): KES 25,000</li>
+                <li>Refundable Amount (50%): KES 25,000</li>
               </ul>
             </div>
           </section>
 
           <section className="cancellation-section">
             <h2 className="cancellation-section-title">4. Cancellation Timelines and Deadlines</h2>
-            <h3 className="cancellation-subsection-title">Free Cancellation Period</h3>
-            <p>Guests may cancel their reservation <strong>up to 7 days before the scheduled check-in date</strong> without incurring the retention fee. Full refunds will be processed for cancellations made within this window.</p>
-            
-            <h3 className="cancellation-subsection-title">Standard Cancellation (25% Retention)</h3>
-            <p>Cancellations made <strong>within 7 days of the check-in date</strong> will be subject to the 25% retention fee. The 75% balance will be refunded to your account.</p>
-            
-            <h3 className="cancellation-subsection-title">Same-Day Cancellation</h3>
-            <p>Cancellations requested on the same day as check-in (after 2:00 PM) or after check-in time has passed may be treated differently. Please contact our reservations team immediately if you need to cancel on the day of arrival.</p>
-            
+            <h3 className="cancellation-subsection-title">7 Days or More Before Check-Out (10% Retention)</h3>
+            <p>Guests may cancel their reservation <strong>7 or more days before the scheduled check-out date</strong> with a 10% retention fee. A refund of 90% of the booking amount will be processed to the original payment method within 7-14 business days of the cancellation request.</p>
+
+            <h3 className="cancellation-subsection-title">3 Days Before Check-Out (50% Retention)</h3>
+            <p>Cancellations made <strong>3 days before the scheduled check-out date</strong> will be subject to a 50% retention fee. A refund of 50% of the booking amount will be processed to the original payment method within 7-14 business days.</p>
+
+            <h3 className="cancellation-subsection-title">Same Day as Check-Out (No Refund - Treated as No-Show)</h3>
+            <p>Cancellations requested on the same day as your scheduled check-out date are treated as a no-show. <strong>No refund will be issued, and the full 100% of the booking amount will be forfeited.</strong></p>
+
             <h3 className="cancellation-subsection-title">Late Cancellation and No-Show Fees</h3>
-            <p>If a guest does not check in on their scheduled arrival date and has not formally cancelled their reservation, the full booking amount will be charged as a no-show fee. <strong>No refund will be issued for no-shows.</strong></p>
+            <p>If a guest does not check out on their scheduled departure date and has not formally cancelled their reservation in advance, the full booking amount will be charged as a no-show fee. <strong>No refund will be issued for no-shows.</strong></p>
           </section>
 
           <section className="cancellation-section">
@@ -192,27 +209,47 @@ export default function CancellationPolicy() {
           </section>
 
           <section className="cancellation-section">
-            <h2 className="cancellation-section-title">Summary: Cancellation vs. No-Show</h2>
+            <h2 className="cancellation-section-title">Summary: Cancellation Policy Timeline & No-Show</h2>
             <div className="cancellation-comparison">
               <div className="comparison-column">
-                <h3>Cancellation</h3>
+                <h3>7+ Days Before Check-In</h3>
                 <ul>
-                  <li>Guest formally requests cancellation</li>
-                  <li>Resort retains 25% of booking</li>
-                  <li>75% refunded to guest</li>
+                  <li>Retention Fee: 10%</li>
+                  <li>Refund: 90%</li>
+                  <li>Guest initiates cancellation</li>
                   <li>Refund processed in 7-14 days</li>
-                  <li>Contact required to proceed</li>
-                  <li>Evidence of cancellation provided</li>
+                  <li>Confirmation email provided</li>
                 </ul>
               </div>
               <div className="comparison-column">
-                <h3>No-Show</h3>
+                <h3>3 Days Before Check-In</h3>
+                <ul>
+                  <li>Retention Fee: 50%</li>
+                  <li>Refund: 50%</li>
+                  <li>Guest initiates cancellation</li>
+                  <li>Refund processed in 7-14 days</li>
+                  <li>Confirmation email provided</li>
+                </ul>
+              </div>
+            </div>
+            <div className="cancellation-comparison">
+              <div className="comparison-column">
+                <h3>Same Day as Check-In</h3>
+                <ul>
+                  <li>Treated as No-Show</li>
+                  <li>Retention Fee: 100%</li>
+                  <li>Refund: 0%</li>
+                  <li>No refund issued</li>
+                  <li>Full amount forfeited</li>
+                </ul>
+              </div>
+              <div className="comparison-column">
+                <h3>No-Show (Failure to Check-In)</h3>
                 <ul>
                   <li>Guest fails to arrive without notification</li>
                   <li>Resort charges 100% of booking</li>
                   <li>No refund issued</li>
                   <li>Full amount forfeited</li>
-                  <li>No contact or notice from guest</li>
                   <li>Reservation marked as no-show</li>
                 </ul>
               </div>
