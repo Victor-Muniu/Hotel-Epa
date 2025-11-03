@@ -28,8 +28,16 @@ export default function AboutUs() {
 
           <section className="privacy-section">
             <h2 className="privacy-section-title">Our Story</h2>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '20px 0'}}>
+              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2F781707577b0147af9c231ec692cdc21b?format=webp&width=800" alt="Elegant Epashikino resort room" style={{width: '100%', height: '250px', objectFit: 'cover', display: 'block'}} />
+              </figure>
+              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2Fe46ddac554334ce183438f24777b4479?format=webp&width=800" alt="Resort exterior view" style={{width: '100%', height: '250px', objectFit: 'cover', display: 'block'}} />
+              </figure>
+            </div>
             <p>Epashikino Resort & Spa represents years of dedication to creating a world-class hospitality destination in one of Kenya's most captivating locations. Situated on the shores of Lake Elementaita, directly opposite the iconic "Sleeping Warrior" rocky mountain formation, our resort has become a preferred sanctuary for travelers seeking both relaxation and adventure.</p>
-            
+
             <p>Our distinctive architecture and thoughtfully designed spaces celebrate the region's natural beauty while providing the comfort and sophistication our guests deserve. Every detail, from our spacious deluxe suites to our panoramic views of flamingoes foraging in the lake, has been crafted to create an unforgettable stay.</p>
           </section>
 
