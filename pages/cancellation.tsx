@@ -209,27 +209,47 @@ export default function CancellationPolicy() {
           </section>
 
           <section className="cancellation-section">
-            <h2 className="cancellation-section-title">Summary: Cancellation vs. No-Show</h2>
+            <h2 className="cancellation-section-title">Summary: Cancellation Policy Timeline & No-Show</h2>
             <div className="cancellation-comparison">
               <div className="comparison-column">
-                <h3>Cancellation</h3>
+                <h3>7+ Days Before Check-Out</h3>
                 <ul>
-                  <li>Guest formally requests cancellation</li>
-                  <li>Resort retains 25% of booking</li>
-                  <li>75% refunded to guest</li>
+                  <li>Retention Fee: 10%</li>
+                  <li>Refund: 90%</li>
+                  <li>Guest initiates cancellation</li>
                   <li>Refund processed in 7-14 days</li>
-                  <li>Contact required to proceed</li>
-                  <li>Evidence of cancellation provided</li>
+                  <li>Confirmation email provided</li>
                 </ul>
               </div>
               <div className="comparison-column">
-                <h3>No-Show</h3>
+                <h3>3-6 Days Before Check-Out</h3>
                 <ul>
-                  <li>Guest fails to arrive without notification</li>
+                  <li>Retention Fee: 50%</li>
+                  <li>Refund: 50%</li>
+                  <li>Guest initiates cancellation</li>
+                  <li>Refund processed in 7-14 days</li>
+                  <li>Confirmation email provided</li>
+                </ul>
+              </div>
+            </div>
+            <div className="cancellation-comparison">
+              <div className="comparison-column">
+                <h3>Same Day as Check-Out</h3>
+                <ul>
+                  <li>Treated as No-Show</li>
+                  <li>Retention Fee: 100%</li>
+                  <li>Refund: 0%</li>
+                  <li>No refund issued</li>
+                  <li>Full amount forfeited</li>
+                </ul>
+              </div>
+              <div className="comparison-column">
+                <h3>No-Show (Failure to Check-Out)</h3>
+                <ul>
+                  <li>Guest fails to depart without notification</li>
                   <li>Resort charges 100% of booking</li>
                   <li>No refund issued</li>
                   <li>Full amount forfeited</li>
-                  <li>No contact or notice from guest</li>
                   <li>Reservation marked as no-show</li>
                 </ul>
               </div>
