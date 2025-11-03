@@ -42,8 +42,8 @@ export default function CancellationPolicy() {
             <p><strong>7 Days or More Before Check-Out:</strong> <strong>10% retention fee</strong> | <strong>90% refundable</strong></p>
             <p>If a cancellation is requested 7 or more days before your scheduled check-out date, Epashikino Resort & Spa retains 10% of the total booking revenue. The remaining 90% will be refunded to the original payment method within 7-14 business days.</p>
 
-            <p><strong>3 to 6 Days Before Check-Out:</strong> <strong>50% retention fee</strong> | <strong>50% refundable</strong></p>
-            <p>If a cancellation is requested between 3 and 6 days before your scheduled check-out date, Epashikino Resort & Spa retains 50% of the total booking revenue. The remaining 50% will be refunded to the original payment method within 7-14 business days.</p>
+            <p><strong>3 Days Before Check-Out:</strong> <strong>50% retention fee</strong> | <strong>50% refundable</strong></p>
+            <p>If a cancellation is requested 3 days before your scheduled check-out date, Epashikino Resort & Spa retains 50% of the total booking revenue. The remaining 50% will be refunded to the original payment method within 7-14 business days.</p>
 
             <p><strong>Same Day as Check-Out:</strong> <strong>No Refund (Treated as No-Show)</strong></p>
             <p>Cancellations requested on the same day as your scheduled check-out date are treated as a no-show. The full 100% of the booking amount will be forfeited with no refund issued.</p>
@@ -59,7 +59,7 @@ export default function CancellationPolicy() {
             </div>
 
             <div className="cancellation-example">
-              <p><strong>Example 2: Cancellation 3-6 Days Before Check-Out</strong></p>
+              <p><strong>Example 2: Cancellation 3 Days Before Check-Out</strong></p>
               <ul>
                 <li>Total Booking Amount: KES 50,000</li>
                 <li>Retention Fee (50%): KES 25,000</li>
@@ -73,8 +73,8 @@ export default function CancellationPolicy() {
             <h3 className="cancellation-subsection-title">7 Days or More Before Check-Out (10% Retention)</h3>
             <p>Guests may cancel their reservation <strong>7 or more days before the scheduled check-out date</strong> with a 10% retention fee. A refund of 90% of the booking amount will be processed to the original payment method within 7-14 business days of the cancellation request.</p>
 
-            <h3 className="cancellation-subsection-title">3 to 6 Days Before Check-Out (50% Retention)</h3>
-            <p>Cancellations made <strong>between 3 and 6 days before the scheduled check-out date</strong> will be subject to a 50% retention fee. A refund of 50% of the booking amount will be processed to the original payment method within 7-14 business days.</p>
+            <h3 className="cancellation-subsection-title">3 Days Before Check-Out (50% Retention)</h3>
+            <p>Cancellations made <strong>3 days before the scheduled check-out date</strong> will be subject to a 50% retention fee. A refund of 50% of the booking amount will be processed to the original payment method within 7-14 business days.</p>
 
             <h3 className="cancellation-subsection-title">Same Day as Check-Out (No Refund - Treated as No-Show)</h3>
             <p>Cancellations requested on the same day as your scheduled check-out date are treated as a no-show. <strong>No refund will be issued, and the full 100% of the booking amount will be forfeited.</strong></p>
@@ -222,7 +222,7 @@ export default function CancellationPolicy() {
                 </ul>
               </div>
               <div className="comparison-column">
-                <h3>3-6 Days Before Check-In</h3>
+                <h3>3 Days Before Check-In</h3>
                 <ul>
                   <li>Retention Fee: 50%</li>
                   <li>Refund: 50%</li>
