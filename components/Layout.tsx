@@ -69,7 +69,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="footer-column">
               <h4>Support &amp; Company</h4>
               <ul>
-                <li><a href="#">About Us</a></li>
+                <li><Link href="/about">About Us</Link></li>
                 <li><a href="#">How It Works</a></li>
                 <li><Link href="/faq">FAQs</Link></li>
                 <li><Link href="/contact">Contact Support</Link></li>
