@@ -104,12 +104,12 @@ export default function AboutUs() {
             <p>Our on-site restaurants serve a diverse range of cuisines, from international favorites to authentic Kenyan dishes prepared with locally sourced ingredients. Whether dining in our main restaurant overlooking the lake or enjoying a private meal in your suite, our culinary team crafts memorable dining experiences.</p>
             
             <h3 className="privacy-subsection-title">Conferences and Events</h3>
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0'}}>
-              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F22e2311edffd4634a0a1b74e09843a11?format=webp&width=800" alt="Kilimanjaro conference hall" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
+            <div className="conference-image-grid">
+              <figure className="conference-figure">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F22e2311edffd4634a0a1b74e09843a11?format=webp&width=800" alt="Kilimanjaro conference hall" className="conference-image" />
               </figure>
-              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F10a5b3405c5845a29378bede4dfe85f0?format=webp&width=800" alt="Conference hall interior" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
+              <figure className="conference-figure">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F10a5b3405c5845a29378bede4dfe85f0?format=webp&width=800" alt="Conference hall interior" className="conference-image" />
               </figure>
             </div>
             <p>Epashikino Resort & Spa features fully equipped conference halls and meeting spaces with state-of-the-art technology, scenic views, and professional support. Whether hosting a corporate retreat, intimate wedding, or large conference, our events team ensures every detail is executed flawlessly.</p>
