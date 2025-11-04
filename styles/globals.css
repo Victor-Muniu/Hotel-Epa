@@ -1658,6 +1658,38 @@ input, textarea, select { width: 100%; max-width: 100%; box-sizing: border-box; 
 /* keep subtle panel grain and vignette */
 .tour-panel::before { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%); mix-blend-mode: multiply; }
 .tour-panel::after { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="g"><feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.06"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(%23g)" opacity="0.04"/></svg>'); opacity: .6; mix-blend-mode: overlay; }
+
+/* Conference page specific responsive fixes */
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.home-card .media img { width: 100%; height: 180px; object-fit: cover; display: block; }
+
+/* Ensure pill-search collapses gracefully */
+.pill-search { grid-template-columns: 1.2fr .8fr .8fr .8fr auto; gap: 10px; align-items: center; }
+@media (max-width: 1100px) {
+  .pill-search { grid-template-columns: 1fr 1fr 1fr auto; }
+}
+@media (max-width: 900px) {
+  .pill-search { grid-template-columns: 1fr 1fr; grid-auto-flow: row; }
+  .homes-searchbar { gap: 12px; }
+  .seg-tabs { gap: 8px; }
+  .grid-cards { grid-template-columns: 1fr; }
+  .filters { position: static; width: 100%; order: 3; }
+  .homes-body { display: grid; grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 600px) {
+  .pill-search { grid-template-columns: 1fr; }
+  .seg-tabs { display: flex; gap: 10px; overflow-x: auto; }
+  .seg-btn { min-width: 120px; }
+  .home-card .media img { height: 140px; }
+  .home-card { padding: 12px; }
+  .filters { padding: 12px; }
+  .chip-row { overflow-x: auto; display: flex; gap: 8px; }
+}
+
+/* Make filters accessible and stack on small devices */
+@media (max-width: 900px) {
+  .filters { border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); }
+}
 /* ensure images themselves cover and remain crisp */
 .tour-slide img { display: none; }
 
