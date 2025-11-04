@@ -11,8 +11,8 @@ export default function AboutUs() {
       try {
         const res = await fetch('/api/rooms');
         const json = await res.json();
-        if (mounted && Array.isArray(json.rooms)) {
-          setRooms(json.rooms);
+        if (mounted && Array.isArray(json)) {
+          setRooms(json);
         }
       } catch (_) {}
     })();
