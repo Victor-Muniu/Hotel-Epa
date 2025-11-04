@@ -5,7 +5,7 @@ html, body, #__next { height: 100%; }
 body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; background: var(--text-white); color: var(--text-black); overflow-x: hidden; }
 
 .site-wrapper { display: flex; flex-direction: column; min-height: 100%; padding-top: 86px; box-sizing: border-box; }
-.topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 50; display: block; height: 62px; padding: 0; width: 100%; max-width: none; margin: 0; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: hidden; }
+.topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 9999; display: block; height: 62px; padding: 0; width: 100%; max-width: none; margin: 0; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: visible; isolation: isolate; }
 .topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; position: relative; }
 .branding { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; padding: 8px 10px; border-radius: 999px; background: transparent; }
 .brand-logo { height: 36px; width: auto; border-radius: 0; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; background: transparent; }
@@ -22,7 +22,7 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: url('https://i.pravatar.cc/68?img=12') center/cover no-repeat, #ddd; border: 1px solid rgba(255,255,255,.25); }
 
 /* mobile nav panel */
-.mobile-nav { position: fixed; left: 12px; right: 12px; top: 74px; z-index: 60; background: rgba(248,245,242,.98); color: var(--text-black); border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.25); padding: 8px; display: grid; gap: 6px; }
+.mobile-nav { position: fixed; left: 12px; right: 12px; top: 74px; z-index: 10001; background: rgba(248,245,242,.98); color: var(--text-black); border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.35); padding: 8px; display: grid; gap: 6px; max-height: calc(100vh - 96px); overflow: auto; width: calc(100% - 24px); }
 .mobile-nav-link { display: block; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: var(--text-black); }
 .mobile-nav-link:hover { background: rgba(0,0,0,.04); }
 
@@ -101,9 +101,7 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .availability-label { font-size: .75rem; color: #6b635c; }
 .availability-input { border: 0; padding: 0; background: transparent; color: var(--text-black); font-size: .95rem; outline: none; width: 100%; }
 .availability-btn { justify-self: end; }
-.hero-title { margin: 0 0 12px; font-size: 2.5rem; }
-@media (max-width: 900px) { .hero-title { font-size: 2rem; } }
-@media (max-width: 600px) { .hero-title { font-size: 1.6rem; } }
+.hero-title { margin: 0 0 12px; font-size: clamp(1.6rem, 6.5vw, 3.5rem); line-height: 1.05; font-weight: 800; }
 .hero-subtitle { margin: 0 0 18px; opacity: .95; }
 .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .btn { display: inline-block; padding: 12px 18px; border-radius: 999px; text-decoration: none; font-weight: 600; border: 1px solid transparent; cursor: pointer; }
