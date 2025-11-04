@@ -1,7 +1,24 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function AboutUs() {
+  const [rooms, setRooms] = useState<any[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/rooms');
+        const json = await res.json();
+        if (mounted && Array.isArray(json)) {
+          setRooms(json);
+        }
+      } catch (_) {}
+    })();
+    return () => { mounted = false; };
+  }, []);
+
   return (
     <main className="privacy-page" aria-label="About Epashikino Resort & Spa">
       <Head>
@@ -67,22 +84,25 @@ export default function AboutUs() {
           <section className="privacy-section">
             <h2 className="privacy-section-title">Our Accommodations</h2>
             <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', margin: '20px 0'}}>
-              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
-                <img src="https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F1966ee8babb94437812b351eb3246c8a?format=webp&width=800" alt="Deluxe Ocean View room" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
-              </figure>
-              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
-                <img src="https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2Ffa4d03405a5f4af6a0fb140a86159812?format=webp&width=800" alt="Family Suite room" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
-              </figure>
-              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
-                <img src="https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F9ae710d8f1ed4e49b9b727c33fb31d0f?format=webp&width=800" alt="Garden View room" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
-              </figure>
+              {rooms.slice(0, 3).map((room) => (
+                <figure key={room.id} style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                  {room.images && room.images.length > 0 && (
+                    <img
+                      src={room.images[0]}
+                      alt={room.name}
+                      style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}}
+                    />
+                  )}
+                </figure>
+              ))}
             </div>
             <p>Epashikino offers a carefully curated selection of accommodation options to suit diverse guest preferences and needs:</p>
             <ul className="privacy-list">
-              <li><strong>Deluxe Rooms:</strong> Spacious, individually themed suites with private balconies offering panoramic views of Lake Elementaita and the Sleeping Warrior</li>
-              <li><strong>Premium Suites:</strong> Enhanced comfort with larger living areas, premium furnishings, and upgraded amenities for discerning travelers</li>
-              <li><strong>Family Accommodations:</strong> Multi-room options designed for families, with configurations that ensure comfort for guests of all ages</li>
-              <li><strong>Accessible Rooms:</strong> Specially designed accommodations ensuring comfort and independence for guests with mobility requirements</li>
+              {rooms.map((room) => (
+                <li key={room.id}>
+                  <strong>{room.name}</strong>
+                </li>
+              ))}
             </ul>
           </section>
 
@@ -101,10 +121,7 @@ export default function AboutUs() {
               </figure>
             </div>
             <p>Epashikino Resort & Spa features fully equipped conference halls and meeting spaces with state-of-the-art technology, scenic views, and professional support. Whether hosting a corporate retreat, intimate wedding, or large conference, our events team ensures every detail is executed flawlessly.</p>
-            
-            <h3 className="privacy-subsection-title">Spa and Wellness</h3>
-            <p>Our spa offers a comprehensive range of treatments and therapies designed to rejuvenate body, mind, and spirit. From traditional massages to modern wellness treatments, our skilled therapists create personalized experiences in a serene environment overlooking the lake.</p>
-            
+
             <h3 className="privacy-subsection-title">Recreation and Activities</h3>
             <p>Whether seeking adventure or relaxation, Epashikino offers numerous activities including birdwatching, nature walks, lake activities, visits to nearby Soysambu Conservancy for wildlife viewing, and exploration of local attractions like the Sleeping Warrior hiking trail and natural hot springs.</p>
             
