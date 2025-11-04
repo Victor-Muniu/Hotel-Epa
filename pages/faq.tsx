@@ -29,7 +29,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Are pets allowed at the resort?',
-    answer: 'We welcome well-behaved pets at Epashikino Resort & Spa. Please inform us during booking and note that additional pet fees may apply. Certain restrictions may apply to specific room types.'
+    answer: 'Pets are not allowed in our facility.'
   },
   {
     question: 'What dining options are available?',
