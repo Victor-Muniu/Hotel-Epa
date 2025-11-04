@@ -44,10 +44,6 @@ const faqs: FAQItem[] = [
     answer: 'All rooms include air conditioning, en-suite bathrooms with premium toiletries, flat-screen TV, and complimentary WiFi. Some room categories include additional amenities such as private balconies.'
   },
   {
-    question: 'Is there a spa or wellness facility?',
-    answer: 'Yes, Epashikino Resort & Spa offers a full-service spa with various massage and wellness treatments. We also have a fitness center and can arrange yoga and meditation sessions. Spa services can be booked through our front desk.'
-  },
-  {
     question: 'What activities and tours are available?',
     answer: 'We offer nature tours, adventure activities, local cultural experiences, and guided visits to nearby attractions. Our concierge team can help arrange activities based on your interests and schedule.'
   },
