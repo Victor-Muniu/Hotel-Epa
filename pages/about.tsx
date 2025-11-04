@@ -87,8 +87,8 @@ export default function AboutUs() {
               {rooms.slice(0, 3).map((room) => (
                 <figure key={room.id} style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
                   {room.images && room.images.length > 0 && (
-                    <img 
-                      src={room.images[0]} 
+                    <img
+                      src={room.images[0]}
                       alt={room.name}
                       style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}}
                     />
@@ -100,7 +100,7 @@ export default function AboutUs() {
             <ul className="privacy-list">
               {rooms.map((room) => (
                 <li key={room.id}>
-                  <strong>{room.name}:</strong> {room.description}
+                  <strong>{room.name}</strong>
                 </li>
               ))}
             </ul>
