@@ -17,7 +17,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit cards (Visa, Mastercard, American Express), bank transfers, and mobile payment options. A valid credit card is required to secure your reservation.'
+    answer: 'We accept all major credit cards (Visa, Mastercard, American Express), bank transfers, mobile payment options, and cash. A valid credit card is required to secure your reservation.'
   },
   {
     question: 'Is there a cancellation policy?',
