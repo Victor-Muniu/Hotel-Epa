@@ -121,10 +121,7 @@ export default function AboutUs() {
               </figure>
             </div>
             <p>Epashikino Resort & Spa features fully equipped conference halls and meeting spaces with state-of-the-art technology, scenic views, and professional support. Whether hosting a corporate retreat, intimate wedding, or large conference, our events team ensures every detail is executed flawlessly.</p>
-            
-            <h3 className="privacy-subsection-title">Spa and Wellness</h3>
-            <p>Our spa offers a comprehensive range of treatments and therapies designed to rejuvenate body, mind, and spirit. From traditional massages to modern wellness treatments, our skilled therapists create personalized experiences in a serene environment overlooking the lake.</p>
-            
+
             <h3 className="privacy-subsection-title">Recreation and Activities</h3>
             <p>Whether seeking adventure or relaxation, Epashikino offers numerous activities including birdwatching, nature walks, lake activities, visits to nearby Soysambu Conservancy for wildlife viewing, and exploration of local attractions like the Sleeping Warrior hiking trail and natural hot springs.</p>
             
