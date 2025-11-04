@@ -35,7 +35,7 @@ export default function AboutUs() {
         <header className="privacy-header">
           <p className="privacy-eyebrow">Our Story</p>
           <h1 className="privacy-title">About Epashikino Resort & Spa</h1>
-          <p className="privacy-lead">Welcome to Epashikino Resort & Spa, a sanctuary of luxury and natural beauty nestled on the shores of Lake Elementaita in Kenya's spectacular Great Rift Valley. We are committed to delivering exceptional hospitality experiences that blend world-class comfort with the breathtaking splendor of our pristine natural surroundings.</p>
+          <p className="privacy-lead">Welcome to Epashikino Resort & Spa, a sanctuary of luxury and natural beauty situated opposite Lake Elementaita in Kenya's spectacular Great Rift Valley. We are committed to delivering exceptional hospitality experiences that blend world-class comfort with the breathtaking splendor of our pristine natural surroundings.</p>
         </header>
 
         <div className="privacy-content">
@@ -58,7 +58,7 @@ export default function AboutUs() {
                 <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2Fe46ddac554334ce183438f24777b4479?format=webp&width=800" alt="Resort exterior view" style={{width: '100%', height: '250px', objectFit: 'cover', display: 'block'}} />
               </figure>
             </div>
-            <p>Epashikino Resort & Spa represents years of dedication to creating a world-class hospitality destination in one of Kenya's most captivating locations. Situated on the shores of Lake Elementaita, directly opposite the iconic "Sleeping Warrior" rocky mountain formation, our resort has become a preferred sanctuary for travelers seeking both relaxation and adventure.</p>
+            <p>Epashikino Resort & Spa represents years of dedication to creating a world-class hospitality destination in one of Kenya's most captivating locations. Situated opposite Lake Elementaita, with direct views of the iconic "Sleeping Warrior" rocky mountain formation, our resort has become a preferred sanctuary for travelers seeking both relaxation and adventure.</p>
 
             <p>Our distinctive architecture and thoughtfully designed spaces celebrate the region's natural beauty while providing the comfort and sophistication our guests deserve. Every detail, from our spacious deluxe suites to our panoramic views of flamingoes foraging in the lake, has been crafted to create an unforgettable stay.</p>
           </section>
@@ -66,7 +66,7 @@ export default function AboutUs() {
           <section className="privacy-section">
             <h2 className="privacy-section-title">Why Choose Epashikino</h2>
             <h3 className="privacy-subsection-title">Spectacular Location</h3>
-            <p>Perched on the shores of Lake Elementaita within the UNESCO World Heritage Kenya Lake System, Epashikino offers unparalleled natural beauty. Guests wake to breath-taking views of flamingoes foraging in the crystalline waters and the majestic "Sleeping Warrior" mountain formation in the distance. The constant sight of steam rising from natural hot springs dancing in the tropical sun creates an enchanting backdrop unlike any other destination.</p>
+            <p>Positioned opposite Lake Elementaita within the UNESCO World Heritage Kenya Lake System, Epashikino offers unparalleled natural beauty. Guests wake to breath-taking views of flamingoes foraging in the crystalline waters and the majestic "Sleeping Warrior" mountain formation. The constant sight of steam rising from natural hot springs dancing in the tropical sun creates an enchanting backdrop unlike any other destination.</p>
             
             <h3 className="privacy-subsection-title">Luxurious Accommodations</h3>
             <p>Our spacious and tastefully furnished deluxe suites are individually themed to complement either business or leisure stays. Each room features a private balcony providing breathtaking, awe-inspiring views. Whether you're a business traveler requiring a professional space or a leisure guest seeking tranquility, our suites are designed to exceed your expectations with premium bedding, modern amenities, and elegant décor.</p>
