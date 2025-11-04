@@ -41,7 +41,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'What amenities are included in the rooms?',
-    answer: 'All rooms include air conditioning, en-suite bathrooms with premium toiletries, flat-screen TV, minibar, safe deposit box, and complimentary WiFi. Some room categories include additional amenities such as private balconies and jacuzzis.'
+    answer: 'All rooms include air conditioning, en-suite bathrooms with premium toiletries, flat-screen TV, and complimentary WiFi. Some room categories include additional amenities such as private balconies.'
   },
   {
     question: 'Is there a spa or wellness facility?',
