@@ -1499,6 +1499,21 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .result-media-wrap { position: relative; }
 .thumb-fav { position: absolute; right: 8px; top: 8px; width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 1px solid rgba(111,78,55,.18); display: grid; place-items: center; color: var(--brand-brown); }
 
+/* Accommodations Grid */
+.accommodations-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+
+.accommodation-figure { margin: 0; border-radius: 8px; overflow: hidden; }
+
+.accommodation-image { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+@media (max-width: 900px) {
+  .accommodations-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .accommodations-grid { grid-template-columns: 1fr; }
+}
+
 .btn-tours { display: inline-flex; align-items: center; justify-content: center; height: 34px; padding: 0 14px; border-radius: 999px; background: var(--brand-brown); color: #fff; border: 1px solid rgba(111,78,55,.25); font-weight: 700; cursor: pointer; }
 .result-rating-row { display: inline-flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.8); }
 .result-summary { margin: 4px 0 8px; color: rgba(0,0,0,0.75); }
