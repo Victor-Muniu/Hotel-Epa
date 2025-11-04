@@ -1,7 +1,15 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { getRooms, Room } from '../lib/roomsData';
 
 export default function AboutUs() {
+  const [rooms, setRooms] = useState<Room[]>([]);
+
+  useEffect(() => {
+    getRooms().then(setRooms);
+  }, []);
+
   return (
     <main className="privacy-page" aria-label="About Epashikino Resort & Spa">
       <Head>
