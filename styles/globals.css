@@ -1499,49 +1499,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 .result-media-wrap { position: relative; }
 .thumb-fav { position: absolute; right: 8px; top: 8px; width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 1px solid rgba(111,78,55,.18); display: grid; place-items: center; color: var(--brand-brown); }
 
-/* About Hero */
-.about-hero-container { position: relative; width: 100%; height: 300px; overflow: hidden; margin-bottom: 40px; }
-
-.about-hero-image { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.about-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2)); }
-
-/* Story Image Grid */
-.story-image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
-
-.story-figure { margin: 0; border-radius: 8px; overflow: hidden; }
-
-.story-image { width: 100%; height: 250px; object-fit: cover; display: block; }
-
-/* Conference Image Grid */
-.conference-image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-
-.conference-figure { margin: 0; border-radius: 8px; overflow: hidden; }
-
-.conference-image { width: 100%; height: 200px; object-fit: cover; display: block; }
-
-/* Accommodations Grid */
-.accommodations-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
-
-.accommodation-figure { margin: 0; border-radius: 8px; overflow: hidden; }
-
-.accommodation-image { width: 100%; height: 200px; object-fit: cover; display: block; }
-
-@media (max-width: 900px) {
-  .story-image-grid { grid-template-columns: 1fr; }
-  .conference-image-grid { grid-template-columns: 1fr; }
-  .accommodations-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 600px) {
-  .about-hero-container { height: 200px; }
-  .story-image-grid { grid-template-columns: 1fr; }
-  .story-image { height: 180px; }
-  .conference-image-grid { grid-template-columns: 1fr; }
-  .conference-image { height: 160px; }
-  .accommodations-grid { grid-template-columns: 1fr; }
-}
-
 .btn-tours { display: inline-flex; align-items: center; justify-content: center; height: 34px; padding: 0 14px; border-radius: 999px; background: var(--brand-brown); color: #fff; border: 1px solid rgba(111,78,55,.25); font-weight: 700; cursor: pointer; }
 .result-rating-row { display: inline-flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.8); }
 .result-summary { margin: 4px 0 8px; color: rgba(0,0,0,0.75); }
