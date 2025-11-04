@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const [navOpen, setNavOpen] = useState(false);
   const year = String(new Date().getFullYear());
   return (
     <div className="site-wrapper">
@@ -20,6 +21,16 @@ export default function Layout({ children }: { children: ReactNode }) {
             </Link>
           </div>
 
+          <button
+            className="nav-toggle"
+            aria-label="Toggle navigation"
+            aria-expanded={navOpen ? 'true' : 'false'}
+            aria-controls="mobile-primary-nav"
+            onClick={() => setNavOpen((v) => !v)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          </button>
+
           <nav className="primary-nav" aria-label="Primary">
             <Link className="nav-link" href="/">Home</Link>
             <Link className="nav-link" href="/rooms">Accommodation</Link>
@@ -29,6 +40,15 @@ export default function Layout({ children }: { children: ReactNode }) {
           </nav>
 
         </div>
+        {navOpen && (
+          <nav id="mobile-primary-nav" className="mobile-nav" aria-label="Primary mobile">
+            <Link className="mobile-nav-link" href="/" onClick={() => setNavOpen(false)}>Home</Link>
+            <Link className="mobile-nav-link" href="/rooms" onClick={() => setNavOpen(false)}>Accommodation</Link>
+            <Link className="mobile-nav-link" href="/conference" onClick={() => setNavOpen(false)}>Conferences</Link>
+            <Link className="mobile-nav-link" href="/attractions" onClick={() => setNavOpen(false)}>Attractions</Link>
+            <Link className="mobile-nav-link" href="/contact" onClick={() => setNavOpen(false)}>Contact</Link>
+          </nav>
+        )}
       </header>
       {children}
       <footer className="site-footer" aria-label="Site footer">
