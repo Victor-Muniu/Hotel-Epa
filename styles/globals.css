@@ -4,9 +4,9 @@
 html, body, #__next { height: 100%; }
 body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; background: var(--text-white); color: var(--text-black); overflow-x: hidden; }
 
-.site-wrapper { display: flex; flex-direction: column; min-height: 100%; }
-.topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 50; display: block; height: 62px; padding: 0; width: 100%; max-width: none; margin: 0; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: hidden; }
-.topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; }
+.site-wrapper { display: flex; flex-direction: column; min-height: 100%; padding-top: 86px; box-sizing: border-box; }
+.topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 9999; display: block; height: 62px; padding: 0; width: 100%; max-width: none; margin: 0; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: visible; isolation: isolate; }
+.topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; position: relative; }
 .branding { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; padding: 8px 10px; border-radius: 999px; background: transparent; }
 .brand-logo { height: 36px; width: auto; border-radius: 0; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; background: transparent; }
 .brand-title { font-size: 0.95rem; font-weight: 700; letter-spacing: .2px; }
@@ -21,6 +21,14 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .action-icon svg { width: 14px; height: 14px; }
 .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: url('https://i.pravatar.cc/68?img=12') center/cover no-repeat, #ddd; border: 1px solid rgba(255,255,255,.25); }
 
+/* mobile nav panel */
+.mobile-nav { position: fixed; left: 12px; right: 12px; top: 74px; z-index: 10001; background: rgba(248,245,242,.98); color: var(--text-black); border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.35); padding: 8px; display: grid; gap: 6px; max-height: calc(100vh - 96px); overflow: auto; width: calc(100% - 24px); }
+.mobile-nav-link { display: block; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: var(--text-black); }
+.mobile-nav-link:hover { background: rgba(0,0,0,.04); }
+
+/* hide toggle by default on desktop */
+.nav-toggle { display: none; border: 0; background: transparent; color: inherit; }
+
 .hero-banner { position: relative; display: grid; place-items: start center; padding: 140px 20px 80px; min-height: 560px; color: var(--text-white); }
 .hero-banner::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.28)), url('https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F628e1fa355584f05a16f8c6202e7ce55?format=webp&width=2400') center/cover no-repeat, var(--brand-brown); filter: contrast(1.08) saturate(1.06); }
 .hero-inner { width: 100%; max-width: 980px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items: center; }
@@ -28,8 +36,25 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .hero-title { margin: 0 0 12px; font-size: 3.5rem; line-height: 1.05; font-weight: 800; }
 .hero-subtitle { margin: 0 0 22px; opacity: .95; font-size: 1.125rem; }
 .hero-actions { display: flex; gap: 12px; align-items: center; }
+/* Ensure hero action buttons are reachable and scale on small screens */
+.hero-actions .btn { min-width: 140px; padding: 12px 18px; font-size: 1rem; }
+
+@media (max-width: 900px) {
+  .hero-actions { flex-direction: column; align-items: stretch; gap: 12px; margin-top: 8px; }
+  .hero-actions .btn { width: 100%; max-width: 100%; padding: 12px 16px; border-radius: 12px; }
+  .hero-actions .btn-primary { padding: 14px 18px; font-size: clamp(0.95rem, 4.2vw, 1.05rem); }
+  .hero-actions .btn-outline { padding: 12px 16px; font-size: clamp(0.9rem, 3.6vw, 1rem); }
+}
 .hero-preview { justify-self: end; width: 360px; max-width: 100%; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.25); box-shadow: 0 10px 30px rgba(0,0,0,.25); position: relative; }
-.hero-preview img { width: 100%; height: 240px; object-fit: cover; display: block; }
+.hero-preview img { width: 100%; height: 240px; object-fit: cover; display: block; max-width: 100%; }
+
+/* scale hero image gracefully */
+@media (max-width: 900px) {
+  .hero-preview img { height: 220px; }
+}
+@media (max-width: 600px) {
+  .hero-preview img { height: 160px; }
+}
 .hero-preview::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: linear-gradient(180deg, rgba(16,10,5,0) 0%, rgba(111,78,55,.25) 45%, rgba(0,0,0,.55) 100%); }
 .hero-preview-caption { padding: 12px; font-size: .9rem; opacity: .95; position: relative; z-index: 2; }
 
@@ -57,6 +82,12 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
   .availability-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
   .availability-btn { grid-column: 1 / -1; }
   .room-types-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  /* stack hero columns to prevent overlap on small screens */
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-preview { justify-self: stretch; width: 100%; }
+  /* mobile nav: show toggle and hide desktop menu */
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.14); color: var(--text-white); border: 1px solid rgba(255,255,255,.35); }
+  .primary-nav { display: none; }
 }
 
 @media (max-width: 600px) {
@@ -64,14 +95,36 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
   .availability-field { padding: 10px; }
   .room-types-grid { grid-template-columns: 1fr; }
 }
-.availability-field { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 8px 10px; background: #fff; border: 1px solid #e6e2dc; border-radius: 10px; position: relative; }
+.availability-field { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 8px 10px; background: #fff; border: 1px solid #e6e2dc; border-radius: 10px; position: relative; min-width: 0; }
+.availability-field * { box-sizing: border-box; }
+.availability-input { min-width: 0; }
+.availability-bar { box-sizing: border-box; }
+
+/* ensure inputs wrap and don't overflow */
+@media (max-width: 900px) {
+  .availability-field { padding: 8px; }
+}
+@media (max-width: 600px) {
+  .availability-field { padding: 8px 10px; }
+}
 .availability-label { font-size: .75rem; color: #6b635c; }
 .availability-input { border: 0; padding: 0; background: transparent; color: var(--text-black); font-size: .95rem; outline: none; width: 100%; }
 .availability-btn { justify-self: end; }
-.hero-title { margin: 0 0 12px; font-size: 2.5rem; }
+.hero-title { margin: 0 0 12px; font-size: clamp(1.6rem, 6.5vw, 3.5rem); line-height: 1.05; font-weight: 800; }
 .hero-subtitle { margin: 0 0 18px; opacity: .95; }
 .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn { display: inline-block; padding: 12px 18px; border-radius: 999px; text-decoration: none; font-weight: 600; border: 1px solid transparent; cursor: pointer; }
+.btn { display: inline-block; padding: 12px 18px; border-radius: 999px; text-decoration: none; font-weight: 600; border: 1px solid transparent; cursor: pointer; box-sizing: border-box; }
+
+/* Make primary and outline buttons visually balanced */
+.btn-primary { background: var(--brand-brown); color: var(--text-white); }
+.btn-primary, .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.btn-outline { background: transparent; border-color: rgba(255,255,255,0.9); color: var(--text-white); }
+
+@media (max-width: 900px) {
+  .btn { font-size: 1rem; padding: 12px 16px; }
+  .btn-primary { border-radius: 12px; }
+  .btn-outline { border-radius: 12px; }
+}
 .btn-primary { background: var(--brand-brown); color: var(--text-white); }
 .btn-outline { background: transparent; border-color: var(--text-white); color: var(--text-white); }
 .btn-contrast { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #2a2a2a, #0f0f0f); color: var(--text-white); border: 1px solid rgba(0,0,0,.85); box-shadow: 0 8px 18px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.14) inset, 0 0 0 1px rgba(255,255,255,.08); transition: background .18s ease, box-shadow .18s ease, transform .12s ease; font-weight: 700; letter-spacing: .2px; }
@@ -108,10 +161,20 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 /* Newsletter row */
 .footer-newsletter { display: flex; gap: 20px; align-items: center; justify-content: space-between; }
 .newsletter-title { margin: 0; font-size: 1.15rem; max-width: 66%; color: var(--text-black); font-family: 'Playfair Display', Georgia, serif; line-height: 1.25; }
-.newsletter-form { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-.newsletter-input { padding: 10px 8px; border: 0; border-bottom: 1px solid rgba(0,0,0,0.12); background: transparent; min-width: 300px; outline: none; color: rgba(0,0,0,0.85); }
-.newsletter-input::placeholder { color: rgba(0,0,0,0.4); }
-.newsletter-btn { padding: 8px 10px; border-radius: 999px; background: transparent; color: var(--brand-brown); border: 1px solid rgba(0,0,0,0.06); cursor: pointer; font-weight: 700; }
+.newsletter-form { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+/* Make the input container position relative so the send icon can sit inside the input */
+.newsletter-field { position: relative; width: 100%; max-width: 520px; }
+.newsletter-input { padding: 12px 48px 12px 14px; border: 1px solid rgba(0,0,0,0.06); border-radius: 8px; background: transparent; outline: none; color: rgba(0,0,0,0.85); width: 100%; box-sizing: border-box; min-width: 0; }
+.newsletter-input::placeholder { color: rgba(0,0,0,0.45); }
+/* Position the circular send button inside the input on the right */
+.newsletter-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; background: transparent; color: var(--brand-brown); border: 1px solid rgba(0,0,0,0.06); display: grid; place-items: center; cursor: pointer; }
+
+/* Desktop: keep the newsletter form layout as a row; on small screens stack */
+@media (max-width: 900px) {
+  .newsletter-form { width: 100%; margin-left: 0; }
+  .footer-newsletter { flex-direction: column; align-items: stretch; gap: 12px; }
+  .newsletter-field { max-width: 100%; }
+}
 
 /* Links grid */
 .footer-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
@@ -144,7 +207,9 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 /* keep panel contained and prevent horizontal scroll */
 .about-panel { background: var(--brand-cream); border-radius: 24px; border: 1px solid rgba(0,0,0,.06); box-shadow: none; max-width: 1200px; margin: 0 auto; overflow: hidden; }
 /* true three-column layout that never forces overflow */
-.about-inner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 36px 24px; display: grid; grid-template-columns: 1fr 420px; gap: 24px; align-items: start; }
+.about-inner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 36px 20px; display: grid; grid-template-columns: 1fr 420px; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .about-inner { padding: 28px 16px; gap: 18px; } }
+@media (max-width: 600px) { .about-inner { padding: 18px 12px; } }
 .about-head-column, .about-copy, .about-gallery { min-width: 0; }
 .about-head-column { display: flex; align-items: flex-start; z-index: 2; grid-column: 1 / -1; margin-bottom: 12px; }
 .about-heading { margin: 0; display: block; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 3rem; line-height: 1.02; color: var(--text-black); font-weight: 700; }
@@ -186,7 +251,9 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 
 /* Why Book With Us section */
 .why-section { padding: 56px 20px; background: var(--brand-brown); color: var(--text-white); margin-bottom: 48px; }
-.why-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+.why-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; padding: 0 20px; }
+@media (max-width: 900px) { .why-inner { padding: 0 16px; } }
+@media (max-width: 600px) { .why-inner { padding: 0 12px; } }
 .why-media .media-card { position: relative; border-radius: 12px; overflow: hidden; box-shadow: none; }
 .why-media img { width: 100%; height: auto; display: block; }
 .years-badge { position: absolute; left: 18px; top: 18px; background: rgba(111,78,55,0.75); color: var(--text-white); padding: 10px 14px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: none; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); font-weight: 700; }
@@ -460,6 +527,11 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .filters .input { width: 100%; min-width: 0; box-sizing: border-box; }
 .stack { display: grid; gap: 8px; }
 .checkbox { display: inline-flex; align-items: center; gap: 8px; }
+/* Ensure checkbox inputs don't expand to full width and labels sit beside inputs */
+input[type="checkbox"], input[type="radio"] { width: auto; height: auto; margin: 0; }
+.checkbox { justify-content: flex-start; }
+.checkbox input { flex: 0 0 auto; }
+.checkbox { line-height: 1.2; }
 .grid-rows { display: grid; gap: 12px; }
 .counter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
 .counter { padding: 6px 10px; border: 1px solid rgba(0,0,0,.08); border-radius: 10px; background: #fff; cursor: pointer; }
@@ -613,6 +685,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
   padding: 24px;
   display: grid;
   gap: 32px;
+  overflow: auto;
+  max-height: calc(90vh - 180px);
+  box-sizing: border-box;
 }
 
 .hall-gallery {
@@ -1539,6 +1614,48 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 
 /* Room tour cinematic overlay */
 .tour-overlay { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(111,78,55,.55)); backdrop-filter: blur(4px); padding: 20px; }
+
+/* Additional responsive fixes appended: prevent form overflow and improve typography scaling */
+
+/* Ensure grid children can shrink to avoid overflow on small screens */
+.hero-inner, .about-inner, .why-inner, .booking-layout, .contact-grid, .availability-bar, .quote-form, .listing-body, .rooms-grid, .pill-search { min-width: 0; }
+
+/* Inputs and selects should fill their container and not force overflow */
+input, textarea, select { width: 100%; max-width: 100%; box-sizing: border-box; }
+.form-input, .availability-input, .newsletter-input, .quote-form .form-input, .booking-form input, .booking-form select { width: 100%; }
+
+/* Ensure form rows collapse on narrow screens */
+@media (max-width: 900px) {
+  .form-row, .date-row, .count-row { grid-template-columns: 1fr !important; }
+  .pill-search { grid-template-columns: 1fr; }
+}
+
+/* Responsive heading scaling to avoid excessively large fonts on small devices */
+.about-heading { font-size: clamp(1.4rem, 6.5vw, 3rem); }
+.why-title { font-size: clamp(1.2rem, 6vw, 2.25rem); }
+.section-title { font-size: clamp(1rem, 3.5vw, 1.75rem); }
+
+/* Tighten spacing in why/features on narrow screens to avoid long wrapped columns */
+@media (max-width: 600px) {
+  .why-features { grid-template-columns: 1fr; gap: 12px; }
+  .why-panel { padding: 20px 16px; }
+  .about-description { max-width: 100%; }
+  .site-wrapper { padding-top: 76px; }
+}
+
+/* Booking form: make fields stack and remove fixed min widths */
+.booking-form, .booking-container, .booking-layout { box-sizing: border-box; }
+.booking-form .form-row { grid-template-columns: 1fr; }
+.booking-form .form-group { min-width: 0; }
+
+/* Modal/quote form adjustments */
+.quote-form { width: 95%; max-width: 95%; }
+.quote-form .form-row { grid-template-columns: 1fr; }
+
+/* Small utility to ensure sticky sidebars don't overlap content on narrow devices */
+@media (max-width: 900px) {
+  .listing-aside, .conf-filters, .attr-filters, .detail-aside { position: static; }
+}
 .tour-panel { position: relative; width: min(1100px, 94vw); height: min(70vh, 720px); border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08) inset; }
 .tour-close { position: absolute; right: 10px; top: 10px; z-index: 40; background: rgba(255,255,255,.85); color: #111; border: 0; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
 .tour-stage { position: relative; inset: 0; height: 100%; overflow: hidden; }
@@ -1549,6 +1666,38 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 /* keep subtle panel grain and vignette */
 .tour-panel::before { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%); mix-blend-mode: multiply; }
 .tour-panel::after { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="g"><feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.06"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(%23g)" opacity="0.04"/></svg>'); opacity: .6; mix-blend-mode: overlay; }
+
+/* Conference page specific responsive fixes */
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.home-card .media img { width: 100%; height: 180px; object-fit: cover; display: block; }
+
+/* Ensure pill-search collapses gracefully */
+.pill-search { grid-template-columns: 1.2fr .8fr .8fr .8fr auto; gap: 10px; align-items: center; }
+@media (max-width: 1100px) {
+  .pill-search { grid-template-columns: 1fr 1fr 1fr auto; }
+}
+@media (max-width: 900px) {
+  .pill-search { grid-template-columns: 1fr 1fr; grid-auto-flow: row; }
+  .homes-searchbar { gap: 12px; }
+  .seg-tabs { gap: 8px; }
+  .grid-cards { grid-template-columns: 1fr; }
+  .filters { position: static; width: 100%; order: 3; }
+  .homes-body { display: grid; grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 600px) {
+  .pill-search { grid-template-columns: 1fr; }
+  .seg-tabs { display: flex; gap: 10px; overflow-x: auto; }
+  .seg-btn { min-width: 120px; }
+  .home-card .media img { height: 140px; }
+  .home-card { padding: 12px; }
+  .filters { padding: 12px; }
+  .chip-row { overflow-x: auto; display: flex; gap: 8px; }
+}
+
+/* Make filters accessible and stack on small devices */
+@media (max-width: 900px) {
+  .filters { border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); }
+}
 /* ensure images themselves cover and remain crisp */
 .tour-slide img { display: none; }
 

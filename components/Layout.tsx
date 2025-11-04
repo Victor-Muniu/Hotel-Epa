@@ -1,8 +1,40 @@
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, useState, useRef, useEffect } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const [navOpen, setNavOpen] = useState(false);
+  const navRef = useRef<HTMLElement | null>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
   const year = String(new Date().getFullYear());
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setNavOpen(false);
+    }
+    function onClick(e: MouseEvent) {
+      if (!navOpen) return;
+      const target = e.target as Node;
+      if (navRef.current && !navRef.current.contains(target) && !(target as HTMLElement).closest('.nav-toggle')) {
+        setNavOpen(false);
+      }
+    }
+    if (navOpen) {
+      document.addEventListener('keydown', onKey);
+      document.addEventListener('mousedown', onClick);
+      // prevent background scroll
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      // focus first link for keyboard users
+      setTimeout(() => firstLinkRef.current?.focus(), 50);
+      return () => {
+        document.removeEventListener('keydown', onKey);
+        document.removeEventListener('mousedown', onClick);
+        document.body.style.overflow = prev;
+      };
+    }
+    return () => {};
+  }, [navOpen]);
+
   return (
     <div className="site-wrapper">
       <header className="topbar" role="banner">
@@ -20,6 +52,16 @@ export default function Layout({ children }: { children: ReactNode }) {
             </Link>
           </div>
 
+          <button
+            className="nav-toggle"
+            aria-label="Toggle navigation"
+            aria-expanded={navOpen ? 'true' : 'false'}
+            aria-controls="mobile-primary-nav"
+            onClick={() => setNavOpen((v) => !v)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          </button>
+
           <nav className="primary-nav" aria-label="Primary">
             <Link className="nav-link" href="/">Home</Link>
             <Link className="nav-link" href="/rooms">Accommodation</Link>
@@ -29,6 +71,15 @@ export default function Layout({ children }: { children: ReactNode }) {
           </nav>
 
         </div>
+        {navOpen && (
+          <nav ref={(el) => (navRef.current = el)} id="mobile-primary-nav" className="mobile-nav" aria-label="Primary mobile">
+            <Link ref={firstLinkRef} className="mobile-nav-link" href="/" onClick={() => setNavOpen(false)}>Home</Link>
+            <Link className="mobile-nav-link" href="/rooms" onClick={() => setNavOpen(false)}>Accommodation</Link>
+            <Link className="mobile-nav-link" href="/conference" onClick={() => setNavOpen(false)}>Conferences</Link>
+            <Link className="mobile-nav-link" href="/attractions" onClick={() => setNavOpen(false)}>Attractions</Link>
+            <Link className="mobile-nav-link" href="/contact" onClick={() => setNavOpen(false)}>Contact</Link>
+          </nav>
+        )}
       </header>
       {children}
       <footer className="site-footer" aria-label="Site footer">
