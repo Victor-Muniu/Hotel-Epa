@@ -6,7 +6,7 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 
 .site-wrapper { display: flex; flex-direction: column; min-height: 100%; }
 .topbar { position: fixed; top: 12px; left: 0; right: 0; z-index: 50; display: block; height: 62px; padding: 0; width: 100%; max-width: none; margin: 0; background: linear-gradient(180deg, rgba(111, 78, 55, .45), rgba(111, 78, 55, .35)); color: var(--text-white); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 6px rgba(0,0,0,.15) inset, 0 8px 24px rgba(0,0,0,.15); overflow: hidden; }
-.topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; }
+.topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; position: relative; }
 .branding { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; padding: 8px 10px; border-radius: 999px; background: transparent; }
 .brand-logo { height: 36px; width: auto; border-radius: 0; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; background: transparent; }
 .brand-title { font-size: 0.95rem; font-weight: 700; letter-spacing: .2px; }
@@ -20,6 +20,14 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .action-icon { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #b57b22, #d49a3c); color: #fff; }
 .action-icon svg { width: 14px; height: 14px; }
 .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: url('https://i.pravatar.cc/68?img=12') center/cover no-repeat, #ddd; border: 1px solid rgba(255,255,255,.25); }
+
+/* mobile nav panel */
+.mobile-nav { position: fixed; left: 12px; right: 12px; top: 74px; z-index: 60; background: rgba(248,245,242,.98); color: var(--text-black); border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.25); padding: 8px; display: grid; gap: 6px; }
+.mobile-nav-link { display: block; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: var(--text-black); }
+.mobile-nav-link:hover { background: rgba(0,0,0,.04); }
+
+/* hide toggle by default on desktop */
+.nav-toggle { display: none; border: 0; background: transparent; color: inherit; }
 
 .hero-banner { position: relative; display: grid; place-items: start center; padding: 140px 20px 80px; min-height: 560px; color: var(--text-white); }
 .hero-banner::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(0,0,0,.28), rgba(0,0,0,.28)), url('https://cdn.builder.io/api/v1/image/assets%2F0d40b83ce86943258ffc5ae08b027f61%2F628e1fa355584f05a16f8c6202e7ce55?format=webp&width=2400') center/cover no-repeat, var(--brand-brown); filter: contrast(1.08) saturate(1.06); }
@@ -57,6 +65,12 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
   .availability-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
   .availability-btn { grid-column: 1 / -1; }
   .room-types-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  /* stack hero columns to prevent overlap on small screens */
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-preview { justify-self: stretch; width: 100%; }
+  /* mobile nav: show toggle and hide desktop menu */
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.14); color: var(--text-white); border: 1px solid rgba(255,255,255,.35); }
+  .primary-nav { display: none; }
 }
 
 @media (max-width: 600px) {
