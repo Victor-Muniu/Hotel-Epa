@@ -1,13 +1,22 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getRooms, Room } from '../lib/roomsData';
 
 export default function AboutUs() {
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<any[]>([]);
 
   useEffect(() => {
-    getRooms().then(setRooms);
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/rooms');
+        const json = await res.json();
+        if (mounted && Array.isArray(json.rooms)) {
+          setRooms(json.rooms);
+        }
+      } catch (_) {}
+    })();
+    return () => { mounted = false; };
   }, []);
 
   return (
@@ -17,9 +26,10 @@ export default function AboutUs() {
         <meta name="description" content="Learn about Epashikino Resort & Spa. Discover our history, commitment to excellence, and world-class accommodations in Kenya's scenic Rift Valley." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="about-hero-container">
-        <img src="https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F11715a67bfec4a45b4e6c6f5ff24e7d3?format=webp&width=1200" alt="Epashikino Resort hero image" className="about-hero-image" />
-        <div className="about-hero-overlay"></div>
+      <div style={{position: 'relative', width: '100%', height: '300px', overflow: 'hidden', marginBottom: '40px'}}>
+        <img src="https://cdn.builder.io/api/v1/image/assets%2F7efc470fe57f4b95b600ae20623acb83%2F11715a67bfec4a45b4e6c6f5ff24e7d3?format=webp&width=1200" alt="Epashikino Resort hero image" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}} />
+        <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2))'}}>
+        </div>
       </div>
       <div className="privacy-container">
         <header className="privacy-header">
@@ -40,12 +50,12 @@ export default function AboutUs() {
 
           <section className="privacy-section">
             <h2 className="privacy-section-title">Our Story</h2>
-            <div className="story-image-grid">
-              <figure className="story-figure">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2F781707577b0147af9c231ec692cdc21b?format=webp&width=800" alt="Elegant Epashikino resort room" className="story-image" />
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '20px 0'}}>
+              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2F781707577b0147af9c231ec692cdc21b?format=webp&width=800" alt="Elegant Epashikino resort room" style={{width: '100%', height: '250px', objectFit: 'cover', display: 'block'}} />
               </figure>
-              <figure className="story-figure">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2Fe46ddac554334ce183438f24777b4479?format=webp&width=800" alt="Resort exterior view" className="story-image" />
+              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F6c3df5a7a3f7442e951c494b89c27332%2Fe46ddac554334ce183438f24777b4479?format=webp&width=800" alt="Resort exterior view" style={{width: '100%', height: '250px', objectFit: 'cover', display: 'block'}} />
               </figure>
             </div>
             <p>Epashikino Resort & Spa represents years of dedication to creating a world-class hospitality destination in one of Kenya's most captivating locations. Situated on the shores of Lake Elementaita, directly opposite the iconic "Sleeping Warrior" rocky mountain formation, our resort has become a preferred sanctuary for travelers seeking both relaxation and adventure.</p>
@@ -73,21 +83,19 @@ export default function AboutUs() {
 
           <section className="privacy-section">
             <h2 className="privacy-section-title">Our Accommodations</h2>
-            {rooms.length > 0 && (
-              <div className="accommodations-grid">
-                {rooms.slice(0, 3).map((room) => (
-                  <figure key={room.id} className="accommodation-figure">
-                    {room.images && room.images.length > 0 && (
-                      <img
-                        src={room.images[0]}
-                        alt={room.name}
-                        className="accommodation-image"
-                      />
-                    )}
-                  </figure>
-                ))}
-              </div>
-            )}
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', margin: '20px 0'}}>
+              {rooms.slice(0, 3).map((room) => (
+                <figure key={room.id} style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                  {room.images && room.images.length > 0 && (
+                    <img 
+                      src={room.images[0]} 
+                      alt={room.name}
+                      style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}}
+                    />
+                  )}
+                </figure>
+              ))}
+            </div>
             <p>Epashikino offers a carefully curated selection of accommodation options to suit diverse guest preferences and needs:</p>
             <ul className="privacy-list">
               {rooms.map((room) => (
@@ -104,12 +112,12 @@ export default function AboutUs() {
             <p>Our on-site restaurants serve a diverse range of cuisines, from international favorites to authentic Kenyan dishes prepared with locally sourced ingredients. Whether dining in our main restaurant overlooking the lake or enjoying a private meal in your suite, our culinary team crafts memorable dining experiences.</p>
             
             <h3 className="privacy-subsection-title">Conferences and Events</h3>
-            <div className="conference-image-grid">
-              <figure className="conference-figure">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F22e2311edffd4634a0a1b74e09843a11?format=webp&width=800" alt="Kilimanjaro conference hall" className="conference-image" />
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0'}}>
+              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F22e2311edffd4634a0a1b74e09843a11?format=webp&width=800" alt="Kilimanjaro conference hall" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
               </figure>
-              <figure className="conference-figure">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F10a5b3405c5845a29378bede4dfe85f0?format=webp&width=800" alt="Conference hall interior" className="conference-image" />
+              <figure style={{margin: 0, borderRadius: '8px', overflow: 'hidden'}}>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Fc2fe2cfdcc4f432da0d1d67f89e231a4%2F10a5b3405c5845a29378bede4dfe85f0?format=webp&width=800" alt="Conference hall interior" style={{width: '100%', height: '200px', objectFit: 'cover', display: 'block'}} />
               </figure>
             </div>
             <p>Epashikino Resort & Spa features fully equipped conference halls and meeting spaces with state-of-the-art technology, scenic views, and professional support. Whether hosting a corporate retreat, intimate wedding, or large conference, our events team ensures every detail is executed flawlessly.</p>
