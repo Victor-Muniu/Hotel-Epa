@@ -21,7 +21,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Is there a cancellation policy?',
-    answer: 'Yes, our standard cancellation policy allows free cancellation up to 7 days before your arrival date. Cancellations made within 7 days of arrival may be subject to a charge equivalent to one night\'s stay. Please refer to your booking confirmation for specific terms.'
+    answer: 'Yes, our standard cancellation policy allows free cancellation up to 3 days before your arrival date. Cancellations made within 3 days of arrival may be subject to a charge equivalent to one night\'s stay. Please refer to your booking confirmation for specific terms.'
   },
   {
     question: 'Do you have WiFi in all rooms?',
