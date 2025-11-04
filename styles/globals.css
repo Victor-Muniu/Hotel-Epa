@@ -161,10 +161,20 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 /* Newsletter row */
 .footer-newsletter { display: flex; gap: 20px; align-items: center; justify-content: space-between; }
 .newsletter-title { margin: 0; font-size: 1.15rem; max-width: 66%; color: var(--text-black); font-family: 'Playfair Display', Georgia, serif; line-height: 1.25; }
-.newsletter-form { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-.newsletter-input { padding: 10px 8px; border: 0; border-bottom: 1px solid rgba(0,0,0,0.12); background: transparent; min-width: 300px; outline: none; color: rgba(0,0,0,0.85); }
-.newsletter-input::placeholder { color: rgba(0,0,0,0.4); }
-.newsletter-btn { padding: 8px 10px; border-radius: 999px; background: transparent; color: var(--brand-brown); border: 1px solid rgba(0,0,0,0.06); cursor: pointer; font-weight: 700; }
+.newsletter-form { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+/* Make the input container position relative so the send icon can sit inside the input */
+.newsletter-field { position: relative; width: 100%; max-width: 520px; }
+.newsletter-input { padding: 12px 48px 12px 14px; border: 1px solid rgba(0,0,0,0.06); border-radius: 8px; background: transparent; outline: none; color: rgba(0,0,0,0.85); width: 100%; box-sizing: border-box; min-width: 0; }
+.newsletter-input::placeholder { color: rgba(0,0,0,0.45); }
+/* Position the circular send button inside the input on the right */
+.newsletter-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; background: transparent; color: var(--brand-brown); border: 1px solid rgba(0,0,0,0.06); display: grid; place-items: center; cursor: pointer; }
+
+/* Desktop: keep the newsletter form layout as a row; on small screens stack */
+@media (max-width: 900px) {
+  .newsletter-form { width: 100%; margin-left: 0; }
+  .footer-newsletter { flex-direction: column; align-items: stretch; gap: 12px; }
+  .newsletter-field { max-width: 100%; }
+}
 
 /* Links grid */
 .footer-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
