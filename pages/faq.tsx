@@ -33,7 +33,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'What dining options are available?',
-    answer: 'We offer several dining experiences including our main restaurant, rooftop lounge, and room service. Our menus feature both local and international cuisine. Special dietary requirements can be accommodated with advance notice.'
+    answer: 'We offer several dining experiences including our main restaurant, pool area, lounge area, bar, and room service. Our menus feature both local and international cuisine. Special dietary requirements can be accommodated with advance notice.'
   },
   {
     question: 'Do you offer conference and event facilities?',
