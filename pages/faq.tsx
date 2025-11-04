@@ -9,7 +9,7 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     question: 'What are the check-in and check-out times?',
-    answer: 'Check-in is available from 2:00 PM and check-out is at 11:00 AM. Early check-in or late check-out may be available upon request, subject to availability and additional charges.'
+    answer: 'Check-in starts at 12:00 noon and check-out is at 10:00 AM. Early check-in or late check-out may be available upon request, subject to availability and additional charges.'
   },
   {
     question: 'Do you offer airport transfers or shuttle services?',
