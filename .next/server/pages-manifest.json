@@ -2,5 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/rooms": "pages/rooms.js",
+  "/api/room-types": "pages/api/room-types.js",
+  "/booking": "pages/booking.js",
+  "/api/booking": "pages/api/booking.js"
 }
