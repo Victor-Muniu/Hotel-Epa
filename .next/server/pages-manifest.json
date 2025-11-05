@@ -2,8 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/booking": "pages/booking.js",
   "/api/room-types": "pages/api/room-types.js",
-  "/api/booking": "pages/api/booking.js",
-  "/": "pages/index.js",
-  "/booking": "pages/booking.js"
+  "/": "pages/index.js"
 }
