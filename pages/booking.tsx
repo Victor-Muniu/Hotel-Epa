@@ -184,28 +184,16 @@ export default function Booking() {
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
 
-    try {
-      const res = await fetch('/api/booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      const raw = await res.text();
-      let msg = '';
-      try {
-        const parsed = JSON.parse(raw);
-        msg = (parsed && parsed.message) ? parsed.message : (raw || `HTTP ${res.status}`);
-      } catch {
-        msg = raw || `HTTP ${res.status}`;
-      }
-      setSubmitting(false);
-      setStatus(msg);
-      if (res.ok) {
-        formEl.reset();
-      }
-    } catch (error: any) {
-      setSubmitting(false);
-      setStatus(error?.message ? `Network error: ${error.message}` : 'Network error. Please check your connection and try again.');
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    setSubmitting(false);
+    setStatus(json.message);
+    if (res.ok) {
+      formEl.reset();
     }
   }
 
@@ -240,7 +228,6 @@ export default function Booking() {
 
             <div className="form-section-container">
               <form className="booking-form" onSubmit={submit}>
-                <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
 
 
