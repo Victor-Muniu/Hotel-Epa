@@ -451,7 +451,8 @@ export default function Booking() {
                       status.includes('success') ||
                       status.includes('successfully') ||
                       status.includes('Thank you') ||
-                      status.includes('confirmed')
+                      status.includes('confirmed') ||
+                      status.includes('received')
                         ? 'success'
                         : 'error'
                     }`}
