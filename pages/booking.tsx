@@ -182,22 +182,34 @@ export default function Booking() {
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
+    body.guests = (body as any).adults || (body as any).guests;
+    body.children = (body as any).kids ?? (body as any).children;
+    body.rooms = (body as any).num_rooms ?? (body as any).rooms;
+    body.type = (body as any).type || 'room';
 
     try {
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
+        credentials: 'same-origin'
       });
-      const json = await res.json();
+      const raw = await res.text();
+      let msg = '';
+      try {
+        const parsed = JSON.parse(raw);
+        msg = (parsed && parsed.message) ? parsed.message : (raw || `HTTP ${res.status}`);
+      } catch {
+        msg = raw || `HTTP ${res.status}`;
+      }
       setSubmitting(false);
-      setStatus(json.message);
+      setStatus(msg);
       if (res.ok) {
         e.currentTarget.reset();
       }
-    } catch (error) {
+    } catch (error: any) {
       setSubmitting(false);
-      setStatus('Error submitting booking. Please try again.');
+      setStatus(error?.message ? `Network error: ${error.message}` : 'Network error. Please check your connection and try again.');
     }
   }
 
