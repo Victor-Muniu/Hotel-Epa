@@ -177,7 +177,8 @@ export default function Booking() {
       return;
     }
 
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget as HTMLFormElement;
+    const form = new FormData(formEl);
     const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
@@ -200,7 +201,7 @@ export default function Booking() {
       setSubmitting(false);
       setStatus(msg);
       if (res.ok) {
-        e.currentTarget.reset();
+        formEl.reset();
       }
     } catch (error: any) {
       setSubmitting(false);
