@@ -433,7 +433,8 @@ export default function Booking() {
                     className={`booking-status ${
                       status.includes('success') ||
                       status.includes('successfully') ||
-                      status.includes('Thank you')
+                      status.includes('Thank you') ||
+                      status.includes('confirmed')
                         ? 'success'
                         : 'error'
                     }`}
