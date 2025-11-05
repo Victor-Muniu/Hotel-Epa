@@ -2,8 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/api/room-types": "pages/api/room-types.js",
+  "/api/booking": "pages/api/booking.js",
   "/": "pages/index.js",
-  "/bookings": "pages/bookings.js",
-  "/booking": "pages/booking.js",
-  "/api/room-types": "pages/api/room-types.js"
+  "/booking": "pages/booking.js"
 }
