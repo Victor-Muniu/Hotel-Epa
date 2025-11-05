@@ -182,17 +182,12 @@ export default function Booking() {
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
-    body.guests = (body as any).adults || (body as any).guests;
-    body.children = (body as any).kids ?? (body as any).children;
-    body.rooms = (body as any).num_rooms ?? (body as any).rooms;
-    body.type = (body as any).type || 'room';
 
     try {
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        credentials: 'same-origin'
+        body: JSON.stringify(body)
       });
       const raw = await res.text();
       let msg = '';
@@ -281,14 +276,23 @@ export default function Booking() {
                     />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Phone Number *</label>
+                    <label className="form-label">Phone Number</label>
                     <input
                       className="form-input"
                       name="phone"
                       placeholder="+1 (555) 000-0000"
-                      required
                     />
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Nationality *</label>
+                  <input
+                    className="form-input"
+                    name="nationality"
+                    placeholder="Country"
+                    required
+                  />
                 </div>
 
                 <div className="form-row">
