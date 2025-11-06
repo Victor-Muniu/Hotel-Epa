@@ -564,6 +564,7 @@ export default function ExploreRooms() {
         .amenity { display: inline-flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.75); font-size: 0.85rem; padding: 6px 8px; background: #fafafa; border-radius: 8px; border: 1px solid rgba(0,0,0,0.03); }
         .amenity svg { width: 16px; height: 16px; flex-shrink: 0; }
         .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; flex-wrap: wrap; }
+        .room-card-actions { margin-top: 8px; display: flex; gap: 8px; }
 
         @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .filters-bar { grid-template-columns: 1fr 1fr 1fr auto; } }
         @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .filters-bar { grid-template-columns: 1fr; } }
