@@ -264,7 +264,7 @@ export default function ExploreRooms() {
       </main>
 
       <style jsx>{`
-        .explore-page { margin-top: 40px; }
+        .explore-page { margin-top: 16px; }
         .explore-container { width: 80%; max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
         
         .explore-header { text-align: center; margin-bottom: 32px; }
