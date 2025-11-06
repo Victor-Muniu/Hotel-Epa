@@ -54,12 +54,15 @@ export default function AttractionDetail({ item }: { item: Attraction }) {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: attractions.map(a => ({ params: { slug: a.slug } })),
-    fallback: false
+    fallback: 'blocking'
   };
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const slug = String(ctx.params?.slug || '');
   const item = getAttractionBySlug(slug);
+  if (!item) {
+    return { notFound: true };
+  }
   return { props: { item } };
 };

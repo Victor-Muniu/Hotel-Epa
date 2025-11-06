@@ -112,6 +112,32 @@ export const attractions: Attraction[] = [
       'KWS‑managed sanctuary safeguarding the lake’s shoreline and hot springs. A key refuge for flamingos, pelicans and other waterbirds within the UNESCO‑listed Kenya Lake System.',
     badges: ['Birdwatching', 'Protected area'],
     citeUrl: 'https://www.kws.go.ke/lake-elementaita-wildlife-sanctuary'
+  },
+  {
+    slug: 'menengai-crater',
+    title: 'Menengai Crater',
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F690ab93b0be646e28935d13a467762da%2Fce89526a0c174020bf3f3ee23c1cf282?format=webp&width=1600'
+    ],
+    rating: 4.5,
+    reviews: 48,
+    description:
+      'A large dormant volcanic caldera northwest of Nakuru with dramatic cliffs and panoramic views. Popular for scenic drives, short hikes and photography of the rift valley landscape.',
+    badges: ['Scenic views', 'Short hikes'],
+    citeUrl: 'https://en.wikipedia.org/wiki/Menengai_Crater'
+  },
+  {
+    slug: 'lord-egerton-castle',
+    title: 'Lord Egerton Castle',
+    images: [
+      'https://cdn.builder.io/api/v1/image/assets%2F690ab93b0be646e28935d13a467762da%2F5a01c24c97394eb3b8abfed84556c020?format=webp&width=1600'
+    ],
+    rating: 4.4,
+    reviews: 32,
+    description:
+      'A historic mansion built in the early 20th century as a private residence. The castle features extensive gardens, elegant interiors and a fascinating story about its builder, Lord Maurice Egerton.',
+    badges: ['Historic site', 'Gardens'],
+    citeUrl: 'https://en.wikipedia.org/wiki/Lord_Egerton_of_Torwood'
   }
 ];
 

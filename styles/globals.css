@@ -1560,7 +1560,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--brand-brown) var(--text-whi
 }
 
 /* Attractions listing (Tripadvisor-like) */
-.attr-page { margin-top: 86px; font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: var(--text-white); color: var(--text-black); }
+.attr-page { margin-top: 12px; font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: var(--text-white); color: var(--text-black); }
+@media (max-width: 900px) { .attr-page { margin-top: 10px; } }
+@media (max-width: 600px) { .attr-page { margin-top: 6px; } }
 .attr-container { width: 92%; max-width: 1240px; margin: 0 auto; padding: 16px 0 60px; }
 .attr-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .attr-title { margin: 0; font-size: 2.2rem; font-weight: 800; color: var(--brand-brown); }
