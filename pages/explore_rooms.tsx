@@ -272,7 +272,7 @@ export default function ExploreRooms() {
                     </div>
 
                     <div className="room-card-actions">
-                      <button className="btn btn-outline" type="button" onClick={() => openBooking(room.name)}>Reserve</button>
+                      <button className="btn-more-details" type="button" onClick={() => openBooking(room.name)}>Reserve</button>
                     </div>
                   </div>
                 </article>
