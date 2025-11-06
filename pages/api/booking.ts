@@ -47,8 +47,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const candidateType = rawType.toLowerCase() === 'room' ? (req.body.board_type || null) : (rawType || req.body.board_type || null);
     const board_type_summary = candidateType || (distinctTypes.length <= 1 ? (distinctTypes[0] || null) : 'mixed');
 
+    const room_id_raw = String(req.body.room_id || '');
+    const room_id = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(room_id_raw) ? room_id_raw : null;
+
     const bookingPayload = {
-      room_id: req.body.room_id || null,
+      room_id,
       first_name,
       last_name,
       email: req.body.email,

@@ -183,6 +183,11 @@ export default function Booking() {
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
+    body.guests = (body as any).adults || (body as any).guests;
+    body.children = (body as any).kids ?? (body as any).children;
+    body.rooms = (body as any).num_rooms ?? (body as any).rooms;
+    const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRe.test(String((body as any).room_id || ''))) delete (body as any).room_id;
 
     const res = await fetch('/api/booking', {
       method: 'POST',
