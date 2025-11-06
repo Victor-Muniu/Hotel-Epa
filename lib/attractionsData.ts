@@ -130,7 +130,7 @@ export const attractions: Attraction[] = [
     slug: 'lord-egerton-castle',
     title: 'Lord Egerton Castle',
     images: [
-      'https://upload.wikimedia.org/wikipedia/commons/6/6b/Egerton_Castle.jpg'
+      'https://cdn.builder.io/api/v1/image/assets%2F690ab93b0be646e28935d13a467762da%2F5a01c24c97394eb3b8abfed84556c020?format=webp&width=1600'
     ],
     rating: 4.4,
     reviews: 32,
