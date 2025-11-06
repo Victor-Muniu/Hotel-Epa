@@ -13,67 +13,59 @@ export default function ExploreRooms() {
   const rooms = [
     {
       id: 1,
-      name: 'Deluxe Blue Room',
+      name: 'Deluxe Double',
       roomType: 'double',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F0f158b48159b4dea9fd22050b1ed4319?format=webp&width=1600',
-      description: 'Experience comfort in our spacious deluxe room with blue accent wall and modern furnishings.',
+      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F2485ae8cfcdc42bf97186752d3dfedc2?format=webp&width=1600',
+      description: 'Elegant double room with premium finishes and balcony views for a refined stay.',
       features: ['1 Double Bed', '50m²', 'Balcony', 'Smart TV', 'Work Desk']
     },
     {
       id: 2,
-      name: 'Elegant Suite with Balcony',
+      name: 'Standard Double',
       roomType: 'double',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F2485ae8cfcdc42bf97186752d3dfedc2?format=webp&width=1600',
-      description: 'Relax in luxury with our elegant suite featuring a stunning balcony view.',
-      features: ['1 Double Bed', '55m²', 'Large Balcony', 'Premium Amenities', 'Mountain View']
+      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F0f158b48159b4dea9fd22050b1ed4319?format=webp&width=1600',
+      description: 'Comfortable standard double with modern décor and everything you need for a great night\'s sleep.',
+      features: ['1 Double Bed', '45m²', 'Air Conditioning', 'Wi‑Fi', 'Wardrobe']
     },
     {
       id: 3,
-      name: 'Round Bed Suite',
-      roomType: 'single',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F32d5855646ed417e83b45d3d4e1ebbfb?format=webp&width=1600',
-      description: 'Unique and luxurious with our signature round bed and teal accent wall.',
-      features: ['1 Round Bed', '60m²', 'Decorative Mirror', 'Fine Linens', 'Artistic Design']
+      name: 'Double with an extra bed',
+      roomType: 'triple',
+      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F28a2e9e58f4640fa9d68f363c8330e78?format=webp&width=1600',
+      description: 'Ideal for small families or groups—double bed with an additional single bed.',
+      features: ['1 Double + 1 Single', '55m²', 'Spacious Layout', 'Seating Area', 'Wardrobe']
     },
     {
       id: 4,
-      name: 'Panoramic Room',
-      roomType: 'double',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F06582229117145b5bc4bdbf74004bfca?format=webp&width=1600',
-      description: 'Stunning panoramic views with modern décor and spacious seating area.',
-      features: ['1 Double Bed', '58m²', 'Floor-to-Ceiling Windows', 'Seating Area', 'Scenic View']
+      name: 'Standard Single',
+      roomType: 'single',
+      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F32d5855646ed417e83b45d3d4e1ebbfb?format=webp&width=1600',
+      description: 'Cozy single room perfect for solo travelers, with modern amenities and style.',
+      features: ['1 Single Bed', '25m²', 'Wi‑Fi', 'Smart TV', 'Work Desk']
     },
     {
       id: 5,
-      name: 'Family Room with Nursery',
-      roomType: 'family',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F71052c8e23024c39a2a8bdfd0fbef059?format=webp&width=1600',
-      description: 'Perfect for families with main bedroom and separate nursery area.',
-      features: ['1 Double Bed + Crib', '65m²', 'Family Setup', 'Safe Nursery', 'Spacious Layout']
+      name: 'Twin',
+      roomType: 'twin',
+      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F75f97fc26f914e6489ee10104767af66?format=webp&width=1600',
+      description: 'Two comfortable single beds with modern furnishings and a fresh look.',
+      features: ['2 Single Beds', '50m²', 'Modern Decor', 'Reading Lamps', 'Wardrobe']
     },
     {
       id: 6,
-      name: 'Twin Bed Suite',
-      roomType: 'twin',
+      name: 'Tripple',
+      roomType: 'triple',
       image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F11597a5f3c144797bb99b59dac85173c?format=webp&width=1600',
-      description: 'Comfortable twin beds with elegant décor and warm lighting.',
-      features: ['2 Single Beds', '52m²', 'Separate Beds', 'Elegant Design', 'Reading Nook']
+      description: 'Spacious room suitable for three guests, offering flexibility and comfort.',
+      features: ['3 Single Beds', '60m²', 'Ample Storage', 'Seating Area', 'Wi‑Fi']
     },
     {
       id: 7,
-      name: 'Teal Accent Twin Room',
-      roomType: 'twin',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F75f97fc26f914e6489ee10104767af66?format=webp&width=1600',
-      description: 'Modern twin beds with striking teal accent walls and quality furnishings.',
-      features: ['2 Single Beds', '54m²', 'Color Accent', 'Modern Decor', 'Double Vanity']
-    },
-    {
-      id: 10,
-      name: 'Multi-Bed Suite',
+      name: 'Family interconnecting',
       roomType: 'family',
-      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F28a2e9e58f4640fa9d68f363c8330e78?format=webp&width=1600',
-      description: 'Spacious suite with multiple bed options and teal accent walls.',
-      features: ['2 Double Beds', '70m²', 'Teal Accents', 'Large Windows', 'Entertainment Area']
+      image: 'https://cdn.builder.io/api/v1/image/assets%2F63e670d5cbe5459ba070252373268feb%2F71052c8e23024c39a2a8bdfd0fbef059?format=webp&width=1600',
+      description: 'Two interconnecting rooms perfect for families seeking space and privacy.',
+      features: ['2 Interconnecting Rooms', '80m²', '2 Double Beds', 'Nursery Option', 'Spacious Layout']
     }
   ];
 
@@ -127,6 +119,7 @@ export default function ExploreRooms() {
                   <option value="single">Single</option>
                   <option value="double">Double</option>
                   <option value="twin">Twin</option>
+                  <option value="triple">Triple</option>
                   <option value="family">Family</option>
                 </select>
               </label>
