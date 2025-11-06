@@ -10,6 +10,23 @@ export default function ExploreRooms() {
   const [filterType, setFilterType] = useState<string>('Any');
   const [filterCapacity, setFilterCapacity] = useState<string>('Any');
 
+  // Booking / Reserve state
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [reserveRoom, setReserveRoom] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+
+  const [today, setToday] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [minCheckout, setMinCheckout] = useState<string>('');
+  const [nights, setNights] = useState<string[]>([]);
+  const BOARD_TYPES = ['Bed Only', 'Bed and Breakfast', 'Half Board', 'Full Board'];
+  const [defaultBoardType, setDefaultBoardType] = useState<string>('Bed Only');
+  const [boardPlan, setBoardPlan] = useState<Record<string, string>>({});
+  const [numRooms, setNumRooms] = useState<number>(1);
+  const [roomSelections, setRoomSelections] = useState<{ [key: number]: string }>({ 0: '' });
+
   const rooms = [
     {
       id: 1,
@@ -88,6 +105,97 @@ export default function ExploreRooms() {
 
   const visibleRooms = rooms.filter(r => filterType === 'Any' || r.roomType.toLowerCase() === filterType.toLowerCase());
 
+  function toLocalDateString(d: Date) {
+    const tzOffset = d.getTimezoneOffset() * 60000;
+    return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+  }
+  function addDays(dateStr: string, days: number) {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + 1 * days);
+    return toLocalDateString(d);
+  }
+  function enumerateNights(start: string, end: string): string[] {
+    if (!start || !end) return [];
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const out: string[] = [];
+    for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+  function applyDefaultToAll(type: string, dates: string[]) {
+    const next: Record<string, string> = {};
+    for (const d of dates) next[d] = type;
+    setBoardPlan(next);
+  }
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus(null);
+    setSubmitting(true);
+
+    const t = today || toLocalDateString(new Date());
+    const s = startDate;
+    const en = endDate;
+    if (!s || !en) {
+      setSubmitting(false);
+      setStatus('Please select both check-in and check-out dates.');
+      return;
+    }
+    if (s < t) {
+      setSubmitting(false);
+      setStatus('Please select a check-in date that is today or later.');
+      return;
+    }
+    if (en <= s) {
+      setSubmitting(false);
+      setStatus('Check-out must be at least one day after check-in.');
+      return;
+    }
+
+    const form = new FormData(e.currentTarget);
+    const body: any = Object.fromEntries(form.entries());
+    body.room_types = JSON.stringify(roomSelections);
+    const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
+    body.board_plan = JSON.stringify(plan);
+
+    const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const json = await res.json();
+    setSubmitting(false);
+    setStatus(json.message);
+    if (res.ok) {
+      (e.target as HTMLFormElement).reset();
+      setBookingOpen(false);
+    }
+  }
+
+  function openBooking(roomName?: string) { if (roomName) setReserveRoom(roomName); const idx = rooms.findIndex(r => r.name === roomName); if (idx >= 0) setSelectedRoom(idx); setBookingOpen(true); }
+
+  const handleNumRoomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const num = parseInt(e.target.value) || 1;
+    setNumRooms(num);
+    const newSelections: { [key: number]: string } = {};
+    for (let i = 0; i < num; i++) {
+      newSelections[i] = roomSelections[i] || (roomTypes[0] || '');
+    }
+    setRoomSelections(newSelections);
+  };
+
+  const handleRoomTypeChange = (roomIndex: number, roomType: string) => {
+    setRoomSelections(prev => ({
+      ...prev,
+      [roomIndex]: roomType
+    }));
+  };
+
+  // initialize dates
+  useEffect(() => {
+    const t = toLocalDateString(new Date());
+    setToday(t);
+    setMinCheckout(addDays(t, 1));
+  }, []);
+
   return (
     <>
       <Head>
@@ -150,7 +258,7 @@ export default function ExploreRooms() {
                     <h3 className="room-card-title">{room.name}</h3>
                     <p className="room-card-desc">{room.description}</p>
                     <ul className="room-card-amenities">
-                      {room.features.slice(0,3).map((f,i) => (
+                      {room.features.map((f,i) => (
                         <li key={i} className="amenity">
                           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 13h18M4 10h16a2 2 0 0 1 2 2v6H2v-6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
                           {f}
@@ -158,9 +266,13 @@ export default function ExploreRooms() {
                       ))}
                     </ul>
                     <div className="room-card-meta">
-                      <span>{room.roomType}</span>
+                      <span style={{textTransform: 'capitalize'}}>{room.roomType}</span>
                       <span>•</span>
                       <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m²'}</span>
+                    </div>
+
+                    <div className="room-card-actions">
+                      <button className="btn-more-details" type="button" onClick={() => openBooking(room.name)}>Reserve</button>
                     </div>
                   </div>
                 </article>
@@ -262,6 +374,85 @@ export default function ExploreRooms() {
           </nav>
         </div>
       </main>
+
+      {/* Booking modal (reserve) */}
+      {bookingOpen && (
+        <div className="hall-modal-overlay" role="dialog" aria-modal="true" aria-label="Booking form" onClick={() => setBookingOpen(false)}>
+          <div className="hall-modal-panel" onClick={(e) => e.stopPropagation()}>
+            <header className="hall-modal-header">
+              <h3 className="hall-modal-title">Reserve — {reserveRoom || ''}</h3>
+              <button className="hall-modal-close" aria-label="Close" onClick={() => setBookingOpen(false)}>✕</button>
+            </header>
+            <div className="hall-modal-body">
+              <div className="hall-gallery">
+                <div className="gallery-carousel">
+                  {/* simple image */}
+                  <img src={rooms[selectedRoom].image} alt={rooms[selectedRoom].name} className="gallery-image" />
+                </div>
+                <div className="hall-info">
+                  <form className="form booking-form" onSubmit={submit}>
+                    <input type="hidden" name="room_name" value={reserveRoom || ''} />
+                    <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
+                    <input className="input" type="email" name="email" placeholder="Email" required />
+                    <input className="input" name="phone" placeholder="Phone" />
+                    <input className="input" name="nationality" placeholder="Nationality" required />
+                    <div className="date-row">
+                      <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                      <input className="input" type="date" name="end_date" value={endDate} min={minCheckout} onChange={(e) => { let v = e.target.value; const s = startDate || today; const minC = s ? addDays(s, 1) : minCheckout; if (v && s && v <= s) v = minC; setEndDate(v); const ds = enumerateNights(startDate || today, v); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
+                    </div>
+
+                    {nights.length > 0 && (
+                      <div className="room-types-section">
+                        <h4 className="room-types-label">Board plan per night</h4>
+                        <div className="room-types-grid">
+                          {nights.map((d) => (
+                            <div key={d} className="room-type-selector">
+                              <label className="room-type-title">{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</label>
+                              <select className="input" value={boardPlan[d] || defaultBoardType} onChange={(e) => setBoardPlan((prev) => ({ ...prev, [d]: e.target.value }))}>
+                                {BOARD_TYPES.map((t) => (
+                                  <option key={t} value={t}>{t}</option>
+                                ))}
+                              </select>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="count-row"><input className="input" type="number" name="adults" placeholder="Adults" min={1} /><input className="input" type="number" name="kids" placeholder="Children" min={0} /><input className="input" type="number" name="num_rooms" placeholder="Rooms" min={1} value={numRooms} onChange={handleNumRoomsChange} /></div>
+                    {numRooms > 0 && (
+                      <div className="room-types-section">
+                        <h4 className="room-types-label">Room Types</h4>
+                        <div className="room-types-grid">
+                          {Array.from({ length: numRooms }).map((_, idx) => (
+                            <div key={idx} className="room-type-selector">
+                              <label className="room-type-title">Room {idx + 1}</label>
+                              <select
+                                className="input"
+                                value={roomSelections[idx] || ''}
+                                onChange={(e) => handleRoomTypeChange(idx, e.target.value)}
+                                disabled={roomTypes.length === 0}
+                              >
+                                <option value="">Select a room type</option>
+                                {roomTypes.map(type => (
+                                  <option key={type} value={type}>{type}</option>
+                                ))}
+                              </select>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <textarea className="input" name="notes" placeholder="Notes"></textarea>
+                    <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
+                    {status && <p role="status">{status}</p>}
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .explore-page { margin-top: 16px; }
@@ -369,13 +560,33 @@ export default function ExploreRooms() {
         .room-card-location svg { width: 16px; height: 16px; }
         .room-card-title { margin: 0; font-size: 1.05rem; color: var(--text-black); }
         .room-card-desc { margin: 0; color: rgba(0,0,0,0.65); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .room-card-amenities { list-style: none; padding: 0; margin: 0; display: grid; grid-auto-flow: column; gap: 10px; align-items: center; }
-        .amenity { display: inline-flex; align-items: center; gap: 6px; color: rgba(0,0,0,0.75); font-size: 0.85rem; }
-        .amenity svg { width: 16px; height: 16px; }
-        .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; }
+        .room-card-amenities { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 6px; }
+        .amenity { display: inline-flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.75); font-size: 0.85rem; padding: 6px 8px; background: #fafafa; border-radius: 8px; border: 1px solid rgba(0,0,0,0.03); }
+        .amenity svg { width: 16px; height: 16px; flex-shrink: 0; }
+        .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; flex-wrap: wrap; }
+        .room-card-actions { margin-top: 8px; display: flex; gap: 8px; }
 
         @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .filters-bar { grid-template-columns: 1fr 1fr 1fr auto; } }
         @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .filters-bar { grid-template-columns: 1fr; } }
+
+        /* Mobile-friendly tweaks */
+        .room-card-actions .btn-more-details { width: auto; padding: 8px 12px; align-self: flex-start; }
+
+        @media (max-width: 900px) {
+          .card-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+          .room-card-image img { height: 160px; }
+        }
+
+        @media (max-width: 600px) {
+          .card-grid { grid-template-columns: 1fr; gap: 12px; }
+          .room-card-image img { height: 140px; }
+          .amenity { font-size: 0.8rem; padding: 4px 6px; }
+          .room-card-actions .btn-more-details { width: 100%; min-width: 0; align-self: stretch; }
+          .filters-bar { grid-template-columns: 1fr; gap: 10px; }
+          .filters-bar .btn-search { width: 100%; }
+          .room-card-body { padding: 10px; }
+          .room-card-desc { -webkit-line-clamp: 3; }
+        }
       `}</style>
     </>
   );
