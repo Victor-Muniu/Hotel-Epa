@@ -568,6 +568,25 @@ export default function ExploreRooms() {
 
         @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .filters-bar { grid-template-columns: 1fr 1fr 1fr auto; } }
         @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .filters-bar { grid-template-columns: 1fr; } }
+
+        /* Mobile-friendly tweaks */
+        .room-card-actions .btn-more-details { width: auto; padding: 8px 12px; align-self: flex-start; }
+
+        @media (max-width: 900px) {
+          .card-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+          .room-card-image img { height: 160px; }
+        }
+
+        @media (max-width: 600px) {
+          .card-grid { grid-template-columns: 1fr; gap: 12px; }
+          .room-card-image img { height: 140px; }
+          .amenity { font-size: 0.8rem; padding: 4px 6px; }
+          .room-card-actions .btn-more-details { width: 100%; min-width: 0; align-self: stretch; }
+          .filters-bar { grid-template-columns: 1fr; gap: 10px; }
+          .filters-bar .btn-search { width: 100%; }
+          .room-card-body { padding: 10px; }
+          .room-card-desc { -webkit-line-clamp: 3; }
+        }
       `}</style>
     </>
   );
