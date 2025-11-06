@@ -67,53 +67,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       created_at: new Date().toISOString()
     };
 
-    // Attempt inserts independently; succeed if either table accepts the data
-    let bookingOk = false;
-    let requestOk = false;
-    let bookingErr: string | null = null;
-    let requestErr: string | null = null;
-
+    // Insert only into bookings table
     const { error: bookingError } = await supabase.from('bookings').insert(bookingPayload as any);
     if (bookingError) {
-      bookingErr = bookingError.message || String(bookingError);
-    } else {
-      bookingOk = true;
+      console.error('Bookings insert error:', bookingError);
+      return res.status(500).json({ message: 'Failed to save booking.', details: bookingError.message || String(bookingError) });
     }
 
-    // Also maintain backward compatibility with booking_requests table
-    const requestPayload = {
-      type: req.body.type || null,
-      first_name,
-      last_name,
-      full_name: [first_name, last_name].filter(Boolean).join(' ') || req.body.full_name || null,
-      email: req.body.email,
-      phone: req.body.phone || null,
-      start_date: req.body.start_date,
-      end_date: req.body.end_date,
-      guests,
-      children,
-      rooms,
-      room: req.body.room || req.body.room_id || null,
-      nationality: req.body.nationality || null,
-      notes: req.body.notes || null,
-      created_at: new Date().toISOString()
-    };
-
-    const { error: requestError } = await supabase.from('booking_requests').insert(requestPayload as any);
-    if (requestError) {
-      requestErr = requestError.message || String(requestError);
-    } else {
-      requestOk = true;
-    }
-
-    if (bookingOk || requestOk) {
-      return res.status(200).json({ message: 'Booking confirmed! We will contact you soon with details.' });
-    }
-
-    // If both failed, return guidance (keep 200 to avoid exposing backend errors to users)
-    return res.status(200).json({ message: 'Booking received. Please ensure the bookings and booking_requests tables exist with RLS allowing anon inserts.' });
+    return res.status(200).json({ message: 'Booking confirmed! We will contact you soon with details.' });
   } catch (e: any) {
     console.error('Booking error:', e);
-    return res.status(200).json({ message: 'Booking received. Please ensure the bookings and booking_requests tables exist with RLS allowing anon inserts.' });
+    return res.status(500).json({ message: 'Failed to process booking.', details: e?.message || String(e) });
   }
 }
