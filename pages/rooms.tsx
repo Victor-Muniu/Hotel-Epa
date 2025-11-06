@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import RoomTour from '../components/RoomTour';
+import Swal from 'sweetalert2';
 
 export default function Rooms() {
   const [status, setStatus] = useState<string | null>(null);
@@ -83,7 +84,17 @@ export default function Rooms() {
     const json = await res.json();
     setSubmitting(false);
     setStatus(json.message);
-    if (res.ok) (e.target as HTMLFormElement).reset();
+    if (res.ok) {
+      (e.target as HTMLFormElement).reset();
+      try {
+        await Swal.fire({
+          title: 'Booking confirmed',
+          text: json.message,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      } catch {}
+    }
   }
 
   function openBooking(room?: string) { setSelectedRoom(room || null); setBookingOpen(true); }

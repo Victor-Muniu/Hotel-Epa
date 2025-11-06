@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 interface Room {
   id: string;
@@ -199,6 +200,14 @@ export default function Booking() {
     setStatus(json.message);
     if (res.ok) {
       formEl.reset();
+      try {
+        await Swal.fire({
+          title: 'Booking confirmed',
+          text: json.message,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      } catch {}
     }
   }
 
