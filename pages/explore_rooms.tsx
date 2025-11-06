@@ -150,7 +150,7 @@ export default function ExploreRooms() {
                     <h3 className="room-card-title">{room.name}</h3>
                     <p className="room-card-desc">{room.description}</p>
                     <ul className="room-card-amenities">
-                      {room.features.slice(0,3).map((f,i) => (
+                      {room.features.map((f,i) => (
                         <li key={i} className="amenity">
                           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 13h18M4 10h16a2 2 0 0 1 2 2v6H2v-6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
                           {f}
@@ -158,7 +158,7 @@ export default function ExploreRooms() {
                       ))}
                     </ul>
                     <div className="room-card-meta">
-                      <span>{room.roomType}</span>
+                      <span style={{textTransform: 'capitalize'}}>{room.roomType}</span>
                       <span>•</span>
                       <span>{room.features.find(f=>/\dm²/i.test(f)) || '50 m²'}</span>
                     </div>
@@ -372,7 +372,7 @@ export default function ExploreRooms() {
         .room-card-amenities { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 6px; }
         .amenity { display: inline-flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.75); font-size: 0.85rem; padding: 6px 8px; background: #fafafa; border-radius: 8px; border: 1px solid rgba(0,0,0,0.03); }
         .amenity svg { width: 16px; height: 16px; flex-shrink: 0; }
-        .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; }
+        .room-card-meta { display: inline-flex; gap: 8px; align-items: center; color: rgba(0,0,0,0.6); font-size: 0.8rem; flex-wrap: wrap; }
 
         @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .filters-bar { grid-template-columns: 1fr 1fr 1fr auto; } }
         @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .filters-bar { grid-template-columns: 1fr; } }
