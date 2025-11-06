@@ -1,8 +1,11 @@
 {
-  "/_error": "pages/_error.js",
   "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/explore_rooms": "pages/explore_rooms.js",
+  "/api/rates": "pages/api/rates.js",
+  "/api/room-types": "pages/api/room-types.js",
+  "/attractions": "pages/attractions.js",
+  "/rooms": "pages/rooms.js",
   "/": "pages/index.js",
-  "/api/room-types": "pages/api/room-types.js"
+  "/explore_rooms": "pages/explore_rooms.js"
 }
