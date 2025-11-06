@@ -108,12 +108,6 @@ export default function Attractions() {
                     <div className="result-main">
                       <div className="result-head">
                         <h3 className="result-title"><Link href={`/attractions/${item.slug}`}>{idx + 1}. {item.title}</Link></h3>
-                        <div className="result-rating-row" style={{ marginLeft: 'auto' }}>
-                          <span className="muted-star">★</span>
-                          <strong>{item.rating.toFixed(1)}</strong>
-                          <span className="muted">·</span>
-                          <span className="muted">{item.reviews} reviews</span>
-                        </div>
                       </div>
                       <p className="lead result-summary">{item.description}</p>
                       {item.badges && item.badges.length > 0 && (
