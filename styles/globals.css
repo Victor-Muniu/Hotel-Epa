@@ -310,6 +310,13 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubunt
 .listing-gallery img { aspect-ratio: 16/11; }
 
 .listing-cta-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 14px 0 22px; }
+
+@media (max-width: 600px) {
+  .listing-cta-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .listing-badges { flex-wrap: wrap; gap: 8px; }
+  .badge-fav { padding: 8px 10px; }
+  .badge-rating { white-space: nowrap; font-size: 0.95rem; }
+}
 .btn-verify { background: var(--brand-brown); color: var(--text-white); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .btn-verify:hover { filter: brightness(1.05); }
 .listing-badges { display: flex; gap: 10px; align-items: center; }
