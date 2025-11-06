@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getRooms, checkRoomAvailability } from '../lib/roomsData';
 import type { Room } from '../lib/roomsData';
+import Swal from 'sweetalert2';
 
 export default function RoomsList() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -62,7 +63,15 @@ export default function RoomsList() {
       if (res.ok) {
         (e.target as HTMLFormElement).reset();
         setFormData({ start_date: '', end_date: '', guests: '1', children: '0' });
-        setTimeout(() => closeBooking(), 2000);
+        try {
+          await Swal.fire({
+            title: 'Booking confirmed',
+            text: json.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+        } catch {}
+        closeBooking();
       }
     } catch (error) {
       setStatus('Error submitting booking. Please try again.');
