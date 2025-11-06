@@ -117,7 +117,7 @@ export const attractions: Attraction[] = [
     slug: 'menengai-crater',
     title: 'Menengai Crater',
     images: [
-      'https://www.google.com/url?sa=i&url=https%3A%2F%2Fsamburunationalreservekenya.com%2Finformation%2Fmenengai-crater%2F&psig=AOvVaw2HUOttp4DavbU7xJucAsdA&ust=1762506748962000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCOCq6riX3ZADFQAAAAAdAAAAABAE'
+      'https://cdn.builder.io/api/v1/image/assets%2F690ab93b0be646e28935d13a467762da%2Fce89526a0c174020bf3f3ee23c1cf282?format=webp&width=1600'
     ],
     rating: 4.5,
     reviews: 48,
