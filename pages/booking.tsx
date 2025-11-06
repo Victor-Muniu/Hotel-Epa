@@ -177,27 +177,28 @@ export default function Booking() {
       return;
     }
 
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget as HTMLFormElement;
+    const form = new FormData(formEl);
     const body: any = Object.fromEntries(form.entries());
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
+    body.guests = (body as any).adults || (body as any).guests;
+    body.children = (body as any).kids ?? (body as any).children;
+    body.rooms = (body as any).num_rooms ?? (body as any).rooms;
+    const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRe.test(String((body as any).room_id || ''))) delete (body as any).room_id;
 
-    try {
-      const res = await fetch('/api/booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const json = await res.json();
-      setSubmitting(false);
-      setStatus(json.message);
-      if (res.ok) {
-        e.currentTarget.reset();
-      }
-    } catch (error) {
-      setSubmitting(false);
-      setStatus('Error submitting booking. Please try again.');
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    setSubmitting(false);
+    setStatus(json.message);
+    if (res.ok) {
+      formEl.reset();
     }
   }
 
@@ -232,7 +233,6 @@ export default function Booking() {
 
             <div className="form-section-container">
               <form className="booking-form" onSubmit={submit}>
-                <input type="hidden" name="type" value="room" />
                 <input type="hidden" name="room_id" value={selectedRoomId} />
 
 
@@ -269,14 +269,23 @@ export default function Booking() {
                     />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Phone Number *</label>
+                    <label className="form-label">Phone Number</label>
                     <input
                       className="form-input"
                       name="phone"
                       placeholder="+1 (555) 000-0000"
-                      required
                     />
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Nationality *</label>
+                  <input
+                    className="form-input"
+                    name="nationality"
+                    placeholder="Country"
+                    required
+                  />
                 </div>
 
                 <div className="form-row">
@@ -433,7 +442,9 @@ export default function Booking() {
                     className={`booking-status ${
                       status.includes('success') ||
                       status.includes('successfully') ||
-                      status.includes('Thank you')
+                      status.includes('Thank you') ||
+                      status.includes('confirmed') ||
+                      status.includes('received')
                         ? 'success'
                         : 'error'
                     }`}

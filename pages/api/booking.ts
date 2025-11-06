@@ -47,8 +47,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const candidateType = rawType.toLowerCase() === 'room' ? (req.body.board_type || null) : (rawType || req.body.board_type || null);
     const board_type_summary = candidateType || (distinctTypes.length <= 1 ? (distinctTypes[0] || null) : 'mixed');
 
+    const room_id_raw = String(req.body.room_id || '');
+    const room_id = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(room_id_raw) ? room_id_raw : null;
+
     const bookingPayload = {
-      room_id: req.body.room_id || null,
+      room_id,
       first_name,
       last_name,
       email: req.body.email,
@@ -67,35 +70,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       created_at: new Date().toISOString()
     };
 
-    // Insert booking
+    // Insert only into bookings table
     const { error: bookingError } = await supabase.from('bookings').insert(bookingPayload as any);
-    if (bookingError) throw bookingError;
-
-    // Also maintain backward compatibility with booking_requests table
-    const requestPayload = {
-      type: req.body.type,
-      first_name,
-      last_name,
-      full_name: [first_name, last_name].filter(Boolean).join(' ') || req.body.full_name || null,
-      email: req.body.email,
-      phone: req.body.phone || null,
-      start_date: req.body.start_date,
-      end_date: req.body.end_date,
-      guests,
-      children,
-      rooms,
-      room: req.body.room || null,
-      nationality: req.body.nationality || null,
-      notes: req.body.notes || null,
-      created_at: new Date().toISOString()
-    };
-
-    const { error: requestError } = await supabase.from('booking_requests').insert(requestPayload as any);
-    if (requestError) throw requestError;
+    if (bookingError) {
+      console.error('Bookings insert error:', bookingError);
+      return res.status(500).json({ message: 'Failed to save booking.', details: bookingError.message || String(bookingError) });
+    }
 
     return res.status(200).json({ message: 'Booking confirmed! We will contact you soon with details.' });
   } catch (e: any) {
     console.error('Booking error:', e);
-    return res.status(200).json({ message: 'Booking received. Please ensure the bookings and booking_requests tables exist with RLS allowing anon inserts.' });
+    return res.status(500).json({ message: 'Failed to process booking.', details: e?.message || String(e) });
   }
 }
