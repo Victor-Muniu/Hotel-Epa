@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/attractions": "pages/attractions.js",
-  "/attractions/[slug]": "pages/attractions/[slug].js"
+  "/attractions/[slug]": "pages/attractions/[slug].js",
+  "/": "pages/index.js"
 }
