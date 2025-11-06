@@ -105,6 +105,97 @@ export default function ExploreRooms() {
 
   const visibleRooms = rooms.filter(r => filterType === 'Any' || r.roomType.toLowerCase() === filterType.toLowerCase());
 
+  function toLocalDateString(d: Date) {
+    const tzOffset = d.getTimezoneOffset() * 60000;
+    return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+  }
+  function addDays(dateStr: string, days: number) {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + 1 * days);
+    return toLocalDateString(d);
+  }
+  function enumerateNights(start: string, end: string): string[] {
+    if (!start || !end) return [];
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const out: string[] = [];
+    for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+  function applyDefaultToAll(type: string, dates: string[]) {
+    const next: Record<string, string> = {};
+    for (const d of dates) next[d] = type;
+    setBoardPlan(next);
+  }
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus(null);
+    setSubmitting(true);
+
+    const t = today || toLocalDateString(new Date());
+    const s = startDate;
+    const en = endDate;
+    if (!s || !en) {
+      setSubmitting(false);
+      setStatus('Please select both check-in and check-out dates.');
+      return;
+    }
+    if (s < t) {
+      setSubmitting(false);
+      setStatus('Please select a check-in date that is today or later.');
+      return;
+    }
+    if (en <= s) {
+      setSubmitting(false);
+      setStatus('Check-out must be at least one day after check-in.');
+      return;
+    }
+
+    const form = new FormData(e.currentTarget);
+    const body: any = Object.fromEntries(form.entries());
+    body.room_types = JSON.stringify(roomSelections);
+    const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
+    body.board_plan = JSON.stringify(plan);
+
+    const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const json = await res.json();
+    setSubmitting(false);
+    setStatus(json.message);
+    if (res.ok) {
+      (e.target as HTMLFormElement).reset();
+      setBookingOpen(false);
+    }
+  }
+
+  function openBooking(roomName?: string) { if (roomName) setReserveRoom(roomName); const idx = rooms.findIndex(r => r.name === roomName); if (idx >= 0) setSelectedRoom(idx); setBookingOpen(true); }
+
+  const handleNumRoomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const num = parseInt(e.target.value) || 1;
+    setNumRooms(num);
+    const newSelections: { [key: number]: string } = {};
+    for (let i = 0; i < num; i++) {
+      newSelections[i] = roomSelections[i] || (roomTypes[0] || '');
+    }
+    setRoomSelections(newSelections);
+  };
+
+  const handleRoomTypeChange = (roomIndex: number, roomType: string) => {
+    setRoomSelections(prev => ({
+      ...prev,
+      [roomIndex]: roomType
+    }));
+  };
+
+  // initialize dates
+  useEffect(() => {
+    const t = toLocalDateString(new Date());
+    setToday(t);
+    setMinCheckout(addDays(t, 1));
+  }, []);
+
   return (
     <>
       <Head>
