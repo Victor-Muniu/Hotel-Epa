@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSupabase } from '../../lib/supabaseClient';
+import { isValidEmail, isValidPhone, normalizePhone } from '../../lib/validation';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -34,6 +35,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'Check-out must be after check-in.' });
     }
 
+    // Email & phone validation
+    const email = String(req.body.email || '').trim();
+    const phoneRaw = String(req.body.phone || '').trim();
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: 'Invalid email address.' });
+    }
+    if (!isValidPhone(phoneRaw)) {
+      return res.status(400).json({ message: 'Invalid phone number.' });
+    }
+    const phone = normalizePhone(phoneRaw);
+
     // Per-night board plan parsing
     const board_plan_input = req.body.board_plan;
     let board_plan: Array<{ date: string; board_type: string }> = [];
@@ -54,8 +66,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       room_id,
       first_name,
       last_name,
-      email: req.body.email,
-      phone: req.body.phone || null,
+      email,
+      phone,
       start_date: req.body.start_date,
       end_date: req.body.end_date,
       guests,
