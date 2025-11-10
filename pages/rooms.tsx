@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import RoomTour from '../components/RoomTour';
 import Swal from 'sweetalert2';
+import { isValidEmail, isValidPhone, normalizePhone } from '../lib/validation';
 
 export default function Rooms() {
   const [status, setStatus] = useState<string | null>(null);
@@ -79,6 +80,21 @@ export default function Rooms() {
     body.room_types = JSON.stringify(roomSelections);
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
+
+    const email = String((body as any).email || '').trim();
+    const phoneRaw = String((body as any).phone || '').trim();
+    if (!isValidEmail(email)) {
+      setSubmitting(false);
+      setStatus('Please enter a valid email address.');
+      return;
+    }
+    if (!isValidPhone(phoneRaw)) {
+      setSubmitting(false);
+      setStatus('Please enter a valid phone number.');
+      return;
+    }
+    (body as any).email = email;
+    (body as any).phone = normalizePhone(phoneRaw);
 
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
@@ -200,7 +216,7 @@ export default function Rooms() {
 
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
-                <input className="input" name="phone" placeholder="Phone" />
+                <input className="input" name="phone" placeholder="Phone" inputMode="tel" required />
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <div className="date-row">
                   <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
@@ -354,7 +370,7 @@ export default function Rooms() {
 
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
-                <input className="input" name="phone" placeholder="Phone" />
+                <input className="input" name="phone" placeholder="Phone" inputMode="tel" required />
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <div className="date-row">
                   <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
