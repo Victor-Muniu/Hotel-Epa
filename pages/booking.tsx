@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { isValidEmail, isValidPhone, normalizePhone } from '../lib/validation';
 
 interface Room {
   id: string;
@@ -190,6 +191,21 @@ export default function Booking() {
     const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!uuidRe.test(String((body as any).room_id || ''))) delete (body as any).room_id;
 
+    const email = String((body as any).email || '').trim();
+    const phoneRaw = String((body as any).phone || '').trim();
+    if (!isValidEmail(email)) {
+      setSubmitting(false);
+      setStatus('Please enter a valid email address.');
+      return;
+    }
+    if (!isValidPhone(phoneRaw)) {
+      setSubmitting(false);
+      setStatus('Please enter a valid phone number.');
+      return;
+    }
+    (body as any).email = email;
+    (body as any).phone = normalizePhone(phoneRaw);
+
     const res = await fetch('/api/booking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -283,6 +299,8 @@ export default function Booking() {
                       className="form-input"
                       name="phone"
                       placeholder="+1 (555) 000-0000"
+                      inputMode="tel"
+                      required
                     />
                   </div>
                 </div>
