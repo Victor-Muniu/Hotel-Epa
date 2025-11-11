@@ -71,7 +71,7 @@ export default function Rooms() {
     }
     if (en <= s) {
       setSubmitting(false);
-      setStatus('Check-out must be at least one day after check-in.');
+      await Swal.fire({ title: 'Invalid check-out', text: 'Check-out must be at least one day after check-in.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
 
