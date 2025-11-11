@@ -99,7 +99,6 @@ export default function Rooms() {
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
     setSubmitting(false);
-    setStatus(json.message);
     if (res.ok) {
       (e.target as HTMLFormElement).reset();
       try {
@@ -110,6 +109,8 @@ export default function Rooms() {
           confirmButtonText: 'OK'
         });
       } catch {}
+    } else {
+      await Swal.fire({ title: 'Booking failed', text: json.message || 'An error occurred while submitting your booking.', icon: 'error', confirmButtonText: 'OK' });
     }
   }
 
