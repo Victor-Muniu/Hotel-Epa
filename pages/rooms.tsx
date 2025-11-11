@@ -90,7 +90,7 @@ export default function Rooms() {
     }
     if (!isValidPhone(phoneRaw)) {
       setSubmitting(false);
-      setStatus('Please enter a valid phone number.');
+      await Swal.fire({ title: 'Invalid phone', text: 'Please enter a valid phone number.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     (body as any).email = email;
