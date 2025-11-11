@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.epashikinoresort.com
+
+# Sitemaps
+Sitemap: https://www.epashikinoresort.com/sitemap.xml
