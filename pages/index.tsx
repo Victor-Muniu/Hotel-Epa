@@ -303,7 +303,6 @@ export default function Home() {
             </div>
             <div className="about-copy">
               <p className="about-description">A distinctive feature of Epashikino Resort is our spacious &amp; tastefully furnished deluxe suites each with its own theme complementing the guest&apos;s mood of either business or leisure. The private balconies provide a breath taking, awe inspiring view of flamingoes foraging for food in the Lake Elementaita with "sleeping warrior" (a rocky mountain formation resembling a sleeping Moran) in the background. In the distance, steam from hot springs slowly rise above the horizon dancing in the rays of the tropical sun.</p>
-              <Link className="btn btn-soft" href="/rooms"><span className="btn-dot" aria-hidden="true"></span>Explore More</Link>
               <svg className="about-doodle" viewBox="0 0 320 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M10 86c48-28 96 28 144 0s96-28 168 0" stroke="currentColor" strokeWidth="2" strokeDasharray="4 8" opacity=".35"/>
                 <path d="M180 108c10-16 30-16 40 0" stroke="currentColor" strokeWidth="2" opacity=".45"/>
@@ -372,9 +371,6 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="why-cta">
-              <a className="btn btn-soft btn-cream" href="/rooms">Explore More</a>
-            </div>
           </div>
         </div>
       </section>
