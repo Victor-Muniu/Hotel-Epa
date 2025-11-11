@@ -165,17 +165,17 @@ export default function Booking() {
     const en = endDate;
     if (!s || !en) {
       setSubmitting(false);
-      setStatus('Please select both check-in and check-out dates.');
+      await Swal.fire({ title: 'Missing dates', text: 'Please select both check-in and check-out dates.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (s < t) {
       setSubmitting(false);
-      setStatus('Please select a check-in date that is today or later.');
+      await Swal.fire({ title: 'Invalid check-in', text: 'Please select a check-in date that is today or later.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (en <= s) {
       setSubmitting(false);
-      setStatus('Check-out must be at least one day after check-in.');
+      await Swal.fire({ title: 'Invalid check-out', text: 'Check-out must be at least one day after check-in.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
 
@@ -195,12 +195,12 @@ export default function Booking() {
     const phoneRaw = String((body as any).phone || '').trim();
     if (!isValidEmail(email)) {
       setSubmitting(false);
-      setStatus('Please enter a valid email address.');
+      await Swal.fire({ title: 'Invalid email', text: 'Please enter a valid email address.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (!isValidPhone(phoneRaw)) {
       setSubmitting(false);
-      setStatus('Please enter a valid phone number.');
+      await Swal.fire({ title: 'Invalid phone', text: 'Please enter a valid phone number.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     (body as any).email = email;
@@ -213,7 +213,6 @@ export default function Booking() {
     });
     const json = await res.json();
     setSubmitting(false);
-    setStatus(json.message);
     if (res.ok) {
       formEl.reset();
       try {
@@ -224,6 +223,8 @@ export default function Booking() {
           confirmButtonText: 'OK'
         });
       } catch {}
+    } else {
+      await Swal.fire({ title: 'Booking failed', text: json.message || 'An error occurred while submitting your booking.', icon: 'error', confirmButtonText: 'OK' });
     }
   }
 
@@ -464,21 +465,6 @@ export default function Booking() {
                   {submitting ? 'Processing...' : 'Complete Booking'}
                 </button>
 
-                {status && (
-                  <div
-                    className={`booking-status ${
-                      status.includes('success') ||
-                      status.includes('successfully') ||
-                      status.includes('Thank you') ||
-                      status.includes('confirmed') ||
-                      status.includes('received')
-                        ? 'success'
-                        : 'error'
-                    }`}
-                  >
-                    {status}
-                  </div>
-                )}
               </form>
             </div>
           </div>
