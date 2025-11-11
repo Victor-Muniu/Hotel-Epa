@@ -61,7 +61,7 @@ export default function Rooms() {
     const en = endDate;
     if (!s || !en) {
       setSubmitting(false);
-      setStatus('Please select both check-in and check-out dates.');
+      await Swal.fire({ title: 'Missing dates', text: 'Please select both check-in and check-out dates.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (s < t) {
