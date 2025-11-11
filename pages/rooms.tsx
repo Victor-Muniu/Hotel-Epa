@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import RoomTour from '../components/RoomTour';
 import Swal from 'sweetalert2';
+import { isValidEmail, isValidPhone, normalizePhone } from '../lib/validation';
 
 export default function Rooms() {
   const [status, setStatus] = useState<string | null>(null);
@@ -60,17 +61,17 @@ export default function Rooms() {
     const en = endDate;
     if (!s || !en) {
       setSubmitting(false);
-      setStatus('Please select both check-in and check-out dates.');
+      await Swal.fire({ title: 'Missing dates', text: 'Please select both check-in and check-out dates.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (s < t) {
       setSubmitting(false);
-      setStatus('Please select a check-in date that is today or later.');
+      await Swal.fire({ title: 'Invalid check-in', text: 'Please select a check-in date that is today or later.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (en <= s) {
       setSubmitting(false);
-      setStatus('Check-out must be at least one day after check-in.');
+      await Swal.fire({ title: 'Invalid check-out', text: 'Check-out must be at least one day after check-in.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
 
@@ -80,10 +81,24 @@ export default function Rooms() {
     const plan = nights.map((d) => ({ date: d, board_type: boardPlan[d] || defaultBoardType }));
     body.board_plan = JSON.stringify(plan);
 
+    const email = String((body as any).email || '').trim();
+    const phoneRaw = String((body as any).phone || '').trim();
+    if (!isValidEmail(email)) {
+      setSubmitting(false);
+      await Swal.fire({ title: 'Invalid email', text: 'Please enter a valid email address.', icon: 'error', confirmButtonText: 'OK' });
+      return;
+    }
+    if (!isValidPhone(phoneRaw)) {
+      setSubmitting(false);
+      await Swal.fire({ title: 'Invalid phone', text: 'Please enter a valid phone number.', icon: 'error', confirmButtonText: 'OK' });
+      return;
+    }
+    (body as any).email = email;
+    (body as any).phone = normalizePhone(phoneRaw);
+
     const res = await fetch('/api/booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const json = await res.json();
     setSubmitting(false);
-    setStatus(json.message);
     if (res.ok) {
       (e.target as HTMLFormElement).reset();
       try {
@@ -94,6 +109,8 @@ export default function Rooms() {
           confirmButtonText: 'OK'
         });
       } catch {}
+    } else {
+      await Swal.fire({ title: 'Booking failed', text: json.message || 'An error occurred while submitting your booking.', icon: 'error', confirmButtonText: 'OK' });
     }
   }
 
@@ -200,7 +217,7 @@ export default function Rooms() {
 
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
-                <input className="input" name="phone" placeholder="Phone" />
+                <input className="input" name="phone" placeholder="Phone" inputMode="tel" required />
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <div className="date-row">
                   <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
@@ -253,7 +270,7 @@ export default function Rooms() {
                 )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
-                {status && <p role="status">{status}</p>}
+
               </form>
             </div>
             <aside className="listing-aside" aria-label="Floor plan and room tour">
@@ -354,7 +371,7 @@ export default function Rooms() {
 
                 <div className="date-row"><input className="input" name="first_name" placeholder="First name" required /><input className="input" name="last_name" placeholder="Last name" required /></div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
-                <input className="input" name="phone" placeholder="Phone" />
+                <input className="input" name="phone" placeholder="Phone" inputMode="tel" required />
                 <input className="input" name="nationality" placeholder="Nationality" required />
                 <div className="date-row">
                   <input className="input" type="date" name="start_date" value={startDate} min={today} onChange={(e) => { let v = e.target.value; if (today && v && v < today) v = today; setStartDate(v); const nextMinC = v ? addDays(v, 1) : addDays(today || toLocalDateString(new Date()), 1); setMinCheckout(nextMinC); if (endDate && endDate <= v) { setEndDate(nextMinC); } const ds = enumerateNights(v, endDate && endDate > v ? endDate : nextMinC); setNights(ds); applyDefaultToAll(defaultBoardType, ds); }} required />
@@ -407,7 +424,7 @@ export default function Rooms() {
                 )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
-                {status && <p role="status">{status}</p>}
+
               </form>
             </div>
           </div>

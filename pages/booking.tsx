@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { isValidEmail, isValidPhone, normalizePhone } from '../lib/validation';
 
 interface Room {
   id: string;
@@ -164,17 +165,17 @@ export default function Booking() {
     const en = endDate;
     if (!s || !en) {
       setSubmitting(false);
-      setStatus('Please select both check-in and check-out dates.');
+      await Swal.fire({ title: 'Missing dates', text: 'Please select both check-in and check-out dates.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (s < t) {
       setSubmitting(false);
-      setStatus('Please select a check-in date that is today or later.');
+      await Swal.fire({ title: 'Invalid check-in', text: 'Please select a check-in date that is today or later.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (en <= s) {
       setSubmitting(false);
-      setStatus('Check-out must be at least one day after check-in.');
+      await Swal.fire({ title: 'Invalid check-out', text: 'Check-out must be at least one day after check-in.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
 
@@ -190,6 +191,21 @@ export default function Booking() {
     const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!uuidRe.test(String((body as any).room_id || ''))) delete (body as any).room_id;
 
+    const email = String((body as any).email || '').trim();
+    const phoneRaw = String((body as any).phone || '').trim();
+    if (!isValidEmail(email)) {
+      setSubmitting(false);
+      await Swal.fire({ title: 'Invalid email', text: 'Please enter a valid email address.', icon: 'error', confirmButtonText: 'OK' });
+      return;
+    }
+    if (!isValidPhone(phoneRaw)) {
+      setSubmitting(false);
+      await Swal.fire({ title: 'Invalid phone', text: 'Please enter a valid phone number.', icon: 'error', confirmButtonText: 'OK' });
+      return;
+    }
+    (body as any).email = email;
+    (body as any).phone = normalizePhone(phoneRaw);
+
     const res = await fetch('/api/booking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -197,7 +213,6 @@ export default function Booking() {
     });
     const json = await res.json();
     setSubmitting(false);
-    setStatus(json.message);
     if (res.ok) {
       formEl.reset();
       try {
@@ -208,6 +223,8 @@ export default function Booking() {
           confirmButtonText: 'OK'
         });
       } catch {}
+    } else {
+      await Swal.fire({ title: 'Booking failed', text: json.message || 'An error occurred while submitting your booking.', icon: 'error', confirmButtonText: 'OK' });
     }
   }
 
@@ -283,6 +300,8 @@ export default function Booking() {
                       className="form-input"
                       name="phone"
                       placeholder="+1 (555) 000-0000"
+                      inputMode="tel"
+                      required
                     />
                   </div>
                 </div>
@@ -446,21 +465,6 @@ export default function Booking() {
                   {submitting ? 'Processing...' : 'Complete Booking'}
                 </button>
 
-                {status && (
-                  <div
-                    className={`booking-status ${
-                      status.includes('success') ||
-                      status.includes('successfully') ||
-                      status.includes('Thank you') ||
-                      status.includes('confirmed') ||
-                      status.includes('received')
-                        ? 'success'
-                        : 'error'
-                    }`}
-                  >
-                    {status}
-                  </div>
-                )}
               </form>
             </div>
           </div>
