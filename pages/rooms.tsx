@@ -270,7 +270,7 @@ export default function Rooms() {
                 )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
-                {status && <p role="status">{status}</p>}
+
               </form>
             </div>
             <aside className="listing-aside" aria-label="Floor plan and room tour">
@@ -424,7 +424,7 @@ export default function Rooms() {
                 )}
                 <textarea className="input" name="notes" placeholder="Notes"></textarea>
                 <button className="btn btn-primary" disabled={submitting} type="submit">{submitting ? 'Submitting…' : 'Make your reservations'}</button>
-                {status && <p role="status">{status}</p>}
+
               </form>
             </div>
           </div>
