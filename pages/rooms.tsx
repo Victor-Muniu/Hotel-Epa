@@ -66,7 +66,7 @@ export default function Rooms() {
     }
     if (s < t) {
       setSubmitting(false);
-      setStatus('Please select a check-in date that is today or later.');
+      await Swal.fire({ title: 'Invalid check-in', text: 'Please select a check-in date that is today or later.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (en <= s) {
