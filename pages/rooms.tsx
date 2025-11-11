@@ -85,7 +85,7 @@ export default function Rooms() {
     const phoneRaw = String((body as any).phone || '').trim();
     if (!isValidEmail(email)) {
       setSubmitting(false);
-      setStatus('Please enter a valid email address.');
+      await Swal.fire({ title: 'Invalid email', text: 'Please enter a valid email address.', icon: 'error', confirmButtonText: 'OK' });
       return;
     }
     if (!isValidPhone(phoneRaw)) {
