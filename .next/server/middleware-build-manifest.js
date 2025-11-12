@@ -1,1 +1,39 @@
-self.__BUILD_MANIFEST={polyfillFiles:["static/chunks/polyfills-42372ed130431b0a.js"],devFiles:[],ampDevFiles:[],lowPriorityFiles:[],rootMainFiles:[],pages:{"/":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/index-9b63b24474b174e2.js"],"/_app":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/css/84cd07febeafa9f3.css","static/chunks/pages/_app-66396e6ccef39992.js"],"/_error":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/_error-7a92967bea80186d.js"],"/about":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/about-9995302795329c67.js"],"/attractions":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/attractions-db9d96d799841e78.js"],"/attractions/[slug]":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/attractions/[slug]-b374c92841b29a77.js"],"/booking":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/3f06fcd6-2d73f63733b09583.js","static/chunks/pages/booking-b0655f9784d73b0f.js"],"/cancellation":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/cancellation-5f93d76b6680f522.js"],"/conference":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/conference-1c644838e04eea8d.js"],"/contact":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/contact-c9450318e435f210.js"],"/explore_rooms":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/645-a643f384786cf0b2.js","static/chunks/pages/explore_rooms-83d975bfcbd023b2.js"],"/faq":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/faq-5586ae3c5dd6c621.js"],"/privacy":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/privacy-c9db42639c6c184d.js"],"/quote":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/quote-421e20990b53f8d5.js"],"/rooms":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/3f06fcd6-2d73f63733b09583.js","static/chunks/pages/rooms-169084778522b637.js"],"/rooms-list":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/3f06fcd6-2d73f63733b09583.js","static/chunks/608-78241177088c87d1.js","static/chunks/pages/rooms-list-561dfa446257103b.js"],"/terms_condition":["static/chunks/webpack-59c5c889f52620d6.js","static/chunks/framework-64ad27b21261a9ce.js","static/chunks/main-eb143115b8bf2786.js","static/chunks/pages/terms_condition-637a29c8afeb29b2.js"]},ampFirstPages:[]},self.__BUILD_MANIFEST.lowPriorityFiles=["/static/"+process.env.__NEXT_BUILD_ID+"/_buildManifest.js",,"/static/"+process.env.__NEXT_BUILD_ID+"/_ssgManifest.js"];
+self.__BUILD_MANIFEST = {
+  "polyfillFiles": [
+    "static/chunks/polyfills.js"
+  ],
+  "devFiles": [
+    "static/chunks/react-refresh.js"
+  ],
+  "ampDevFiles": [],
+  "lowPriorityFiles": [],
+  "rootMainFiles": [],
+  "pages": {
+    "/": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/index.js"
+    ],
+    "/_app": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/_app.js"
+    ],
+    "/_error": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/_error.js"
+    ],
+    "/booking": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/booking.js"
+    ]
+  },
+  "ampFirstPages": []
+};
+self.__BUILD_MANIFEST.lowPriorityFiles = [
+"/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
+,"/static/" + process.env.__NEXT_BUILD_ID + "/_ssgManifest.js",
+
+];

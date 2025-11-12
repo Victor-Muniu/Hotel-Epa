@@ -62,6 +62,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const room_id_raw = String(req.body.room_id || '');
     const room_id = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(room_id_raw) ? room_id_raw : null;
 
+    // Room types parsing (accepts array or JSON string)
+    const room_types = Array.isArray(req.body.room_types)
+      ? req.body.room_types
+      : typeof req.body.room_types === 'string'
+        ? (() => { try { return JSON.parse(req.body.room_types); } catch { return []; } })()
+        : [];
+    const room_type = room_types && room_types[0] ? String(room_types[0]) : null;
+
     const bookingPayload = {
       room_id,
       first_name,
@@ -74,6 +82,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       children,
       board_type: board_type_summary || null,
       board_plan,
+      room_types,
+      room_type,
       total_price: req.body.total_price || null,
       currency: 'USD',
       status: 'pending',
