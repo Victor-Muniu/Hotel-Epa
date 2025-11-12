@@ -1,1 +1,9 @@
-{"/_app":"pages/_app.js","/about":"pages/about.html","/api/availability":"pages/api/availability.js","/api/booking":"pages/api/booking.js","/api/contact":"pages/api/contact.js","/api/health":"pages/api/health.js","/api/quote":"pages/api/quote.js","/api/rates":"pages/api/rates.js","/api/room-types":"pages/api/room-types.js","/api/rooms":"pages/api/rooms.js","/attractions":"pages/attractions.html","/booking":"pages/booking.html","/cancellation":"pages/cancellation.html","/conference":"pages/conference.html","/_error":"pages/_error.js","/explore_rooms":"pages/explore_rooms.html","/faq":"pages/faq.html","/":"pages/index.html","/privacy":"pages/privacy.html","/quote":"pages/quote.html","/rooms-list":"pages/rooms-list.html","/rooms":"pages/rooms.html","/terms_condition":"pages/terms_condition.html","/contact":"pages/contact.js","/attractions/[slug]":"pages/attractions/[slug].js","/_document":"pages/_document.js","/404":"pages/404.html"}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/booking": "pages/booking.js",
+  "/rooms": "pages/rooms.js",
+  "/api/room-types": "pages/api/room-types.js"
+}
